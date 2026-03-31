@@ -1,0 +1,153 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work | Dieuwe Buijink</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Press+Start+2P&display=swap');
+        body { background-color: #00000A; color: white; margin: 0; font-family: 'Audiowide', sans-serif; }
+        .font-audiowide { font-family: 'Audiowide', sans-serif; }
+        .font-normal-sans { font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; }
+        
+        /* The "Slide in from bottom" entrance animation */
+        #page-slide-wrapper {
+            transform: translateY(100vh);
+            animation: slideUpEnter 0.8s cubic-bezier(0.77, 0, 0.17, 1) forwards;
+        }
+        @keyframes slideUpEnter {
+            to { transform: translateY(0); }
+        }
+
+        /* Metallic Nav Buttons */
+        .metal-nav-btn {
+            font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; letter-spacing: 0.05em;
+            background: linear-gradient(180deg, #2a2d30 0%, #151718 100%); color: #a0aec0;
+            border: 1px solid #000; border-top: 1px solid #4a5568; border-radius: 2px;
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05), 0 4px 6px rgba(0, 0, 0, 0.8), 0 1px 3px rgba(0, 0, 0, 0.9);
+            text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px); transition: all 0.2s; overflow: hidden; position: relative;
+        }
+        .metal-nav-btn:hover { color: #00ffcc; transform: translateY(-2px); border-top: 1px solid #00ffcc; }
+        
+        /* Page Transition Curtain */
+        #page-transition-curtain {
+            position: fixed; inset: 0; background-color: #00000A; z-index: 49; /* behind fixed nav z-50 */
+            transform: translateY(100%); transition: transform 0.6s cubic-bezier(0.77, 0, 0.17, 1); pointer-events: none;
+        }
+        .curtain-active { transform: translateY(0) !important; pointer-events: auto !important; }
+
+        /* Perspective Footer Grid */
+        .perspective-grid-footer {
+            background-image: linear-gradient(transparent 95%, rgba(255, 204, 0, 0.7) 100%), linear-gradient(90deg, transparent 95%, rgba(255, 204, 0, 0.7) 100%);
+            background-size: 80px 50px;
+            transform: perspective(400px) rotateX(60deg) scaleY(1.5);
+            transform-origin: bottom;
+            -webkit-mask-image: radial-gradient(120% 100% at bottom center, black 0%, transparent 100%);
+            mask-image: radial-gradient(120% 100% at bottom center, black 0%, transparent 100%);
+        }
+    </style>
+</head>
+<body class="selection:bg-[#ff007f] selection:text-white font-normal-sans select-none overflow-x-hidden">
+
+    <!-- Transition Curtain (Swooshes up when leaving page) -->
+    <div id="page-transition-curtain"></div>
+
+    <!-- Sticky Top Navigation -->
+    <header id="top-nav" class="fixed top-0 left-0 w-full z-50 px-6 py-4">
+        <div class="flex items-center justify-between w-full max-w-7xl mx-auto flex-wrap gap-4">
+            <div><a href="index.html" class="nav-link metal-nav-btn inline-block px-5 py-2.5 text-sm uppercase">Dieuwe Buijink</a></div>
+            <nav class="flex gap-3 md:gap-4">
+                <a href="index.html#about" class="nav-link metal-nav-btn inline-block px-4 md:px-5 py-2.5 text-xs md:text-sm uppercase">About</a>
+                <a href="work.html" class="nav-link metal-nav-btn inline-block px-4 md:px-5 py-2.5 text-xs md:text-sm uppercase text-[#00ffcc] border-t-[#00ffcc]">Work</a>
+                <a href="skills.html" class="nav-link metal-nav-btn inline-block px-4 md:px-5 py-2.5 text-xs md:text-sm uppercase">Skills</a>
+            </nav>
+            <div><a href="contact.html" class="nav-link metal-nav-btn inline-block px-5 py-2.5 text-sm uppercase text-[#ff007f] hover:text-[#ff007f]">Let's connect!</a></div>
+        </div>
+    </header>
+
+    <!-- Slide Up Wrapper -->
+    <div id="page-slide-wrapper" class="w-full min-h-screen flex flex-col pt-24">
+        
+        <!-- Giant Center Content -->
+        <main class="flex-grow flex items-center justify-center">
+            <h1 class="font-audiowide text-6xl md:text-9xl text-[#00ffcc] drop-shadow-[0_0_15px_rgba(0,255,204,0.5)]">WORK</h1>
+        </main>
+
+        <!-- Footer directly after About -->
+        <footer class="relative border-t-2 border-[#1a1f24] bg-[#00000A] pt-20 pb-6 px-6 md:px-12 overflow-hidden min-h-[50vh] flex flex-col justify-between">
+            <div class="absolute bottom-0 -left-[50%] w-[200%] h-[85%] perspective-grid-footer pointer-events-none z-0"></div>
+            <div class="relative z-10 grid grid-cols-1 lg:grid-cols-3 items-center w-full max-w-[1400px] mx-auto gap-12 lg:gap-4">
+                
+                <div class="flex justify-center lg:justify-start w-full">
+                    <h2 class="font-audiowide text-5xl sm:text-6xl lg:text-7xl xl:text-8xl text-[#ff3333] tracking-tighter leading-none uppercase">Dieuwe<br/>Buijink</h2>
+                </div>
+
+                <div class="flex justify-center w-full">
+                    <div id="footer-cat-container" class="w-32 h-32 md:w-48 md:h-48 relative z-20">
+                        <svg viewBox="0 0 400 300" class="w-full h-full drop-shadow-[0_0_15px_rgba(0,0,0,0.8)]">
+                            <defs>
+                                <radialGradient id="eyeGradLeftFooter" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffffff" /><stop offset="10%" stop-color="#ffff00" /><stop offset="50%" stop-color="#ffcc00" /><stop offset="100%" stop-color="#cc6600" /></radialGradient>
+                                <radialGradient id="eyeGradRightFooter" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffffff" /><stop offset="10%" stop-color="#ffff00" /><stop offset="50%" stop-color="#ffcc00" /><stop offset="100%" stop-color="#cc6600" /></radialGradient>
+                                <clipPath id="eyeMaskLeftFooter"><path d="M 170 140 C 170 75, 60 75, 60 140 C 60 205, 170 205, 170 140 Z" /></clipPath>
+                                <clipPath id="eyeMaskRightFooter"><path d="M 230 140 C 230 75, 340 75, 340 140 C 340 205, 230 205, 230 140 Z" /></clipPath>
+                            </defs>
+                            <g>
+                                <path d="M 170 140 C 170 75, 60 75, 60 140 C 60 205, 170 205, 170 140 Z" fill="url(#eyeGradLeftFooter)" />
+                                <g clip-path="url(#eyeMaskLeftFooter)"><ellipse id="footer-pupilL" cx="115" cy="140" rx="38" ry="38" fill="#00000A" class="transition-transform duration-100 ease-out" /><circle id="footer-highL" cx="130" cy="120" r="6.5" fill="white" opacity="0.9" class="transition-transform duration-100 ease-out" /></g>
+                                <path d="M 230 140 C 230 75, 340 75, 340 140 C 340 205, 230 205, 230 140 Z" fill="url(#eyeGradRightFooter)" />
+                                <g clip-path="url(#eyeMaskRightFooter)"><ellipse id="footer-pupilR" cx="285" cy="140" rx="38" ry="38" fill="#00000A" class="transition-transform duration-100 ease-out" /><circle id="footer-highR" cx="300" cy="120" r="6.5" fill="white" opacity="0.9" class="transition-transform duration-100 ease-out" /></g>
+                            </g>
+                            <path d="M 184 208 C 184 250, 216 250, 216 208 Z" fill="#ff7da6" />
+                            <path d="M 200 210 L 200 235" stroke="#d44a7a" stroke-width="2" stroke-linecap="round" />
+                            <path d="M 190 194 C 196 189, 204 189, 210 194 L 200 204 Z" fill="#2a1a10" />
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="flex flex-row justify-center lg:justify-center items-end gap-10 lg:gap-16 w-full text-left">
+                    <div class="flex flex-col gap-2 font-normal-sans text-xs md:text-sm text-[#ff3333] pb-[2px]">
+                        <a href="tel:+31621597179" class="hover:text-white transition-colors">+31 6 21597179</a>
+                        <a href="mailto:dieuwebuijink@gmail.com" class="hover:text-white transition-colors">dieuwebuijink@gmail.com</a>
+                    </div>
+                    <div>
+                        <a href="https://www.linkedin.com/in/dieuwe-buijink/" target="_blank" rel="noopener noreferrer" class="hover:text-white text-[#ff3333] transition-colors flex flex-col items-start gap-2 group w-14">
+                            <svg class="w-full h-auto group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                            <span class="w-full text-left text-xs md:text-sm">LinkedIn</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="relative z-10 w-full max-w-[1400px] mx-auto mt-24 flex justify-start items-end">
+                <!-- Copyright line removed as requested -->
+            </div>
+        </footer>
+    </div>
+
+    <!-- Script handles leaving transitions -->
+    <script src="transition.js"></script>
+    <script>
+        function setFooterEyeTracking(e) {
+            const pupilL = document.getElementById('footer-pupilL');
+            const pupilR = document.getElementById('footer-pupilR');
+            const highL = document.getElementById('footer-highL');
+            const highR = document.getElementById('footer-highR');
+            if (!pupilL || !pupilR || !highL || !highR) return;
+            const x = (e.clientX / window.innerWidth - 0.5) * 12;
+            const y = (e.clientY / window.innerHeight - 0.5) * 12;
+            const translate = `translate(${x}, ${y})`;
+            pupilL.setAttribute('transform', translate);
+            pupilR.setAttribute('transform', translate);
+            highL.setAttribute('transform', translate);
+            highR.setAttribute('transform', translate);
+        }
+        window.addEventListener('mousemove', setFooterEyeTracking);
+        window.addEventListener('touchmove', (e) => {
+            if (e.touches.length) setFooterEyeTracking(e.touches[0]);
+        }, { passive: true });
+    </script>
+</body>
+</html>
+
+
