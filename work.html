@@ -101,7 +101,7 @@
 
         /* Page Transition Curtain */
         #page-transition-curtain {
-            position: fixed; inset: 0; background-color: #00000A; z-index: 49; /* behind fixed nav z-50 */
+            position: fixed; inset: 0; background-color: #00000A; z-index: 49;
             transform: translateY(100%); transition: transform 0.6s cubic-bezier(0.77, 0, 0.17, 1); pointer-events: none;
         }
         .curtain-active { transform: translateY(0) !important; pointer-events: auto !important; }
@@ -114,6 +114,167 @@
             transform-origin: bottom;
             -webkit-mask-image: radial-gradient(120% 100% at bottom center, black 0%, transparent 100%);
             mask-image: radial-gradient(120% 100% at bottom center, black 0%, transparent 100%);
+        }
+
+        /* --- WORK PAGE SPECIFIC STYLES --- */
+
+        /* Warping Image Base Styles */
+        #warp-container {
+            transition: transform 0.1s linear, border-radius 0.1s linear, filter 0.1s linear;
+            will-change: transform, border-radius, filter;
+            /* Using standard shadow, not too crazy */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+
+        /* Highlight Scroll Words - Replaced in place */
+        .scroll-word {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity, filter;
+            pointer-events: none; /* Let clicks pass through */
+        }
+        .scroll-word.enter {
+            opacity: 0;
+            transform: translateY(80px);
+            filter: blur(4px);
+            color: white;
+        }
+        .scroll-word.active {
+            opacity: 1;
+            transform: translateY(0);
+            color: #00ffcc;
+            text-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
+            filter: blur(0px);
+            z-index: 10;
+        }
+        .scroll-word.exit {
+            opacity: 0;
+            transform: translateY(-80px);
+            filter: blur(4px);
+            color: white;
+        }
+
+        /* Project Grid Block (Matches Wireframe exactly) */
+        .project-block-img {
+            background-color: #111; /* Dark base behind image */
+            border-radius: 8px; /* Slightly sharper corners */
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            border: 4px solid transparent; /* Transparent border for structure */
+        }
+        
+        .project-block-img:hover {
+            border-color: #3b82f6; /* Bright blue wireframe border */
+            transform: translateY(-4px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
+        }
+        
+        .project-block-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.85; /* Show the actual image clearly */
+            transition: opacity 0.3s ease, transform 0.5s ease;
+        }
+        
+        .project-block-img:hover img {
+            opacity: 1; /* Fully bright on hover */
+            transform: scale(1.03); /* Subtle inner zoom */
+        }
+
+        /* Modal Styles matching wireframe exactly */
+        #project-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 10, 0.85);
+            backdrop-filter: blur(5px);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+        #project-modal-overlay.active {
+            display: flex;
+            animation: fadeIn 0.3s ease forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .modal-content-box {
+            background-color: #e2e8f0; /* Light grey background from wireframe */
+            border: 6px solid #4f46e5; /* Thick blue/purple border from wireframe */
+            border-radius: 12px;
+            width: 100%;
+            max-width: 800px;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            color: #1a202c;
+            font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+        }
+        .modal-scroll-area {
+            padding: 2.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        /* Wireframe exact scrollbar */
+        .modal-scroll-area::-webkit-scrollbar {
+            width: 12px;
+        }
+        .modal-scroll-area::-webkit-scrollbar-track {
+            background: #cbd5e1;
+            border-radius: 0 4px 4px 0;
+        }
+        .modal-scroll-area::-webkit-scrollbar-thumb {
+            background: #000000; /* Black scrollbar thumb */
+            border-radius: 6px;
+            border: 2px solid #cbd5e1;
+        }
+        .modal-close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 2.5rem;
+            color: #1a202c;
+            cursor: pointer;
+            z-index: 10;
+            line-height: 1;
+            transition: color 0.2s;
+        }
+        .modal-close-btn:hover {
+            color: #4f46e5;
+        }
+        .modal-media-placeholder {
+            width: 100%;
+            height: 350px;
+            background-color: #71717a; /* Darker grey box from wireframe */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            font-weight: 300;
+        }
+        .modal-small-media {
+            width: 100%;
+            max-width: 250px;
+            height: 200px;
+            background-color: #71717a;
+            align-self: flex-end;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
         }
     </style>
 </head>
@@ -154,8 +315,51 @@
 
     <div id="page-slide-wrapper" class="w-full min-h-screen flex flex-col pt-24">
         
-        <main class="flex-grow flex items-center justify-center">
-            <h1 class="font-audiowide text-6xl md:text-9xl text-[#00ffcc] drop-shadow-[0_0_15px_rgba(0,255,204,0.5)]">WORK</h1>
+        <!-- MAIN CONTENT CONTAINER -->
+        <main class="flex-grow w-full flex flex-col items-center">
+            
+            <!-- HEADER SECTION -->
+            <div class="w-full pt-12 pb-4 flex justify-center border-b-[6px] border-white">
+                <h1 class="font-audiowide text-6xl md:text-8xl text-white text-center">My Work</h1>
+            </div>
+
+            <!-- SCROLL EXPLANTION & WARPING IMAGE SECTION (Sticky) -->
+            <section class="w-full h-[400vh] relative" id="scroll-warp-section">
+                <!-- This container sticks to the screen while you scroll through the 400vh height -->
+                <div class="sticky top-0 w-full h-screen flex items-center justify-center overflow-hidden">
+                    <div class="w-full max-w-7xl mx-auto px-6 flex flex-col lg:flex-row gap-12 relative pt-16 md:pt-0">
+                        
+                        <!-- Left Side: Scrollable Text (Replaces in place) -->
+                        <div class="w-full lg:w-1/2 flex items-center relative h-[200px] md:h-[300px]">
+                            <!-- Words stacked on top of each other -->
+                            <h2 class="font-normal-sans text-5xl md:text-7xl font-normal scroll-word enter">Bold</h2>
+                            <h2 class="font-normal-sans text-5xl md:text-7xl font-normal scroll-word enter">Creative</h2>
+                            <h2 class="font-normal-sans text-5xl md:text-7xl font-normal scroll-word enter">Sleek</h2>
+                            <h2 class="font-normal-sans text-5xl md:text-7xl font-normal scroll-word enter">Adaptive</h2>
+                        </div>
+
+                        <!-- Right Side: Warping Image -->
+                        <div class="w-full lg:w-1/2 flex justify-center items-center h-full hidden lg:flex">
+                            <!-- Wireframe exact Grey block -->
+                            <div id="warp-container" class="w-[85%] aspect-square bg-[#d1d5db] flex items-center justify-center overflow-hidden rounded-md">
+                                <span class="relative z-10 text-[#1a202c] font-normal-sans text-2xl text-left leading-relaxed px-10">
+                                    video of work<br>that follows scroll<br>and changes
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- PROJECT GRID SECTION (Strict Grid Layout) -->
+            <section class="w-full max-w-6xl mx-auto px-6 py-20 mt-12">
+                <!-- Standard Grid to enforce clear horizontal row divides -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-16 gap-x-8 w-full" id="project-grid">
+                    <!-- Filled by JS -->
+                </div>
+            </section>
+
         </main>
 
         <footer class="relative border-t-2 border-[#1a1f24] bg-[#00000A] pt-20 pb-6 px-6 md:px-12 overflow-hidden min-h-[50vh] flex flex-col justify-between">
@@ -206,8 +410,207 @@
         </footer>
     </div>
 
+    <!-- PROJECT MODAL OVERLAY (Matches Wireframe 2) -->
+    <div id="project-modal-overlay">
+        <div class="modal-content-box">
+            <span class="modal-close-btn" id="close-project-modal">&times;</span>
+            <div class="modal-scroll-area">
+                <h2 id="modal-title" class="text-4xl md:text-5xl font-normal mb-4">Project Name</h2>
+                
+                <p id="modal-desc-1" class="text-sm md:text-base leading-relaxed text-[#2563eb] underline decoration-[1.5px] underline-offset-[3px] font-medium pr-12">
+                    <!-- Text populated by JS -->
+                </p>
+
+                <!-- Wireframe perfect grey main block -->
+                <div class="modal-media-placeholder my-4 relative overflow-hidden group">
+                    <img id="modal-main-img" src="" class="absolute inset-0 w-full h-full object-cover opacity-10 group-hover:opacity-100 transition-opacity duration-300" alt="">
+                    <span class="relative z-10 drop-shadow-md pointer-events-none">img / game / VD</span>
+                </div>
+
+                <div class="flex flex-col md:flex-row gap-8 mt-2 justify-between">
+                    <p id="modal-desc-2" class="flex-1 text-sm md:text-base leading-relaxed text-[#1a202c]">
+                        <!-- Text populated by JS -->
+                    </p>
+                    
+                    <!-- Wireframe perfect grey small block -->
+                    <div class="modal-small-media relative overflow-hidden group shrink-0">
+                        <img id="modal-small-img" src="" class="absolute inset-0 w-full h-full object-cover opacity-10 group-hover:opacity-100 transition-opacity duration-300" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="transition.js"></script>
     <script>
+        // --- WORK PAGE SCROLL & WARP LOGIC ---
+        
+        const warpSection = document.getElementById('scroll-warp-section');
+        const warpContainer = document.getElementById('warp-container');
+        const scrollWords = document.querySelectorAll('.scroll-word');
+        const totalWords = scrollWords.length;
+
+        // 1. Setup Scroll Event to control both Word Swapping and Image Warping
+        window.addEventListener('scroll', () => {
+            if(!warpSection || !warpContainer) return;
+            
+            const rect = warpSection.getBoundingClientRect();
+            const sectionTop = rect.top;
+            const sectionHeight = rect.height;
+            const windowHeight = window.innerHeight;
+            
+            // Calculate progress (0 to 1) ONLY while the section is locked (sticky) at the top of viewport
+            let progress = 0;
+            if (sectionTop <= 0) {
+                // The amount of pixel scrolling available before it un-sticks
+                const scrollableDistance = sectionHeight - windowHeight;
+                progress = Math.abs(sectionTop) / scrollableDistance;
+            }
+            
+            // Clamp progress between 0 and 1 strictly
+            progress = Math.max(0, Math.min(1, progress));
+
+            // --- Logic A: Word Swapping ---
+            const segment = 1 / totalWords; 
+            // Determine which word should be active based on progress fraction
+            let activeIndex = Math.min(totalWords - 1, Math.floor(progress / segment));
+
+            scrollWords.forEach((word, index) => {
+                if (index === activeIndex) {
+                    word.className = 'font-normal-sans text-5xl md:text-7xl font-normal scroll-word active';
+                } else if (index < activeIndex) {
+                    word.className = 'font-normal-sans text-5xl md:text-7xl font-normal scroll-word exit'; // scrolled past
+                } else {
+                    word.className = 'font-normal-sans text-5xl md:text-7xl font-normal scroll-word enter'; // hasn't reached yet
+                }
+            });
+
+            // --- Logic B: Warping the Image Container ---
+            // Rotate X and Y back and forth multiple times throughout the scroll
+            const rotateX = Math.sin(progress * Math.PI * 4) * 25; // Twists up to 25 deg
+            const rotateY = Math.cos(progress * Math.PI * 4) * 25; 
+            
+            // Scale dynamically (creates a breathing effect)
+            const scale = 0.9 + Math.abs(Math.sin(progress * Math.PI * 2)) * 0.15;
+            
+            // Morph border radius for a liquid/blob feel
+            const radius1 = 10 + progress * 40;
+            const radius2 = 50 - progress * 40;
+            const borderRadius = `${radius1}% ${radius2}% ${radius1}% ${radius2}%`;
+
+            // Apply transformations
+            warpContainer.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(${scale})`;
+            warpContainer.style.borderRadius = borderRadius;
+        });
+
+        // Trigger once on load to set initial states immediately
+        window.dispatchEvent(new Event('scroll'));
+
+        // --- PROJECT GRID (STRICT ROWS) & MODAL LOGIC ---
+
+        const projectsData = [
+            { 
+                id: 1, name: "Neon Nights", 
+                img: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=600",
+                imgSmall: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=400",
+                desc1: "A fully immersive WebGL experience using custom shaders and Three.js.", desc2: "This project focused on pushing the boundaries of in-browser rendering. I handled the entire pipeline from 3D asset creation in Blender to final optimization and logic implementation." 
+            },
+            { 
+                id: 2, name: "Echo Engine", 
+                img: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&q=80&w=600",
+                imgSmall: "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?auto=format&fit=crop&q=80&w=400",
+                desc1: "Custom audio-visualization tool built for live DJ performances.", desc2: "The tool reacts in real-time to frequency bands, morphing generative geometry. It features an intuitive UI allowing performers to tweak visual parameters on the fly." 
+            },
+            { 
+                id: 3, name: "Project Adaptive", 
+                img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=600",
+                imgSmall: "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&q=80&w=400",
+                desc1: "A massive e-commerce platform overhaul focusing on responsive architecture.", desc2: "Rebuilt the front-end using React and Tailwind CSS, improving load times by 40% and completely standardizing the design system across mobile and desktop viewpoints." 
+            },
+            { 
+                id: 4, name: "Cyber Grid", 
+                img: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&q=80&w=600",
+                imgSmall: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&q=80&w=400",
+                desc1: "Procedural level generator and balancing tool for unity.", desc2: "Designed to help game developers rapidly iterate on grid-based puzzle designs. It exports serialized data directly into scriptable objects." 
+            },
+            { 
+                id: 5, name: "Vanguard UI", 
+                img: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=600",
+                imgSmall: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&q=80&w=400",
+                desc1: "Clean, accessible dashboard design for fintech applications.", desc2: "Focusing heavily on user-research and data clarity, this project simplified complex financial metrics into easily digestible, interactive charts." 
+            },
+            { 
+                id: 6, name: "Data Visualization", 
+                img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=600",
+                imgSmall: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=400",
+                desc1: "Complex datasets turned into beautiful, readable interfaces.", desc2: "Focused on clarity and performance using D3.js and custom canvas rendering to handle thousands of data points smoothly." 
+            }
+        ];
+
+        function initProjects() {
+            const grid = document.getElementById('project-grid');
+            if(!grid) return;
+
+            // Heights assigned to match wireframe staggering exactly
+            // Row 1: Tall, Medium, Short
+            // Row 2: Short, Medium, Tall
+            const layoutHeights = [
+                'h-[450px]', 'h-[350px]', 'h-[250px]', 
+                'h-[250px]', 'h-[350px]', 'h-[450px]'
+            ];
+
+            projectsData.forEach((project, index) => {
+                const wrapper = document.createElement('div');
+                // Use flex-col to keep the title tucked nicely under the block
+                wrapper.className = 'flex flex-col gap-2';
+
+                const block = document.createElement('div');
+                // Apply the staggered heights while grid maintains the clean horizontal row limits
+                block.className = `project-block-img w-full ${layoutHeights[index % layoutHeights.length]}`;
+                block.onclick = () => openProjectModal(project);
+                
+                // Only the image, no more text overlay or grey placeholder
+                block.innerHTML = `<img src="${project.img}" alt="${project.name}">`;
+
+                const title = document.createElement('h3');
+                title.className = 'text-white font-normal-sans text-lg mt-1';
+                title.innerText = project.name;
+
+                wrapper.appendChild(block);
+                wrapper.appendChild(title);
+                grid.appendChild(wrapper);
+            });
+        }
+
+        const projectModalOverlay = document.getElementById('project-modal-overlay');
+        const closeProjectModalBtn = document.getElementById('close-project-modal');
+
+        function openProjectModal(project) {
+            document.getElementById('modal-title').innerText = project.name; // Wireframe uses project name here
+            document.getElementById('modal-desc-1').innerText = project.desc1;
+            document.getElementById('modal-desc-2').innerText = project.desc2;
+            document.getElementById('modal-main-img').src = project.img;
+            document.getElementById('modal-small-img').src = project.imgSmall;
+            
+            projectModalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function closeProjectModal() {
+            projectModalOverlay.classList.remove('active');
+            document.body.style.overflow = ''; 
+        }
+
+        closeProjectModalBtn.addEventListener('click', closeProjectModal);
+        projectModalOverlay.addEventListener('click', (e) => {
+            if (e.target === projectModalOverlay) closeProjectModal();
+        });
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', initProjects);
+
+
+        // --- ORIGINAL FOOTER / NAV SCRIPTS ---
         function setFooterEyeTracking(e) {
             const pupilL = document.getElementById('footer-pupilL');
             const pupilR = document.getElementById('footer-pupilR');
@@ -226,8 +629,7 @@
         window.addEventListener('touchmove', (e) => {
             if (e.touches.length) setFooterEyeTracking(e.touches[0]);
         }, { passive: true });
-    </script>
-    <script>
+
         (function setupBurgerMenu() {
             const navToggle = document.getElementById('nav-toggle');
             const navLinks = document.querySelector('#top-nav .nav-links');
