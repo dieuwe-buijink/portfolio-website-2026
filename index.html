@@ -48,10 +48,26 @@
 
         html { scroll-behavior: smooth; }
 
+        /* Expanded Top Nav for Edge Alignment */
+        header#top-nav {
+            padding-left: 0.7rem;
+            padding-right: 0.7rem;
+        }
+        #top-nav .max-w-7xl {
+            max-width: 100% !important;
+            padding-left: 0.7rem;
+            padding-right: 0.7rem;
+        }
+        #top-nav nav {
+            gap: 0.7rem !important;
+        }
+
         /* Metallic Nav Buttons */
         .metal-nav-btn {
             font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
             letter-spacing: 0.05em;
+            font-size: clamp(0.98rem, 1.8vw, 1.2rem);
+            padding: 0.8rem 1rem;
             background: linear-gradient(180deg, #2a2d30 0%, #151718 100%);
             color: #a0aec0;
             border: 1px solid #000;
@@ -78,6 +94,67 @@
             box-shadow: inset 0 1px 5px rgba(0, 255, 204, 0.2), 0 6px 12px rgba(0, 0, 0, 0.9), 0 0 10px rgba(0, 255, 204, 0.3);
         }
         .metal-nav-btn:hover::after { left: 200%; }
+
+        .footer-name { font-size: clamp(2rem, 4vw, 4rem); line-height: 1.05; margin: 0; }
+        footer { font-size: 1.1rem; }
+        footer p, footer a, footer span, footer h2, footer h3, footer div { font-size: 1.1rem; }
+        footer .text-xs { font-size: 1rem; }
+
+        /* Mobile Burger Menu & Overlay CSS */
+        .nav-toggle {
+            display: none;
+            font-size: 1.5rem;
+            color: #00ffcc;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #00ffcc;
+            border-radius: 4px;
+            padding: 0.3rem 0.6rem;
+            cursor: pointer;
+            line-height: 1;
+        }
+        .nav-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(3px);
+            z-index: 49;
+        }
+        .nav-overlay.active { display: block; }
+
+        @media (max-width: 1024px) {
+            .footer-name { font-size: clamp(1.8rem, 5vw, 3.5rem); }
+            #top-nav nav { gap: 0.5rem !important; }
+            .metal-nav-btn { font-size: clamp(0.9rem, 2.2vw, 1.05rem); padding: 0.65rem 0.9rem; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-toggle { display: block; }
+            #top-nav .nav-links { 
+                display: none; 
+                position: absolute; 
+                top: 100%; 
+                left: 0; 
+                right: 0; 
+                background: rgba(0, 0, 10, 0.95); 
+                backdrop-filter: blur(10px);
+                flex-direction: column; 
+                align-items: center; 
+                padding: 2rem 0; 
+                border-top: 1px solid #1a1f24; 
+                border-bottom: 2px solid #00ffcc;
+                z-index: 60; 
+                box-shadow: 0 10px 30px rgba(0,0,0,0.9);
+            }
+            #top-nav .nav-links.open { display: flex !important; }
+            .footer-name { font-size: clamp(1.8rem, 6vw, 3.3rem); }
+            .metal-nav-btn { padding: 0.5rem 0.75rem; }
+        }
+
+        @media (min-width: 769px) {
+            /* Dissolves the nav-links container on desktop to perfectly center the nav bar via justify-between */
+            #top-nav .nav-links { display: contents; }
+        }
 
         /* Brutalist Block Cards */
         .brutalist-card {
@@ -125,26 +202,38 @@
 
     <!-- Sticky Top Navigation -->
     <header id="top-nav" class="fixed top-0 left-0 w-full z-50 px-6 py-4 opacity-0 transition-all duration-1000 -translate-y-full">
-        <div class="flex items-center justify-between w-full max-w-7xl mx-auto flex-wrap gap-4">
-            <div>
+        <div class="flex items-center justify-between w-full max-w-7xl mx-auto relative">
+            
+            <!-- Logo -->
+            <div class="relative z-50">
                 <a href="index.html" class="metal-nav-btn inline-block px-5 py-2.5 text-sm whitespace-nowrap uppercase text-[#00ffcc] border-t-[#00ffcc]">
                     Dieuwe Buijink
                 </a>
             </div>
-            
-            <nav class="flex gap-3 md:gap-4">
-                <a href="#about" class="metal-nav-btn inline-block px-4 md:px-5 py-2.5 text-xs md:text-sm uppercase">About</a>
-                <a href="work.html" class="metal-nav-btn inline-block px-4 md:px-5 py-2.5 text-xs md:text-sm uppercase">Work</a>
-                <a href="skills.html" class="metal-nav-btn inline-block px-4 md:px-5 py-2.5 text-xs md:text-sm uppercase">Skills</a>
-            </nav>
 
-            <div>
-                <a href="contact.html" class="metal-nav-btn inline-block px-5 py-2.5 text-sm whitespace-nowrap text-[#ff007f] hover:text-[#ff007f] uppercase">
-                    Let's connect!
-                </a>
+            <!-- Hamburger Button -->
+            <button id="nav-toggle" class="nav-toggle relative z-50" aria-expanded="false" aria-label="Toggle navigation">
+                ☰
+            </button>
+
+            <!-- Nav Links Container -->
+            <div class="nav-links w-full md:w-auto">
+                <nav class="flex flex-col md:flex-row gap-3 md:gap-4 items-center w-full md:w-auto">
+                    <a href="#about" class="metal-nav-btn inline-block px-4 md:px-5 py-2.5 text-xs md:text-sm uppercase w-[85%] md:w-auto text-center">About</a>
+                    <a href="work.html" class="metal-nav-btn inline-block px-4 md:px-5 py-2.5 text-xs md:text-sm uppercase w-[85%] md:w-auto text-center">Work</a>
+                    <a href="skills.html" class="metal-nav-btn inline-block px-4 md:px-5 py-2.5 text-xs md:text-sm uppercase w-[85%] md:w-auto text-center">Skills</a>
+                </nav>
+
+                <div class="mt-4 md:mt-0 flex justify-center w-full md:w-auto">
+                    <a href="contact.html" class="metal-nav-btn inline-block px-5 py-2.5 text-sm whitespace-nowrap text-[#ff007f] hover:text-[#ff007f] uppercase w-[85%] md:w-auto text-center">
+                        Let's connect!
+                    </a>
+                </div>
             </div>
+
         </div>
     </header>
+    <div class="nav-overlay" id="nav-overlay"></div>
 
     <section id="hero-section" class="h-screen w-full flex flex-col items-center justify-center relative overflow-hidden bg-[#00000A]">
         <div id="floor-grid" class="absolute bottom-0 left-0 w-full h-[50vh] perspective-grid opacity-0 transition-opacity duration-[2000ms] pointer-events-none"></div>
@@ -354,7 +443,7 @@
             <div class="relative z-10 grid grid-cols-1 lg:grid-cols-3 items-center w-full max-w-[1400px] mx-auto gap-12 lg:gap-4">
                 
                 <div class="flex justify-center lg:justify-start w-full">
-                    <h2 class="font-audiowide text-5xl sm:text-6xl lg:text-7xl xl:text-8xl text-[#ff3333] tracking-tighter leading-none uppercase">Dieuwe<br/>Buijink</h2>
+                    <h2 class="footer-name font-audiowide text-[#ff3333] tracking-tighter leading-none uppercase">Dieuwe<br/>Buijink</h2>
                 </div>
 
                 <div class="flex justify-center w-full">
@@ -466,11 +555,19 @@
         let mouseX = 0; let mouseY = 0;
 
         document.addEventListener('mousemove', (e) => {
-            mouseX = (e.clientX / window.innerWidth - 0.5) * 2; mouseY = (e.clientY / window.innerHeight - 0.5) * 2; updatePupils();
+            const normalizedX = Math.min(1, Math.max(0, e.clientX / window.innerWidth));
+            const normalizedY = Math.min(1, Math.max(0, e.clientY / window.innerHeight));
+            mouseX = (normalizedX - 0.5) * 2;
+            mouseY = (normalizedY - 0.5) * 2;
+            updatePupils();
         });
 
         function updatePupils() {
-            const d = state[currentMode]; const dx = mouseX * 10; const dy = mouseY * 12;
+            const d = state[currentMode];
+            const safeX = Math.max(-1, Math.min(1, mouseX));
+            const safeY = Math.max(-1, Math.min(1, mouseY));
+            const dx = safeX * 10;
+            const dy = safeY * 12;
             els.pupilL.setAttribute('transform', `translate(${dx}, ${dy}) rotate(${d.rotL} ${d.pupilLX} ${d.pupilLY})`);
             els.pupilR.setAttribute('transform', `translate(${dx}, ${dy}) rotate(${d.rotR} ${d.pupilRX} ${d.pupilRY})`);
             els.highL.setAttribute('transform', `translate(${dx}, ${dy})`); els.highR.setAttribute('transform', `translate(${dx}, ${dy})`);
@@ -529,6 +626,40 @@
 
         function triggerSequence() {
             clearTimeout(glitchTimeout); clearTimeout(randomLoop);
+            
+            // --- NEW: Skip animation if coming directly to #about ---
+            if (window.location.hash === '#about') {
+                document.body.style.overflow = "auto";
+                els.main.classList.remove('hidden'); 
+                els.main.style.opacity = "1";
+                
+                els.topNav.style.opacity = "1"; 
+                els.topNav.style.transform = "translateY(0)";
+                
+                els.catSvg.classList.add('shrink-corner'); 
+                els.cat.style.opacity = "1";
+                
+                els.textWrap.style.opacity = "1"; 
+                els.textWrap.style.transform = "scale(1)";
+                
+                els.floorGrid.style.opacity = "1";
+                
+                els.nameTag.classList.remove('font-press-start', 'glitch'); 
+                els.nameTag.classList.add('font-audiowide'); 
+                els.nameTag.style.fontSize = "";
+
+                setFace('blep');
+                randomLoop = setTimeout(triggerRandomGlitch, 3000);
+                
+                // Scroll down to the about section
+                setTimeout(() => {
+                    const aboutSection = document.getElementById('about');
+                    if(aboutSection) aboutSection.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+                return; // Stop the rest of the intro sequence from playing
+            }
+            // --------------------------------------------------------
+
             document.body.style.overflow = "hidden";
             els.main.classList.add('hidden'); els.main.style.opacity = "0";
             els.catSvg.classList.remove('shrink-corner'); els.cat.style.opacity = "0";
@@ -557,23 +688,7 @@
         }
 
         document.getElementById('replay').onclick = triggerSequence;
-        window.onload = () => {
-            if (window.location.hash === '#about') {
-                // Direct navigation to about should skip intro animation.
-                document.body.style.overflow = 'auto';
-                els.cat.style.opacity = '0';
-                els.topNav.style.opacity = '1';
-                els.topNav.style.transform = 'translateY(0)';
-                els.floorGrid.style.opacity = '1';
-                els.main.classList.remove('hidden');
-                els.main.style.opacity = '1';
-                els.textWrap.style.opacity = '1';
-                els.textWrap.style.transform = 'scale(1)';
-                randomLoop = setTimeout(triggerRandomGlitch, 3000);
-            } else {
-                triggerSequence();
-            }
-        };
+        window.onload = triggerSequence;
 
         // --- Restored Modal Logic ---
         const modalOverlay = document.getElementById('modal-overlay');
@@ -746,6 +861,39 @@
         // Initialize Infinite Carousels
         setupInfiniteCarousel('work-wrapper', 'work-container', 'work-toggle', 'carousel-mode-work', ['grid-cols-1', 'md:grid-cols-2', 'lg:grid-cols-3'], 'work-prev', 'work-next');
         setupInfiniteCarousel('skills-wrapper', 'skills-container', 'skills-toggle', 'carousel-mode-skills', ['grid-cols-1', 'md:grid-cols-2'], 'skills-prev', 'skills-next');
+
+        // --- Burger Menu Logic ---
+        function setupBurgerMenu() {
+            const navToggle = document.getElementById('nav-toggle');
+            const navLinks = document.querySelector('#top-nav .nav-links');
+            const navOverlay = document.getElementById('nav-overlay');
+            if (!navToggle || !navLinks || !navOverlay) return;
+
+            const closeMenu = () => {
+                navLinks.classList.remove('open');
+                navOverlay.classList.remove('active');
+                navToggle.setAttribute('aria-expanded', 'false');
+            };
+
+            navToggle.addEventListener('click', () => {
+                const isOpen = navLinks.classList.toggle('open');
+                navOverlay.classList.toggle('active', isOpen);
+                navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            });
+
+            navOverlay.addEventListener('click', closeMenu);
+            
+            // Close the menu if screen resizes to desktop
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768) closeMenu();
+            });
+
+            // Make sure clicking the actual links closes the menu too
+            document.querySelectorAll('#top-nav .nav-links a').forEach((link) => {
+                link.addEventListener('click', closeMenu);
+            });
+        }
+        setupBurgerMenu();
 
     </script>
 </body>

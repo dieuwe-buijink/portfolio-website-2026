@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,16 +20,85 @@
             to { transform: translateY(0); }
         }
 
+        html { scroll-behavior: smooth; }
+
+        /* Expanded Top Nav for Edge Alignment */
+        header#top-nav {
+            padding-left: 0.7rem;
+            padding-right: 0.7rem;
+        }
+        #top-nav .max-w-7xl {
+            max-width: 100% !important;
+            padding-left: 0.7rem;
+            padding-right: 0.7rem;
+        }
+        #top-nav nav {
+            gap: 0.7rem !important;
+        }
+
         /* Metallic Nav Buttons */
         .metal-nav-btn {
             font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; letter-spacing: 0.05em;
+            font-size: clamp(0.98rem, 1.8vw, 1.2rem);
+            padding: 0.8rem 1rem;
             background: linear-gradient(180deg, #2a2d30 0%, #151718 100%); color: #a0aec0;
             border: 1px solid #000; border-top: 1px solid #4a5568; border-radius: 2px;
             box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05), 0 4px 6px rgba(0, 0, 0, 0.8), 0 1px 3px rgba(0, 0, 0, 0.9);
-            text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px); transition: all 0.2s; overflow: hidden; position: relative;
+            text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px); transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); overflow: hidden; position: relative;
         }
-        .metal-nav-btn:hover { color: #00ffcc; transform: translateY(-2px); border-top: 1px solid #00ffcc; }
+        .metal-nav-btn::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-25deg); transition: left 0.5s ease;
+        }
+        .metal-nav-btn:hover { 
+            color: #00ffcc; transform: translateY(-2px); border-top: 1px solid #00ffcc; 
+            background: linear-gradient(180deg, #3a4043 0%, #1a1c1d 100%);
+            box-shadow: inset 0 1px 5px rgba(0, 255, 204, 0.2), 0 6px 12px rgba(0, 0, 0, 0.9), 0 0 10px rgba(0, 255, 204, 0.3);
+        }
+        .metal-nav-btn:hover::after { left: 200%; }
+
+        .footer-name { font-size: clamp(2rem, 4vw, 4rem); line-height: 1.05; margin: 0; }
+        footer { font-size: 1.1rem; }
+        footer p, footer a, footer span, footer h2, footer h3, footer div { font-size: 1.1rem; }
+        footer .text-xs { font-size: 1rem; }
         
+        /* Mobile Burger Menu & Overlay CSS */
+        .nav-toggle {
+            display: none; font-size: 1.5rem; color: #00ffcc;
+            background: rgba(0, 0, 0, 0.5); border: 1px solid #00ffcc;
+            border-radius: 4px; padding: 0.3rem 0.6rem; cursor: pointer; line-height: 1;
+        }
+        .nav-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(3px); z-index: 49;
+        }
+        .nav-overlay.active { display: block; }
+
+        @media (max-width: 1024px) {
+            .footer-name { font-size: clamp(1.8rem, 5vw, 3.5rem); }
+            #top-nav nav { gap: 0.5rem !important; }
+            .metal-nav-btn { font-size: clamp(0.9rem, 2.2vw, 1.05rem); padding: 0.65rem 0.9rem; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-toggle { display: block; }
+            #top-nav .nav-links { 
+                display: none; position: absolute; top: 100%; left: 0; right: 0; 
+                background: rgba(0, 0, 10, 0.95); backdrop-filter: blur(10px);
+                flex-direction: column; align-items: center; padding: 2rem 0; 
+                border-top: 1px solid #1a1f24; border-bottom: 2px solid #00ffcc;
+                z-index: 60; box-shadow: 0 10px 30px rgba(0,0,0,0.9);
+            }
+            #top-nav .nav-links.open { display: flex !important; }
+            .footer-name { font-size: clamp(1.8rem, 6vw, 3.3rem); }
+            .metal-nav-btn { padding: 0.5rem 0.75rem; }
+        }
+        
+        @media (min-width: 769px) {
+            #top-nav .nav-links { display: contents; }
+        }
+
         /* Page Transition Curtain */
         #page-transition-curtain {
             position: fixed; inset: 0; background-color: #00000A; z-index: 49; /* behind fixed nav z-50 */
@@ -51,37 +119,51 @@
 </head>
 <body class="selection:bg-[#ff007f] selection:text-white font-normal-sans select-none overflow-x-hidden">
 
-    <!-- Transition Curtain (Swooshes up when leaving page) -->
     <div id="page-transition-curtain"></div>
 
-    <!-- Sticky Top Navigation -->
     <header id="top-nav" class="fixed top-0 left-0 w-full z-50 px-6 py-4">
-        <div class="flex items-center justify-between w-full max-w-7xl mx-auto flex-wrap gap-4">
-            <div><a href="index.html" class="nav-link metal-nav-btn inline-block px-5 py-2.5 text-sm uppercase">Dieuwe Buijink</a></div>
-            <nav class="flex gap-3 md:gap-4">
-                <a href="index.html#about" class="nav-link metal-nav-btn inline-block px-4 md:px-5 py-2.5 text-xs md:text-sm uppercase">About</a>
-                <a href="work.html" class="nav-link metal-nav-btn inline-block px-4 md:px-5 py-2.5 text-xs md:text-sm uppercase text-[#00ffcc] border-t-[#00ffcc]">Work</a>
-                <a href="skills.html" class="nav-link metal-nav-btn inline-block px-4 md:px-5 py-2.5 text-xs md:text-sm uppercase">Skills</a>
-            </nav>
-            <div><a href="contact.html" class="nav-link metal-nav-btn inline-block px-5 py-2.5 text-sm uppercase text-[#ff007f] hover:text-[#ff007f]">Let's connect!</a></div>
+        <div class="flex items-center justify-between w-full max-w-7xl mx-auto relative">
+            
+            <div class="relative z-50">
+                <a href="index.html" class="metal-nav-btn inline-block px-5 py-2.5 text-sm whitespace-nowrap uppercase">
+                    Dieuwe Buijink
+                </a>
+            </div>
+
+            <button id="nav-toggle" class="nav-toggle relative z-50" aria-expanded="false" aria-label="Toggle navigation">
+                ☰
+            </button>
+
+            <div class="nav-links w-full md:w-auto">
+                <nav class="flex flex-col md:flex-row gap-3 md:gap-4 items-center w-full md:w-auto">
+                    <a href="index.html#about" class="metal-nav-btn inline-block px-4 md:px-5 py-2.5 text-xs md:text-sm uppercase w-[85%] md:w-auto text-center">About</a>
+                    <a href="work.html" class="metal-nav-btn inline-block px-4 md:px-5 py-2.5 text-xs md:text-sm uppercase w-[85%] md:w-auto text-center text-[#00ffcc] border-t-[#00ffcc]">Work</a>
+                    <a href="skills.html" class="metal-nav-btn inline-block px-4 md:px-5 py-2.5 text-xs md:text-sm uppercase w-[85%] md:w-auto text-center">Skills</a>
+                </nav>
+
+                <div class="mt-4 md:mt-0 flex justify-center w-full md:w-auto">
+                    <a href="contact.html" class="metal-nav-btn inline-block px-5 py-2.5 text-sm whitespace-nowrap text-[#ff007f] hover:text-[#ff007f] uppercase w-[85%] md:w-auto text-center">
+                        Let's connect!
+                    </a>
+                </div>
+            </div>
+
         </div>
     </header>
+    <div class="nav-overlay" id="nav-overlay"></div>
 
-    <!-- Slide Up Wrapper -->
     <div id="page-slide-wrapper" class="w-full min-h-screen flex flex-col pt-24">
         
-        <!-- Giant Center Content -->
         <main class="flex-grow flex items-center justify-center">
             <h1 class="font-audiowide text-6xl md:text-9xl text-[#00ffcc] drop-shadow-[0_0_15px_rgba(0,255,204,0.5)]">WORK</h1>
         </main>
 
-        <!-- Footer directly after About -->
         <footer class="relative border-t-2 border-[#1a1f24] bg-[#00000A] pt-20 pb-6 px-6 md:px-12 overflow-hidden min-h-[50vh] flex flex-col justify-between">
             <div class="absolute bottom-0 -left-[50%] w-[200%] h-[85%] perspective-grid-footer pointer-events-none z-0"></div>
             <div class="relative z-10 grid grid-cols-1 lg:grid-cols-3 items-center w-full max-w-[1400px] mx-auto gap-12 lg:gap-4">
                 
                 <div class="flex justify-center lg:justify-start w-full">
-                    <h2 class="font-audiowide text-5xl sm:text-6xl lg:text-7xl xl:text-8xl text-[#ff3333] tracking-tighter leading-none uppercase">Dieuwe<br/>Buijink</h2>
+                    <h2 class="footer-name font-audiowide text-[#ff3333] tracking-tighter leading-none uppercase">Dieuwe<br/>Buijink</h2>
                 </div>
 
                 <div class="flex justify-center w-full">
@@ -120,12 +202,10 @@
                 </div>
             </div>
             <div class="relative z-10 w-full max-w-[1400px] mx-auto mt-24 flex justify-start items-end">
-                <!-- Copyright line removed as requested -->
-            </div>
+                </div>
         </footer>
     </div>
 
-    <!-- Script handles leaving transitions -->
     <script src="transition.js"></script>
     <script>
         function setFooterEyeTracking(e) {
@@ -147,7 +227,32 @@
             if (e.touches.length) setFooterEyeTracking(e.touches[0]);
         }, { passive: true });
     </script>
+    <script>
+        (function setupBurgerMenu() {
+            const navToggle = document.getElementById('nav-toggle');
+            const navLinks = document.querySelector('#top-nav .nav-links');
+            const navOverlay = document.getElementById('nav-overlay');
+            if (!navToggle || !navLinks || !navOverlay) return;
+
+            const closeMenu = () => {
+                navLinks.classList.remove('open');
+                navOverlay.classList.remove('active');
+                navToggle.setAttribute('aria-expanded', 'false');
+            };
+
+            navToggle.addEventListener('click', () => {
+                const isOpen = navLinks.classList.toggle('open');
+                navOverlay.classList.toggle('active', isOpen);
+                navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            });
+
+            navOverlay.addEventListener('click', closeMenu);
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768) closeMenu();
+            });
+
+            document.querySelectorAll('#top-nav .nav-links a').forEach((link) => link.addEventListener('click', closeMenu));
+        })();
+    </script>
 </body>
 </html>
-
-
