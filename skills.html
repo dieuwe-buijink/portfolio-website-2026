@@ -194,28 +194,22 @@
         }
 
         /* Animations */
-        /* To fix the stutter: shift by -50% AND half of the flex gap (which is 1rem since gap is 2rem) */
+        /* Shift by the exact pixel amount calculated in JS to prevent stutter */
         .track-down {
-            animation: scrollDown 25s linear infinite; 
+            animation: scrollDown 18s linear infinite; 
         }
         .track-up {
-            animation: scrollUp 25s linear infinite; 
-        }
-
-        /* Pause on hover */
-        .carousel-wrapper:hover .track-down,
-        .carousel-wrapper:hover .track-up {
-            animation-play-state: paused;
+            animation: scrollUp 18s linear infinite; 
         }
 
         @keyframes scrollDown {
-            0% { transform: translateY(calc(-50% - 1rem)); }
+            0% { transform: translateY(var(--shift-amount, -1168px)); }
             100% { transform: translateY(0); }
         }
 
         @keyframes scrollUp {
             0% { transform: translateY(0); }
-            100% { transform: translateY(calc(-50% - 1rem)); }
+            100% { transform: translateY(var(--shift-amount, -1168px)); }
         }
 
         /* Modal Styles matching wireframe */
@@ -466,16 +460,14 @@
         // --- SKILLS DATA & LOGIC ---
 
         const skillsData = [
-            { id: 1, name: "Web Dev", img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=400", desc1: "Extensive experience in creating responsive, dynamic web applications using modern HTML, CSS, and Javascript. Specializing in Tailwind, React, and seamless UI/UX design integration.", desc2: "Focused on clean code architecture and performance optimization to ensure lightning-fast load times and accessible experiences across all devices." },
-            { id: 2, name: "Game Design", img: "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?auto=format&fit=crop&q=80&w=400", desc1: "Developing interactive mechanics and gameplay loops that keep players engaged. Creating comprehensive game design documents, wireframes, and prototypes.", desc2: "Experience with level design, balancing gameplay economy, and integrating storytelling with core game mechanics." },
-            { id: 3, name: "UI / UX", img: "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&q=80&w=400", desc1: "Designing intuitive user interfaces with a strong emphasis on user experience. From wireframing in Figma to final implementation, bridging the gap between design and technical execution.", desc2: "Conducting user research and A/B testing to refine interfaces and ensure the final product meets user needs while looking visually stunning." },
-            { id: 4, name: "3D Modeling", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=400", desc1: "Creating high-fidelity 3D assets for games and interactive media using Blender and Maya. Proficient in poly-modeling, UV mapping, and texturing.", desc2: "Optimizing models for real-time rendering engines without sacrificing visual quality, ensuring smooth performance in demanding environments." },
-            { id: 5, name: "Animation", img: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&q=80&w=400", desc1: "Bringing characters and UI elements to life with fluid animations. Understanding of weight, timing, and the 12 principles of animation applied to both 2D and 3D contexts.", desc2: "Implementing skeletal rigging, blend trees, and state machines inside game engines to create responsive and dynamic character movements." },
-            { id: 6, name: "Creative Coding", img: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=400", desc1: "Using code as a creative medium to generate procedural art, complex shaders, and particle systems. Exploring the intersection of logic and aesthetics.", desc2: "Leveraging WebGL, Three.js, and custom shaders to build immersive digital experiences that push the boundaries of standard web and game design." },
-            { id: 7, name: "Sound Design", img: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&q=80&w=400", desc1: "Crafting immersive audio landscapes for games and interactive experiences.", desc2: "Proficient in Foley, synthesis, and mixing to ensure auditory feedback perfectly complements the visual aesthetic." },
-            { id: 8, name: "Backend Arch", img: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=400", desc1: "Designing robust and scalable server-side architectures to support complex frontend applications.", desc2: "Experience with RESTful APIs, database management, and cloud deployment pipelines." },
-            { id: 9, name: "Digital Art", img: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&q=80&w=400", desc1: "Producing compelling digital illustrations and concept art to establish visual direction.", desc2: "Utilizing tools like Photoshop and Illustrator to create polished assets and vector graphics." },
-            { id: 10, name: "Video Editing", img: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&q=80&w=400", desc1: "Splicing, color grading, and finalizing video content for promotional material and cinematics.", desc2: "Creating dynamic motion graphics to elevate the storytelling of any video project." }
+            { id: 1, name: "Website development", img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=400", desc1: "Extensive experience in creating responsive, dynamic web applications.", desc2: "Focused on clean code architecture and performance optimization." },
+            { id: 2, name: "3D modelling", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=400", desc1: "Creating high-fidelity 3D assets and optimizing models.", desc2: "Proficient in poly-modeling, UV mapping, and texturing." },
+            { id: 3, name: "game development", img: "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?auto=format&fit=crop&q=80&w=400", desc1: "Developing interactive mechanics and gameplay loops.", desc2: "Experience with level design and integrating storytelling." },
+            { id: 4, name: "UI / UX design", img: "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&q=80&w=400", desc1: "Designing intuitive user interfaces with a strong emphasis on user experience.", desc2: "Bridging the gap between design and technical execution." },
+            { id: 5, name: "Photography", img: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&q=80&w=400", desc1: "Capturing high-quality images and moments.", desc2: "Editing and color grading for the perfect aesthetic." },
+            { id: 6, name: "Media marketing", img: "https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?auto=format&fit=crop&q=80&w=400", desc1: "Creating and executing digital marketing campaigns.", desc2: "Analyzing engagement metrics and driving growth." },
+            { id: 7, name: "Language & culture", img: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=400", desc1: "Understanding and bridging cultural nuances.", desc2: "Applying linguistic skills to diverse projects." },
+            { id: 8, name: "Git and Scrum", img: "https://images.unsplash.com/photo-1556075798-4825dfaaf498?auto=format&fit=crop&q=80&w=400", desc1: "Proficient in version control using Git.", desc2: "Working effectively in Agile/Scrum environments." }
         ];
 
         function createSkillCard(skill) {
@@ -501,13 +493,21 @@
             const col2Data = skillsData.slice(half);
 
             // Function to populate a track. 
-            // We append the data EXACTLY 2 times to ensure perfect math for a stutter-free 50% loop
+            // We append the data 4 times to ensure there's enough content to cover large screens 
+            // and prevent blank spaces at the end of the loop causing a reset stutter.
             const populateTrack = (track, data) => {
-                for (let i = 0; i < 2; i++) { 
+                for (let i = 0; i < 4; i++) { 
                     data.forEach(skill => {
                         track.appendChild(createSkillCard(skill));
                     });
                 }
+                
+                // Calculate exactly how far one set of items spans so we can shift perfectly
+                // Card height is 260px, flex gap is 2rem.
+                const remValue = parseFloat(getComputedStyle(document.documentElement).fontSize);
+                const gapSize = 2 * remValue;
+                const singleSetHeight = data.length * 260 + data.length * gapSize;
+                track.style.setProperty('--shift-amount', `-${singleSetHeight}px`);
             };
 
             populateTrack(trackDown, col1Data);

@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dieuwe Buijink | Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Press+Start+2P&display=swap');
+
+        body {
+            background-color: #00000A;
+            color: white;
+            margin: 0;
+            overflow-x: hidden;
+            font-family: 'Audiowide', sans-serif;
+        }
+
+        .font-audiowide { font-family: 'Audiowide', sans-serif; }
+        .font-press-start { font-family: 'Press Start 2P', cursive; }
+        .font-normal-sans { font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        
+        /* Smooth Morphing */
+        path, circle, ellipse {
+            transition: d 1s cubic-bezier(0.4, 0, 0.2, 1), fill 1s ease, opacity 1s ease;
+        }
+
+        /* Scaled down slightly more for desktop, perfectly aligned with the replay button's new calc center */
+        .shrink-corner {
+            transform: translate(calc(-50vw + 11.5rem), calc(50vh - 10.5rem)) scale(0.32) !important;
+            pointer-events: auto;
+            cursor: pointer;
+        }
+
+        /* Glitch Effect */
+        .glitch { animation: glitch-anim 0.3s infinite; position: relative; }
+        .glitch::before, .glitch::after { content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: transparent; font-family: inherit; }
+        .glitch::before { left: 4px; text-shadow: -4px 0 #ff007f, 4px 0 #00ffcc; clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%); animation: glitch-anim-2 0.4s infinite linear alternate-reverse; }
+        .glitch::after { left: -4px; text-shadow: -4px 0 #00ffcc, 4px 0 #ff007f; clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%); animation: glitch-anim-1 0.4s infinite linear alternate-reverse; }
+
+        @keyframes glitch-anim {
+            0% { transform: translate(0) }
+            20% { transform: translate(-3px, 3px) }
+            40% { transform: translate(-3px, -3px) }
+            60% { transform: translate(3px, 3px) }
+            80% { transform: translate(3px, -3px) }
+            100% { transform: translate(0) }
+        }
+        @keyframes glitch-anim-1 { 0% { clip-path: polygon(0 10%, 100% 10%, 100% 30%, 0 30%); } 100% { clip-path: polygon(0 80%, 100% 80%, 100% 100%, 0 100%); } }
+        @keyframes glitch-anim-2 { 0% { clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%); } 100% { clip-path: polygon(0 10%, 100% 10%, 100% 30%, 0 30%); } }
+
+        html { scroll-behavior: smooth; }
+
+        /* Expanded Top Nav for Edge Alignment */
+        header#top-nav {
+            padding-left: 0.7rem;
+            padding-right: 0.7rem;
+        }
+        #top-nav .max-w-7xl {
+            max-width: 100% !important;
+            padding-left: 0.7rem;
+            padding-right: 0.7rem;
+        }
+        #top-nav nav {
+            gap: 0.7rem !important;
+        }
+
+        /* Metallic Nav Buttons */
+        .metal-nav-btn {
+            font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+            letter-spacing: 0.05em;
+            font-size: clamp(0.98rem, 1.8vw, 1.2rem);
+            padding: 0.8rem 1rem;
+            background: linear-gradient(180deg, #2a2d30 0%, #151718 100%);
+            color: #a0aec0;
+            border: 1px solid #000;
+            border-top: 1px solid #4a5568;
+            border-radius: 2px;
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05), 0 4px 6px rgba(0, 0, 0, 0.8), 0 1px 3px rgba(0, 0, 0, 0.9);
+            text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metal-nav-btn::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-25deg); transition: left 0.5s ease;
+        }
+
+        .metal-nav-btn:hover {
+            color: #00ffcc; transform: translateY(-2px);
+            background: linear-gradient(180deg, #3a4043 0%, #1a1c1d 100%);
+            border-top: 1px solid #00ffcc;
+            box-shadow: inset 0 1px 5px rgba(0, 255, 204, 0.2), 0 6px 12px rgba(0, 0, 0, 0.9), 0 0 10px rgba(0, 255, 204, 0.3);
+        }
+        .metal-nav-btn:hover::after { left: 200%; }
+
+        /* Mobile Burger Menu & Overlay CSS */
+        .nav-toggle {
+            display: none;
+            font-size: 1.5rem;
+            color: #00ffcc;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #00ffcc;
+            border-radius: 4px;
+            padding: 0.3rem 0.6rem;
+            cursor: pointer;
+            line-height: 1;
+        }
+        .nav-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(3px);
+            z-index: 49;
+        }
+        .nav-overlay.active { display: block; }
+
+        @media (max-width: 1024px) {
+            #top-nav nav { gap: 0.5rem !important; }
+            .metal-nav-btn { font-size: clamp(0.9rem, 2.2vw, 1.05rem); padding: 0.65rem 0.9rem; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-toggle { display: block; }
+            #top-nav .nav-links { 
+                display: none; 
+                position: absolute; 
+                top: 100%; 
+                left: 0; 
+                right: 0; 
+                background: rgba(0, 0, 10, 0.95); 
+                backdrop-filter: blur(10px);
+                flex-direction: column; 
+                align-items: center; 
+                padding: 2rem 0; 
+                border-top: 1px solid #1a1f24; 
+                border-bottom: 2px solid #00ffcc;
+                z-index: 60; 
+                box-shadow: 0 10px 30px rgba(0,0,0,0.9);
+            }
+            #top-nav .nav-links.open { display: flex !important; }
+            .metal-nav-btn { padding: 0.5rem 0.75rem; }
+            
+            /* Shifts the cat to visually center between the logo and hamburger on phones */
+            .shrink-corner {
+                transform: translate(4.5rem, calc(-50vh + 2.25rem)) scale(0.2) !important;
+            }
+        }
+
+        @media (min-width: 769px) {
+            #top-nav .nav-links { display: contents; }
+        }
+
+        /* Brutalist Block Cards */
+        .brutalist-card {
+            background-color: #0d0f12; border: 2px solid #1a1f24; position: relative;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 8px 8px 0px rgba(0,0,0,0.8);
+        }
+        .brutalist-card::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 100% 4px; pointer-events: none; opacity: 0.5;
+        }
+        .brutalist-card:hover {
+            border-color: #ff007f; transform: translate(-4px, -4px);
+            box-shadow: 12px 12px 0px rgba(255, 0, 127, 0.2), 0 0 20px rgba(255, 0, 127, 0.1) inset;
+        }
+
+        /* Perspective Grids */
+        .perspective-grid {
+            background-image: linear-gradient(transparent 95%, rgba(0, 255, 204, 0.2) 100%), linear-gradient(90deg, transparent 95%, rgba(0, 255, 204, 0.2) 100%);
+            background-size: 50px 50px; transform: perspective(600px) rotateX(75deg); transform-origin: bottom;
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 60%); mask-image: linear-gradient(to bottom, transparent 0%, black 60%);
+        }
+    </style>
+</head>
+<body class="selection:bg-[#ff007f] selection:text-white font-normal-sans select-none overflow-hidden">
+
+    <!-- Sticky Top Navigation -->
+    <header id="top-nav" class="fixed top-0 left-0 w-full z-50 px-6 py-4 opacity-0 transition-all duration-1000 -translate-y-full pointer-events-auto">
+        <div class="flex items-center justify-between w-full max-w-7xl mx-auto relative">
+            
+            <!-- Logo -->
+            <div class="relative z-50">
+                <a href="index.html" class="metal-nav-btn inline-block px-5 py-2.5 text-sm whitespace-nowrap uppercase text-[#00ffcc] border-t-[#00ffcc]">
+                    Dieuwe Buijink
+                </a>
+            </div>
+
+            <!-- Hamburger Button -->
+            <button id="nav-toggle" class="nav-toggle relative z-50" aria-expanded="false" aria-label="Toggle navigation">
+                ☰
+            </button>
+
+            <!-- Nav Links Container -->
+            <div class="nav-links w-full md:w-auto">
+                <nav class="flex flex-col md:flex-row gap-3 md:gap-4 items-center w-full md:w-auto">
+                    <a href="#about" class="metal-nav-btn inline-block px-4 md:px-5 py-2.5 text-xs md:text-sm uppercase w-[85%] md:w-auto text-center">About</a>
+                    <a href="work.html" class="metal-nav-btn inline-block px-4 md:px-5 py-2.5 text-xs md:text-sm uppercase w-[85%] md:w-auto text-center">Work</a>
+                    <a href="skills.html" class="metal-nav-btn inline-block px-4 md:px-5 py-2.5 text-xs md:text-sm uppercase w-[85%] md:w-auto text-center">Skills</a>
+                </nav>
+
+                <div class="mt-4 md:mt-0 flex justify-center w-full md:w-auto">
+                    <a href="contact.html" class="metal-nav-btn inline-block px-5 py-2.5 text-sm whitespace-nowrap text-[#ff007f] hover:text-[#ff007f] uppercase w-[85%] md:w-auto text-center">
+                        Let's connect!
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </header>
+    <div class="nav-overlay" id="nav-overlay"></div>
+
+    <section id="hero-section" class="h-screen w-full flex flex-col items-center justify-center relative overflow-hidden bg-[#00000A]">
+        
+        <!-- Top Left Placeholder (Responsive handling for phone vs desktop sizing) -->
+        <div id="placeholder-tl" class="absolute top-24 md:top-0 left-4 md:left-0 right-4 md:right-[calc(50%+18rem)] h-[20vh] md:h-[35vh] min-h-[150px] md:min-h-[250px] bg-[#d1d5db] flex items-center justify-start p-4 md:p-8 z-10 opacity-0 transition-opacity duration-1000 rounded-lg md:rounded-none">
+            <p class="text-[#00000A] font-normal-sans text-sm md:text-2xl font-bold leading-snug text-center md:text-left w-full">Corner with glitchy pixel art expanding to the middle</p>
+        </div>
+
+        <!-- Bottom Right Placeholder (Responsive handling for phone vs desktop sizing) -->
+        <div id="placeholder-br" class="absolute bottom-28 md:bottom-0 right-4 md:right-0 left-4 md:left-[calc(50%+18rem)] h-[20vh] md:h-[35vh] min-h-[150px] md:min-h-[250px] bg-[#d1d5db] flex items-center justify-end p-4 md:p-8 z-10 opacity-0 transition-opacity duration-1000 rounded-lg md:rounded-none">
+            <p class="text-[#00000A] font-normal-sans text-sm md:text-2xl font-bold leading-snug text-center md:text-right w-full">Corner brutalist architecture covered in vines/plants</p>
+        </div>
+
+        <div id="floor-grid" class="absolute bottom-0 left-0 w-full h-[50vh] perspective-grid opacity-0 transition-opacity duration-[2000ms] pointer-events-none"></div>
+
+        <div id="text-wrap" class="text-center z-10 transition-all duration-700 opacity-0 scale-95 flex flex-col items-center justify-center">
+            <h1 id="name-tag" data-text="Dieuwe Buijink" class="text-white text-4xl md:text-6xl tracking-tight font-audiowide drop-shadow-[0_5px_15px_rgba(0,0,0,1)]">
+                Dieuwe Buijink
+            </h1>
+        </div>
+    </section>
+
+    <!-- Cat Container moved out of hero to become FIXED so it sticks across the page. Z-index ensures it sits above the header layer. -->
+    <div id="cat-container" class="fixed inset-0 transition-opacity duration-1000 z-[55] flex justify-center items-center opacity-0 pointer-events-none">
+        <svg id="cat-svg" viewBox="0 0 400 300" class="w-[85vw] max-w-[48rem] h-auto transition-transform duration-1000 ease-in-out drop-shadow-[0_0_15px_rgba(0,0,0,0.8)]" style="transform: translate(0,0) scale(1);">
+            <defs>
+                <filter id="eyeGlow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur id="blur1" in="SourceGraphic" stdDeviation="3" />
+                    <feGaussianBlur id="blur2" in="SourceGraphic" stdDeviation="10" opacity="0.6" />
+                    <feMerge><feMergeNode in="blur2" /><feMergeNode in="blur1" /><feMergeNode in="SourceGraphic" /></feMerge>
+                </filter>
+                <radialGradient id="eyeGradLeft" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#ffffff" /><stop offset="10%" stop-color="#ffff00" /><stop id="gradLeftMid" offset="50%" stop-color="#ffaa00" /><stop id="gradLeftEnd" offset="100%" stop-color="#cc3300" />
+                </radialGradient>
+                <radialGradient id="eyeGradRight" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#ffffff" /><stop offset="10%" stop-color="#ffff00" /><stop id="gradRightMid" offset="50%" stop-color="#ffaa00" /><stop id="gradRightEnd" offset="100%" stop-color="#cc3300" />
+                </radialGradient>
+                <clipPath id="eyeMaskLeft"><path id="pathL" d="" /></clipPath>
+                <clipPath id="eyeMaskRight"><path id="pathR" d="" /></clipPath>
+            </defs>
+            <g filter="url(#eyeGlow)">
+                <path id="baseL" d="" fill="url(#eyeGradLeft)" />
+                <g clip-path="url(#eyeMaskLeft)"><ellipse id="pupilL" fill="#00000A" /><circle id="highL" fill="white" opacity="0.9" /></g>
+                <path id="baseR" d="" fill="url(#eyeGradRight)" />
+                <g clip-path="url(#eyeMaskRight)"><ellipse id="pupilR" fill="#00000A" /><circle id="highR" fill="white" opacity="0.9" /></g>
+            </g>
+            <path id="tongue" d="M 184 208 C 184 250, 216 250, 216 208 Z" fill="#ff7da6" class="transition-all duration-1000" />
+            <path id="tongueSlit" d="M 200 210 L 200 235" stroke="#d44a7a" stroke-width="2" stroke-linecap="round" class="transition-all duration-1000" />
+            <path id="nose" d="" fill="#4a2e1b" />
+        </svg>
+    </div>
+
+    <!-- Replay button correctly centered mathematically to perfectly match the cat's translation -->
+    <button id="replay" class="hidden md:block fixed bottom-10 left-1/2 z-40 bg-[#00000A] text-gray-500 border-2 border-[#2a2a2e] font-audiowide text-[10px] px-4 py-3 tracking-widest hover:border-[#ffaa00] hover:text-[#ffaa00] transition-all duration-1000 shadow-[4px_4px_0px_rgba(0,0,0,0.8)] opacity-0 pointer-events-auto" style="transform: translateX(calc(-50vw + 11.5rem)) translateX(-50%);">REPLAY</button>
+
+    <main id="main-content" class="hidden opacity-0 transition-opacity duration-1000 pt-20 bg-[#00000A]">
+        
+        <section id="about" class="min-h-[100vh] flex flex-col items-center justify-center py-16 px-4 md:px-8 border-t-2 border-[#1a1f24] scroll-mt-20">
+            <div class="max-w-5xl w-full text-center relative z-10">
+                <h2 class="font-audiowide text-[#ff007f] text-2xl mb-12 tracking-widest drop-shadow-[0_0_8px_rgba(255,0,127,0.5)]">ABOUT ME</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch text-left">
+                    <div class="w-full min-h-[400px] md:min-h-[450px] flex items-end justify-center group relative pt-12 pb-16 md:pb-24">
+                         <!-- Portal Animation Adjusted Lower & Bigger -->
+                         <div class="absolute bottom-[-90px] md:bottom-[-101px] left-1/2 -translate-x-1/2 z-10 flex justify-center items-center pointer-events-none">
+                             <img src="pictures/portal to me.gif" alt="Portal" class="h-[300px] md:h-[400px] max-w-none rotate-90 opacity-90 translate-x-[8px]" />
+                         </div>
+
+                         <!-- Photo (Bigger with custom clip-path to slice off the bottom right grey corner) -->
+                         <img src="pictures/me-Photoroom.png" alt="Dieuwe Buijink" class="relative z-20 w-[80%] max-w-[280px] md:max-w-[320px] object-contain drop-shadow-[0_0_15px_rgba(255,0,127,0.4)]" style="clip-path: polygon(0 0, 100% 0, 100% 56%, 81% 100%, 0 100%);" />
+                    </div>
+                    <div class="brutalist-card p-8 md:p-10 cursor-default hover:translate-x-0 hover:translate-y-0 hover:border-[#1a1f24] hover:shadow-[8px_8px_0px_rgba(0,0,0,0.8)] h-full flex flex-col justify-center">
+                        <p class="text-gray-300 text-lg leading-relaxed font-normal-sans">
+                            I'm a media designer and developer focused on bringing high-fidelity, atmospheric web experiences to life. I construct robust digital architectures bridged with vibrant aesthetics, combining raw brutalist layouts with deep, immersive atmospheres.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="min-h-[30vh] flex items-center justify-center py-16 px-4 md:px-8 border-t-2 border-[#1a1f24] scroll-mt-20">
+             <button class="brutalist-card font-audiowide text-[#ff007f] p-8 text-xl tracking-widest hover:text-[#00000A] hover:bg-[#ff007f] transition-all duration-300">LET'S CONNECT</button>
+        </section>
+
+    </main>
+
+    <script>
+        const state = {
+            angry: {
+                dLeft: "M 175 146 C 130 110, 60 90, 35 100 C 30 150, 110 185, 175 146 Z",
+                dRight: "M 225 146 C 270 110, 340 90, 365 100 C 370 150, 290 185, 225 146 Z",
+                dNose: "M 190 196 C 195 192, 205 192, 210 196 L 200 206 Z",
+                pupilLX: 103, pupilLY: 118, pupilRX: 292, pupilRY: 118,
+                pupilRXval: 7.5, pupilRYval: 20,
+                highLX: 115, highLY: 130, highRX: 280, highRY: 130, highR: 2.5,
+                rotL: -5, rotR: 5,
+                blur1: 3, blur2: 10,
+                colorMid: '#ffaa00', colorEnd: '#cc3300'
+            },
+            blep: {
+                dLeft: "M 170 140 C 170 75, 60 75, 60 140 C 60 205, 170 205, 170 140 Z",
+                dRight: "M 230 140 C 230 75, 340 75, 340 140 C 340 205, 230 205, 230 140 Z",
+                dNose: "M 190 194 C 196 189, 204 189, 210 194 L 200 204 Z",
+                pupilLX: 115, pupilLY: 140, pupilRX: 285, pupilRY: 140,
+                pupilRXval: 38, pupilRYval: 38,
+                highLX: 130, highLY: 120, highRX: 300, highRY: 120, highR: 6.5,
+                rotL: 0, rotR: 0,
+                blur1: 5, blur2: 15,
+                colorMid: '#ffcc00', colorEnd: '#cc6600'
+            }
+        };
+
+        const els = {
+            cat: document.getElementById('cat-container'), catSvg: document.getElementById('cat-svg'),
+            baseL: document.getElementById('baseL'), baseR: document.getElementById('baseR'),
+            pathL: document.getElementById('pathL'), pathR: document.getElementById('pathR'),
+            pupilL: document.getElementById('pupilL'), pupilR: document.getElementById('pupilR'),
+            highL: document.getElementById('highL'), highR: document.getElementById('highR'),
+            nose: document.getElementById('nose'), tongue: document.getElementById('tongue'), tongueSlit: document.getElementById('tongueSlit'),
+            blur1: document.getElementById('blur1'), blur2: document.getElementById('blur2'),
+            gradL1: document.getElementById('gradLeftMid'), gradL2: document.getElementById('gradLeftEnd'),
+            gradR1: document.getElementById('gradRightMid'), gradR2: document.getElementById('gradRightEnd'),
+            textWrap: document.getElementById('text-wrap'), nameTag: document.getElementById('name-tag'),
+            topNav: document.getElementById('top-nav'), main: document.getElementById('main-content'),
+            floorGrid: document.getElementById('floor-grid'),
+            phTL: document.getElementById('placeholder-tl'), 
+            phBR: document.getElementById('placeholder-br'),
+            replayBtn: document.getElementById('replay')
+        };
+
+        let currentMode = 'angry';
+        let mouseX = 0; let mouseY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            const normalizedX = Math.min(1, Math.max(0, e.clientX / window.innerWidth));
+            const normalizedY = Math.min(1, Math.max(0, e.clientY / window.innerHeight));
+            mouseX = (normalizedX - 0.5) * 2;
+            mouseY = (normalizedY - 0.5) * 2;
+            updatePupils();
+        });
+
+        function updatePupils() {
+            const d = state[currentMode];
+            const safeX = Math.max(-1, Math.min(1, mouseX));
+            const safeY = Math.max(-1, Math.min(1, mouseY));
+            const dx = safeX * 10;
+            const dy = safeY * 12;
+            els.pupilL.setAttribute('transform', `translate(${dx}, ${dy}) rotate(${d.rotL} ${d.pupilLX} ${d.pupilLY})`);
+            els.pupilR.setAttribute('transform', `translate(${dx}, ${dy}) rotate(${d.rotR} ${d.pupilRX} ${d.pupilRY})`);
+            els.highL.setAttribute('transform', `translate(${dx}, ${dy})`); els.highR.setAttribute('transform', `translate(${dx}, ${dy})`);
+        }
+
+        function setFace(mode) {
+            currentMode = mode; const d = state[mode]; const isAngry = mode === 'angry';
+            els.baseL.setAttribute('d', d.dLeft); els.baseR.setAttribute('d', d.dRight);
+            els.pathL.setAttribute('d', d.dLeft); els.pathR.setAttribute('d', d.dRight);
+            els.nose.setAttribute('d', d.dNose); els.nose.setAttribute('fill', isAngry ? '#4a2e1b' : '#2a1a10');
+            els.pupilL.setAttribute('cx', d.pupilLX); els.pupilL.setAttribute('cy', d.pupilLY);
+            els.pupilL.setAttribute('rx', d.pupilRXval); els.pupilL.setAttribute('ry', d.pupilRYval);
+            els.pupilR.setAttribute('cx', d.pupilRX); els.pupilR.setAttribute('cy', d.pupilRY);
+            els.pupilR.setAttribute('rx', d.pupilRXval); els.pupilR.setAttribute('ry', d.pupilRYval);
+            els.pupilL.style.transition = els.pupilR.style.transition = els.highL.style.transition = els.highR.style.transition = "all 1s ease";
+            updatePupils();
+
+            setTimeout(() => {
+                els.pupilL.style.transition = els.pupilR.style.transition = "cx 1s, cy 1s, rx 1s, ry 1s, transform 0.1s ease-out";
+                els.highL.style.transition = els.highR.style.transition = "cx 1s, cy 1s, r 1s, transform 0.1s ease-out";
+            }, 1000);
+
+            els.highL.setAttribute('cx', d.highLX); els.highL.setAttribute('cy', d.highLY); els.highL.setAttribute('r', d.highR);
+            els.highR.setAttribute('cx', d.highRX); els.highR.setAttribute('cy', d.highRY); els.highR.setAttribute('r', d.highR);
+            els.blur1.setAttribute('stdDeviation', d.blur1); els.blur2.setAttribute('stdDeviation', d.blur2);
+            els.gradL1.setAttribute('stop-color', d.colorMid); els.gradR1.setAttribute('stop-color', d.colorMid);
+            els.gradL2.setAttribute('stop-color', d.colorEnd); els.gradR2.setAttribute('stop-color', d.colorEnd);
+
+            if (!isAngry) {
+                els.tongue.style.opacity = "1"; els.tongue.style.transform = "translateY(0)";
+                els.tongueSlit.style.opacity = "0.7"; els.tongueSlit.style.transform = "translateY(0)";
+            } else {
+                els.tongue.style.opacity = "0"; els.tongue.style.transform = "translateY(-25px)";
+                els.tongueSlit.style.opacity = "0"; els.tongueSlit.style.transform = "translateY(-25px)";
+            }
+        }
+
+        let glitchTimeout; let randomLoop;
+        function triggerRandomGlitch() {
+            clearTimeout(glitchTimeout);
+            els.nameTag.classList.remove('font-audiowide');
+            els.nameTag.classList.add('font-press-start', 'glitch');
+            els.nameTag.style.fontSize = window.innerWidth < 768 ? "24px" : "48px";
+            
+            glitchTimeout = setTimeout(() => {
+                els.nameTag.classList.remove('glitch', 'font-press-start');
+                els.nameTag.classList.add('font-audiowide');
+                els.nameTag.style.fontSize = ""; 
+                randomLoop = setTimeout(triggerRandomGlitch, Math.random() * 4000 + 2000);
+            }, Math.random() * 400 + 200);
+        }
+
+        function triggerSequence() {
+            clearTimeout(glitchTimeout); clearTimeout(randomLoop);
+            
+            // --- TEMPORARILY BYPASS ANIMATION FOR PROTOTYPING ---
+            document.body.style.overflow = "auto";
+            els.main.classList.remove('hidden'); 
+            els.main.style.opacity = "1";
+            
+            els.topNav.style.opacity = "1"; 
+            els.topNav.style.transform = "translateY(0)";
+            
+            els.catSvg.classList.add('shrink-corner'); 
+            els.cat.style.opacity = "1";
+            
+            els.textWrap.style.opacity = "1"; 
+            els.textWrap.style.transform = "scale(1)";
+            
+            els.floorGrid.style.opacity = "1";
+            
+            els.nameTag.classList.remove('font-press-start', 'glitch'); 
+            els.nameTag.classList.add('font-audiowide'); 
+            els.nameTag.style.fontSize = "";
+
+            // Fade in the new elements
+            els.phTL.style.opacity = "1";
+            els.phBR.style.opacity = "1";
+            els.replayBtn.style.opacity = "1";
+
+            setFace('blep');
+            randomLoop = setTimeout(triggerRandomGlitch, 3000);
+            return; // Stops here, no animation delays
+        }
+
+        // Cat & button both trigger replay sequence
+        els.replayBtn.onclick = triggerSequence;
+        els.catSvg.onclick = triggerSequence;
+        window.onload = triggerSequence;
+
+        // --- Burger Menu Logic ---
+        function setupBurgerMenu() {
+            const navToggle = document.getElementById('nav-toggle');
+            const navLinks = document.querySelector('#top-nav .nav-links');
+            const navOverlay = document.getElementById('nav-overlay');
+            if (!navToggle || !navLinks || !navOverlay) return;
+
+            const closeMenu = () => {
+                navLinks.classList.remove('open');
+                navOverlay.classList.remove('active');
+                navToggle.setAttribute('aria-expanded', 'false');
+            };
+
+            navToggle.addEventListener('click', () => {
+                const isOpen = navLinks.classList.toggle('open');
+                navOverlay.classList.toggle('active', isOpen);
+                navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            });
+
+            navOverlay.addEventListener('click', closeMenu);
+            
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768) closeMenu();
+            });
+
+            document.querySelectorAll('#top-nav .nav-links a').forEach((link) => {
+                link.addEventListener('click', closeMenu);
+            });
+        }
+        setupBurgerMenu();
+
+    </script>
+</body>
+</html>
