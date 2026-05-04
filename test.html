@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,16 +20,14 @@
         .font-press-start { font-family: 'Press Start 2P', cursive; }
         .font-normal-sans { font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
         
-        /* Smooth Morphing */
-        path, circle, ellipse {
-            transition: d 1s cubic-bezier(0.4, 0, 0.2, 1), fill 1s ease, opacity 1s ease;
-        }
+        path, circle, ellipse { transition: d 1s cubic-bezier(0.4, 0, 0.2, 1), fill 1s ease, opacity 1s ease; }
 
         .shrink-corner {
-            transform: translate(28vw, 32vh) scale(0.22) !important;
+            transform: translate(calc(-50vw + 11.5rem), calc(50vh - 10.5rem)) scale(0.32) !important;
+            pointer-events: auto;
+            cursor: pointer;
         }
 
-        /* Glitch Effect */
         .glitch { animation: glitch-anim 0.3s infinite; position: relative; }
         .glitch::before, .glitch::after { content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: transparent; font-family: inherit; }
         .glitch::before { left: 4px; text-shadow: -4px 0 #ff007f, 4px 0 #00ffcc; clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%); animation: glitch-anim-2 0.4s infinite linear alternate-reverse; }
@@ -49,142 +46,75 @@
 
         html { scroll-behavior: smooth; }
 
-        /* Expanded Top Nav for Edge Alignment */
-        header#top-nav {
-            padding-left: 0.7rem;
-            padding-right: 0.7rem;
-        }
-        #top-nav .max-w-7xl {
-            max-width: 100% !important;
-            padding-left: 0.7rem;
-            padding-right: 0.7rem;
-        }
-        #top-nav nav {
-            gap: 0.7rem !important;
-        }
+        header#top-nav { padding-left: 0.7rem; padding-right: 0.7rem; }
+        #top-nav .max-w-7xl { max-width: 100% !important; padding-left: 0.7rem; padding-right: 0.7rem; }
+        #top-nav nav { gap: 0.7rem !important; }
 
-        /* Metallic Nav Buttons */
         .metal-nav-btn {
-            font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
-            letter-spacing: 0.05em;
-            font-size: clamp(0.98rem, 1.8vw, 1.2rem);
-            padding: 0.8rem 1rem;
-            background: linear-gradient(180deg, #2a2d30 0%, #151718 100%);
-            color: #a0aec0;
-            border: 1px solid #000;
-            border-top: 1px solid #4a5568;
-            border-radius: 2px;
+            font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; letter-spacing: 0.05em; font-size: clamp(0.98rem, 1.8vw, 1.2rem); padding: 0.8rem 1rem;
+            background: linear-gradient(180deg, #2a2d30 0%, #151718 100%); color: #a0aec0; border: 1px solid #000; border-top: 1px solid #4a5568; border-radius: 2px;
             box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05), 0 4px 6px rgba(0, 0, 0, 0.8), 0 1px 3px rgba(0, 0, 0, 0.9);
-            text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(8px);
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
+            text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px); transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden;
         }
-
         .metal-nav-btn::after {
             content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
             background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0) 100%);
             transform: skewX(-25deg); transition: left 0.5s ease;
         }
-
         .metal-nav-btn:hover {
-            color: #00ffcc; transform: translateY(-2px);
-            background: linear-gradient(180deg, #3a4043 0%, #1a1c1d 100%);
-            border-top: 1px solid #00ffcc;
+            color: #00ffcc; transform: translateY(-2px); background: linear-gradient(180deg, #3a4043 0%, #1a1c1d 100%); border-top: 1px solid #00ffcc;
             box-shadow: inset 0 1px 5px rgba(0, 255, 204, 0.2), 0 6px 12px rgba(0, 0, 0, 0.9), 0 0 10px rgba(0, 255, 204, 0.3);
         }
         .metal-nav-btn:hover::after { left: 200%; }
 
         .footer-name { font-size: clamp(2rem, 4vw, 4rem); line-height: 1.05; margin: 0; }
-        footer { font-size: 1.1rem; }
-        footer p, footer a, footer span, footer h2, footer h3, footer div { font-size: 1.1rem; }
+        footer, footer p, footer a, footer span, footer h2, footer h3, footer div { font-size: 1.1rem; }
         footer .text-xs { font-size: 1rem; }
 
-        /* Mobile Burger Menu & Overlay CSS */
-        .nav-toggle {
-            display: none;
-            font-size: 1.5rem;
-            color: #00ffcc;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid #00ffcc;
-            border-radius: 4px;
-            padding: 0.3rem 0.6rem;
-            cursor: pointer;
-            line-height: 1;
-        }
-        .nav-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(3px);
-            z-index: 49;
-        }
+        .nav-toggle { display: none; font-size: 1.5rem; color: #00ffcc; background: rgba(0, 0, 0, 0.5); border: 1px solid #00ffcc; border-radius: 4px; padding: 0.3rem 0.6rem; cursor: pointer; line-height: 1; }
+        .nav-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(3px); z-index: 49; }
         .nav-overlay.active { display: block; }
 
         @media (max-width: 1024px) {
-            .footer-name { font-size: clamp(1.8rem, 5vw, 3.5rem); }
             #top-nav nav { gap: 0.5rem !important; }
             .metal-nav-btn { font-size: clamp(0.9rem, 2.2vw, 1.05rem); padding: 0.65rem 0.9rem; }
+            .footer-name { font-size: clamp(1.8rem, 5vw, 3.5rem); }
         }
 
         @media (max-width: 768px) {
             .nav-toggle { display: block; }
             #top-nav .nav-links { 
-                display: none; 
-                position: absolute; 
-                top: 100%; 
-                left: 0; 
-                right: 0; 
-                background: rgba(0, 0, 10, 0.95); 
-                backdrop-filter: blur(10px);
-                flex-direction: column; 
-                align-items: center; 
-                padding: 2rem 0; 
-                border-top: 1px solid #1a1f24; 
-                border-bottom: 2px solid #00ffcc;
-                z-index: 60; 
-                box-shadow: 0 10px 30px rgba(0,0,0,0.9);
+                display: none; position: absolute; top: 100%; left: 0; right: 0; background: rgba(0, 0, 10, 0.95); backdrop-filter: blur(10px);
+                flex-direction: column; align-items: center; padding: 2rem 0; border-top: 1px solid #1a1f24; border-bottom: 2px solid #00ffcc; z-index: 60; box-shadow: 0 10px 30px rgba(0,0,0,0.9);
             }
             #top-nav .nav-links.open { display: flex !important; }
-            .footer-name { font-size: clamp(1.8rem, 6vw, 3.3rem); }
             .metal-nav-btn { padding: 0.5rem 0.75rem; }
+            .footer-name { font-size: clamp(1.8rem, 6vw, 3.3rem); }
+            .shrink-corner { transform: translate(4.5rem, calc(-50vh + 2.25rem)) scale(0.2) !important; }
         }
+        @media (min-width: 769px) { #top-nav .nav-links { display: contents; } }
 
-        @media (min-width: 769px) {
-            /* Dissolves the nav-links container on desktop to perfectly center the nav bar via justify-between */
-            #top-nav .nav-links { display: contents; }
-        }
+        .brutalist-card { background-color: #0d0f12; border: 2px solid #1a1f24; position: relative; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 8px 8px 0px rgba(0,0,0,0.8); }
+        .brutalist-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px); background-size: 100% 4px; pointer-events: none; opacity: 0.5; }
+        .brutalist-card:hover { border-color: #ff007f; transform: translate(-4px, -4px); box-shadow: 12px 12px 0px rgba(255, 0, 127, 0.2), 0 0 20px rgba(255, 0, 127, 0.1) inset; }
 
-        /* Brutalist Block Cards */
-        .brutalist-card {
-            background-color: #0d0f12; border: 2px solid #1a1f24; position: relative;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 8px 8px 0px rgba(0,0,0,0.8);
-        }
-        .brutalist-card::before {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
-            background-size: 100% 4px; pointer-events: none; opacity: 0.5;
-        }
-        .brutalist-card:hover {
-            border-color: #ff007f; transform: translate(-4px, -4px);
-            box-shadow: 12px 12px 0px rgba(255, 0, 127, 0.2), 0 0 20px rgba(255, 0, 127, 0.1) inset;
-        }
+        .perspective-grid { background-image: linear-gradient(transparent 95%, rgba(0, 255, 204, 0.2) 100%), linear-gradient(90deg, transparent 95%, rgba(0, 255, 204, 0.2) 100%); background-size: 50px 50px; transform: perspective(600px) rotateX(75deg); transform-origin: bottom; -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 60%); mask-image: linear-gradient(to bottom, transparent 0%, black 60%); }
+        .perspective-grid-footer { background-image: linear-gradient(transparent 95%, rgba(255, 204, 0, 0.7) 100%), linear-gradient(90deg, transparent 95%, rgba(255, 204, 0, 0.7) 100%); background-size: 80px 50px; transform: perspective(400px) rotateX(60deg) scaleY(1.5); transform-origin: bottom; -webkit-mask-image: radial-gradient(120% 100% at bottom center, black 0%, transparent 100%); mask-image: radial-gradient(120% 100% at bottom center, black 0%, transparent 100%); }
 
-        /* Perspective Grids */
-        .perspective-grid {
-            background-image: linear-gradient(transparent 95%, rgba(0, 255, 204, 0.2) 100%), linear-gradient(90deg, transparent 95%, rgba(0, 255, 204, 0.2) 100%);
-            background-size: 50px 50px; transform: perspective(600px) rotateX(75deg); transform-origin: bottom;
-            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 60%); mask-image: linear-gradient(to bottom, transparent 0%, black 60%);
-        }
-        .perspective-grid-footer {
-            background-image: linear-gradient(transparent 95%, rgba(255, 204, 0, 0.7) 100%), linear-gradient(90deg, transparent 95%, rgba(255, 204, 0, 0.7) 100%);
-            background-size: 80px 50px; transform: perspective(400px) rotateX(60deg) scaleY(1.5); transform-origin: bottom;
-            -webkit-mask-image: radial-gradient(120% 100% at bottom center, black 0%, transparent 100%); mask-image: radial-gradient(120% 100% at bottom center, black 0%, transparent 100%);
-        }
+        /* --- Realistic CRT FX --- */
+        .crt-overlay { position: absolute; inset: 0; z-index: 45; pointer-events: none; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)); background-size: 100% 3px, 6px 100%; }
+        .crt-vignette { position: absolute; inset: 0; z-index: 46; pointer-events: none; background: radial-gradient(circle at center, transparent 40%, rgba(0,0,0,0.85) 100%); box-shadow: inset 0 0 100px rgba(0,0,0,0.9); }
+        .crt-flicker-fx { animation: crt-flicker 0.15s infinite; }
+        @keyframes crt-flicker { 0% { opacity: 0.95; } 50% { opacity: 0.85; } 100% { opacity: 0.95; } }
 
-        /* Smooth Draggable Carousel Classes */
+        /* --- Broken Glass Cracks Styles (Tapering Thickness) --- */
+        .crack-base { fill: none; vector-effect: non-scaling-stroke; stroke-linecap: round; stroke-linejoin: round; }
+        .c-thick { stroke: rgba(0,0,0,0.95); stroke-width: 6px; filter: drop-shadow(1px 1px 0px rgba(255,255,255,0.25)); }
+        .c-med { stroke: rgba(0,0,0,0.85); stroke-width: 3.5px; filter: drop-shadow(1px 1px 0px rgba(255,255,255,0.2)); }
+        .c-thin { stroke: rgba(255,255,255,0.45); stroke-width: 1px; filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.8)); }
+        .c-rim-shadow { stroke: rgba(0,0,0,0.95); stroke-width: 7px; filter: drop-shadow(3px 3px 5px rgba(0,0,0,1)); }
+        .c-rim-light { stroke: rgba(255,255,255,0.8); stroke-width: 1.5px; }
+
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .carousel-mode-work, .carousel-mode-skills { display: flex; overflow-x: auto; flex-wrap: nowrap; }
@@ -192,7 +122,6 @@
         @media (min-width: 768px) { .carousel-mode-work > div, .carousel-mode-skills > div { flex: 0 0 45%; } }
         @media (min-width: 1024px) { .carousel-mode-work > div { flex: 0 0 31.333%; } }
 
-        /* Custom Arrow Buttons */
         .nav-arrow { background-color: #0d0f12; border: 2px solid #1a1f24; box-shadow: 4px 4px 0px rgba(0,0,0,0.8); transition: all 0.2s ease; cursor: pointer; }
         .nav-arrow:hover { background-color: #1a1f24; }
         .nav-arrow-cyan:hover { border-color: #00ffcc; color: #000; background-color: #00ffcc; box-shadow: 4px 4px 0px rgba(0, 255, 204, 0.2); }
@@ -201,94 +130,151 @@
 </head>
 <body class="selection:bg-[#ff007f] selection:text-white font-normal-sans select-none overflow-hidden">
 
-    <!-- Sticky Top Navigation -->
-    <header id="top-nav" class="fixed top-0 left-0 w-full z-50 px-6 py-4 opacity-0 transition-all duration-1000 -translate-y-full">
+    <header id="top-nav" class="fixed top-0 left-0 w-full z-50 px-6 py-4 opacity-0 transition-all duration-1000 -translate-y-full pointer-events-auto">
         <div class="flex items-center justify-between w-full max-w-7xl mx-auto relative">
-            
-            <!-- Logo -->
             <div class="relative z-50">
-                <a href="index.html" class="metal-nav-btn inline-block px-5 py-2.5 text-sm whitespace-nowrap uppercase text-[#00ffcc] border-t-[#00ffcc]">
-                    Dieuwe Buijink
-                </a>
+                <a href="index.html" class="metal-nav-btn inline-block px-5 py-2.5 text-sm whitespace-nowrap uppercase text-[#00ffcc] border-t-[#00ffcc]">Dieuwe Buijink</a>
             </div>
-
-            <!-- Hamburger Button -->
-            <button id="nav-toggle" class="nav-toggle relative z-50" aria-expanded="false" aria-label="Toggle navigation">
-                ☰
-            </button>
-
-            <!-- Nav Links Container -->
+            <button id="nav-toggle" class="nav-toggle relative z-50" aria-expanded="false" aria-label="Toggle navigation">☰</button>
             <div class="nav-links w-full md:w-auto">
                 <nav class="flex flex-col md:flex-row gap-3 md:gap-4 items-center w-full md:w-auto">
                     <a href="#about" class="metal-nav-btn inline-block px-4 md:px-5 py-2.5 text-xs md:text-sm uppercase w-[85%] md:w-auto text-center">About</a>
                     <a href="work.html" class="metal-nav-btn inline-block px-4 md:px-5 py-2.5 text-xs md:text-sm uppercase w-[85%] md:w-auto text-center">Work</a>
                     <a href="skills.html" class="metal-nav-btn inline-block px-4 md:px-5 py-2.5 text-xs md:text-sm uppercase w-[85%] md:w-auto text-center">Skills</a>
                 </nav>
-
                 <div class="mt-4 md:mt-0 flex justify-center w-full md:w-auto">
-                    <a href="contact.html" class="metal-nav-btn inline-block px-5 py-2.5 text-sm whitespace-nowrap text-[#ff007f] hover:text-[#ff007f] uppercase w-[85%] md:w-auto text-center">
-                        Let's connect!
-                    </a>
+                    <a href="contact.html" class="metal-nav-btn inline-block px-5 py-2.5 text-sm whitespace-nowrap text-[#ff007f] hover:text-[#ff007f] uppercase w-[85%] md:w-auto text-center">Let's connect!</a>
                 </div>
             </div>
-
         </div>
     </header>
     <div class="nav-overlay" id="nav-overlay"></div>
 
     <section id="hero-section" class="h-screen w-full flex flex-col items-center justify-center relative overflow-hidden bg-[#00000A]">
-        <div id="floor-grid" class="absolute bottom-0 left-0 w-full h-[50vh] perspective-grid opacity-0 transition-opacity duration-[2000ms] pointer-events-none"></div>
+        
+        <!-- Glass Impact Holes (z-30) Localized to the corners -->
+        
+        <!-- Top Left Highly Irregular Shattered Hole Container -->
+        <div id="placeholder-tl" class="absolute top-[-5%] left-[-5%] w-[45vw] md:w-[35vw] max-w-[450px] aspect-square z-30 opacity-0 transition-opacity duration-1000 pointer-events-auto">
+            <!-- Slightly larger void with heavily expanded jag mapping -->
+            <div class="absolute inset-0 w-full h-full z-10" style="clip-path: polygon(36% 34%, 52% 30%, 62% 37%, 68% 46%, 62% 60%, 50% 68%, 40% 65%, 32% 58%, 30% 45%);">
+                <img src="pictures/behind-screen-1.jpg" class="w-full h-full object-cover brightness-[0.6]" onerror="this.style.display='none'" />
+                <div class="absolute inset-0 shadow-[inset_0_0_20px_20px_rgba(0,0,0,1)]"></div>
+            </div>
+            
+            <!-- SVG Cracks shooting aggressively outward with overflow-visible -->
+            <svg viewBox="0 0 100 100" class="absolute inset-0 w-full h-full overflow-visible z-20 drop-shadow-md">
+                <!-- Inner shattered rim edges -->
+                <path class="crack-base c-rim-shadow" d="M 36 34 L 52 30 L 62 37 L 68 46 L 62 60 L 50 68 L 40 65 L 32 58 L 30 45 Z" />
+                <path class="crack-base c-rim-light" d="M 36 34 L 52 30 L 62 37 L 68 46 L 62 60 L 50 68 L 40 65 L 32 58 L 30 45 Z" />
 
-        <div id="cat-container" class="absolute transition-opacity duration-1000 z-20 flex justify-center items-center w-full opacity-0 pointer-events-none">
-            <svg id="cat-svg" viewBox="0 0 400 300" class="w-[85vw] max-w-[48rem] h-auto transition-transform duration-1000 ease-in-out drop-shadow-[0_0_15px_rgba(0,0,0,0.8)]" style="transform: translate(0,0) scale(1);">
-                <defs>
-                    <filter id="eyeGlow" x="-50%" y="-50%" width="200%" height="200%">
-                        <feGaussianBlur id="blur1" in="SourceGraphic" stdDeviation="3" />
-                        <feGaussianBlur id="blur2" in="SourceGraphic" stdDeviation="10" opacity="0.6" />
-                        <feMerge><feMergeNode in="blur2" /><feMergeNode in="blur1" /><feMergeNode in="SourceGraphic" /></feMerge>
-                    </filter>
-                    <radialGradient id="eyeGradLeft" cx="50%" cy="50%" r="50%">
-                        <stop offset="0%" stop-color="#ffffff" /><stop offset="10%" stop-color="#ffff00" /><stop id="gradLeftMid" offset="50%" stop-color="#ffaa00" /><stop id="gradLeftEnd" offset="100%" stop-color="#cc3300" />
-                    </radialGradient>
-                    <radialGradient id="eyeGradRight" cx="50%" cy="50%" r="50%">
-                        <stop offset="0%" stop-color="#ffffff" /><stop offset="10%" stop-color="#ffff00" /><stop id="gradRightMid" offset="50%" stop-color="#ffaa00" /><stop id="gradRightEnd" offset="100%" stop-color="#cc3300" />
-                    </radialGradient>
-                    <clipPath id="eyeMaskLeft"><path id="pathL" d="" /></clipPath>
-                    <clipPath id="eyeMaskRight"><path id="pathR" d="" /></clipPath>
-                </defs>
-                <g filter="url(#eyeGlow)">
-                    <path id="baseL" d="" fill="url(#eyeGradLeft)" />
-                    <g clip-path="url(#eyeMaskLeft)"><ellipse id="pupilL" fill="#00000A" /><circle id="highL" fill="white" opacity="0.9" /></g>
-                    <path id="baseR" d="" fill="url(#eyeGradRight)" />
-                    <g clip-path="url(#eyeMaskRight)"><ellipse id="pupilR" fill="#00000A" /><circle id="highR" fill="white" opacity="0.9" /></g>
-                </g>
-                <path id="tongue" d="M 184 208 C 184 250, 216 250, 216 208 Z" fill="#ff7da6" class="transition-all duration-1000" />
-                <path id="tongueSlit" d="M 200 210 L 200 235" stroke="#d44a7a" stroke-width="2" stroke-linecap="round" class="transition-all duration-1000" />
-                <path id="nose" d="" fill="#4a2e1b" />
+                <!-- Thick explicitly connected inner ring wrapping outside the rim -->
+                <path class="crack-base c-thick" d="M 25 25 L 50 20 L 70 25 L 80 40 L 75 70 L 55 80 L 35 80 L 25 65 Z" />
+
+                <!-- Thick structural cracks branching off-bounds expansively -->
+                <path class="crack-base c-thick" d="M 36 34 L -5 -20 M 52 30 L 60 -30 M 62 37 L 120 -10 M 68 46 L 140 35 M 62 60 L 110 110 M 50 68 L 55 140 M 40 65 L -20 130 M 32 58 L -35 70 M 30 45 L -25 30" />
+                
+                <!-- Cross-connections binding rim to thick inner ring -->
+                <path class="crack-base c-thick" d="M 36 34 L 25 25 M 52 30 L 50 20 M 62 37 L 70 25 M 68 46 L 80 40 M 62 60 L 75 70 M 50 68 L 55 80 M 40 65 L 35 80 M 32 58 L 25 65" />
+
+                <!-- Medium tapering cracks extending deep into the screen layout -->
+                <path class="crack-base c-med" d="M -5 -20 L -25 -45 M 60 -30 L 65 -60 M 120 -10 L 160 -25 M 140 35 L 180 40 M 110 110 L 140 145 M 55 140 L 60 180 M -20 130 L -50 160 M -35 70 L -70 80 M -25 30 L -50 15" />
+                
+                <!-- Inner concentric ring spreading the impact -->
+                <path class="crack-base c-thin" d="M 28 35 L 40 20 L 60 22 L 75 35 L 75 55 L 60 75 L 40 75 L 25 60 Z" />
+                <path class="crack-base c-thin" d="M 15 25 L 35 5 L 70 8 L 90 30 L 85 70 L 50 90 L 20 80 L 10 50 Z" />
+
+                <!-- Thin surface webbing organically filling off-bounds regions -->
+                <path class="crack-base c-thin" d="M 52 30 L 60 5 M 62 37 L 90 20 M 68 46 L 95 50 M 62 60 L 85 85 M 50 68 L 60 95 M 40 65 L 20 90 M 32 58 L 5 80 M 30 45 L 10 50 M 36 34 L 15 25" />
             </svg>
         </div>
 
-        <div id="text-wrap" class="text-center z-10 transition-all duration-700 opacity-0 scale-95 flex flex-col items-center justify-center">
-            <h1 id="name-tag" data-text="Dieuwe Buijink" class="text-white text-4xl md:text-6xl tracking-tight font-audiowide drop-shadow-[0_5px_15px_rgba(0,0,0,1)]">
+        <!-- Bottom Right Highly Irregular Shattered Hole Container -->
+        <div id="placeholder-br" class="absolute bottom-[2%] right-[-5%] w-[50vw] md:w-[40vw] max-w-[500px] aspect-square z-30 opacity-0 transition-opacity duration-1000 pointer-events-auto">
+            <!-- Expanded jagged clip path -->
+            <div class="absolute inset-0 w-full h-full z-10" style="clip-path: polygon(42% 40%, 62% 36%, 72% 50%, 68% 65%, 50% 72%, 38% 58%);">
+                <img src="pictures/behind-screen-2.jpg" class="w-full h-full object-cover brightness-[0.6]" onerror="this.style.display='none'" />
+                <div class="absolute inset-0 shadow-[inset_0_0_20px_20px_rgba(0,0,0,1)]"></div>
+            </div>
+            
+            <!-- SVG Cracks completely breaking the container box limits -->
+            <svg viewBox="0 0 100 100" class="absolute inset-0 w-full h-full overflow-visible z-20 drop-shadow-md">
+                <!-- Inner shattered rim edges for depth -->
+                <path class="crack-base c-rim-shadow" d="M 42 40 L 62 36 L 72 50 L 68 65 L 50 72 L 38 58 Z" />
+                <path class="crack-base c-rim-light" d="M 42 40 L 62 36 L 72 50 L 68 65 L 50 72 L 38 58 Z" />
+
+                <!-- Thick explicitly connected inner ring wrapping outside the rim -->
+                <path class="crack-base c-thick" d="M 35 30 L 60 25 L 80 45 L 75 75 L 45 80 L 25 60 Z" />
+
+                <!-- Thick structural cracks branching drastically off-bounds -->
+                <path class="crack-base c-thick" d="M 42 40 L 15 5 M 62 36 L 80 -15 M 72 50 L 130 15 M 68 65 L 120 100 M 50 72 L 40 130 M 38 58 L -15 80 M 42 40 L -20 20" />
+                
+                <!-- Cross-connections binding rim to thick inner ring -->
+                <path class="crack-base c-thick" d="M 42 40 L 35 30 M 62 36 L 60 25 M 72 50 L 80 45 M 68 65 L 75 75 M 50 72 L 45 80 M 38 58 L 25 60" />
+
+                <!-- Med tapering cracks continuing the path out of the container boundaries -->
+                <path class="crack-base c-med" d="M 15 5 L -10 -25 M 80 -15 L 95 -40 M 130 15 L 160 5 M 120 100 L 150 130 M 40 130 L 30 170 M -15 80 L -50 100 M -20 20 L -45 5" />
+                
+                <!-- Inner concentric ring spreading the impact -->
+                <path class="crack-base c-thin" d="M 32 35 L 50 25 L 75 35 L 80 55 L 65 75 L 45 80 L 30 65 Z" />
+                <path class="crack-base c-thin" d="M 15 25 L 45 5 L 85 15 L 95 50 L 80 90 L 35 95 L 10 75 L 5 45 Z" />
+
+                <!-- Thin surface webbing spreading organically everywhere -->
+                <path class="crack-base c-thin" d="M 42 40 L 30 25 M 62 36 L 75 15 M 72 50 L 95 40 M 68 65 L 85 85 M 50 72 L 45 95 M 38 58 L 15 75" />
+            </svg>
+        </div>
+
+        <!-- CRT Layers (Sit ON TOP of the holes) -->
+        <div class="crt-overlay crt-flicker-fx"></div>
+        <div class="crt-vignette"></div>
+        <div id="floor-grid" class="absolute bottom-0 left-0 w-full h-[50vh] perspective-grid opacity-0 transition-opacity duration-[2000ms] pointer-events-none"></div>
+
+        <div id="text-wrap" class="text-center z-10 transition-all duration-700 opacity-0 scale-95 flex flex-col items-center justify-center relative">
+            <h1 id="name-tag" data-text="Dieuwe Buijink" class="text-white text-4xl md:text-6xl tracking-tight font-audiowide drop-shadow-[0_5px_15px_rgba(0,0,0,1)] relative z-20">
                 Dieuwe Buijink
             </h1>
         </div>
     </section>
 
+    <!-- Cat Container (Fixed, sits above all FX) -->
+    <div id="cat-container" class="fixed inset-0 transition-opacity duration-1000 z-[55] flex justify-center items-center opacity-0 pointer-events-none">
+        <svg id="cat-svg" viewBox="0 0 400 300" class="w-[85vw] max-w-[48rem] h-auto transition-transform duration-1000 ease-in-out drop-shadow-[0_0_15px_rgba(0,0,0,0.8)]" style="transform: translate(0,0) scale(1);">
+            <defs>
+                <filter id="eyeGlow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur id="blur1" in="SourceGraphic" stdDeviation="3" />
+                    <feGaussianBlur id="blur2" in="SourceGraphic" stdDeviation="10" opacity="0.6" />
+                    <feMerge><feMergeNode in="blur2" /><feMergeNode in="blur1" /><feMergeNode in="SourceGraphic" /></feMerge>
+                </filter>
+                <radialGradient id="eyeGradLeft" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffffff" /><stop offset="10%" stop-color="#ffff00" /><stop id="gradLeftMid" offset="50%" stop-color="#ffaa00" /><stop id="gradLeftEnd" offset="100%" stop-color="#cc3300" /></radialGradient>
+                <radialGradient id="eyeGradRight" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffffff" /><stop offset="10%" stop-color="#ffff00" /><stop id="gradRightMid" offset="50%" stop-color="#ffaa00" /><stop id="gradRightEnd" offset="100%" stop-color="#cc3300" /></radialGradient>
+                <clipPath id="eyeMaskLeft"><path id="pathL" d="" /></clipPath>
+                <clipPath id="eyeMaskRight"><path id="pathR" d="" /></clipPath>
+            </defs>
+            <g filter="url(#eyeGlow)">
+                <path id="baseL" d="" fill="url(#eyeGradLeft)" />
+                <g clip-path="url(#eyeMaskLeft)"><ellipse id="pupilL" fill="#00000A" /><circle id="highL" fill="white" opacity="0.9" /></g>
+                <path id="baseR" d="" fill="url(#eyeGradRight)" />
+                <g clip-path="url(#eyeMaskRight)"><ellipse id="pupilR" fill="#00000A" /><circle id="highR" fill="white" opacity="0.9" /></g>
+            </g>
+            <path id="tongue" d="M 184 208 C 184 250, 216 250, 216 208 Z" fill="#ff7da6" class="transition-all duration-1000" />
+            <path id="tongueSlit" d="M 200 210 L 200 235" stroke="#d44a7a" stroke-width="2" stroke-linecap="round" class="transition-all duration-1000" />
+            <path id="nose" d="" fill="#4a2e1b" />
+        </svg>
+    </div>
+
+    <!-- Replay button -->
+    <button id="replay" class="hidden md:block fixed bottom-10 left-1/2 z-40 bg-[#00000A] text-gray-500 border-2 border-[#2a2a2e] font-audiowide text-[10px] px-4 py-3 tracking-widest hover:border-[#ffaa00] hover:text-[#ffaa00] transition-all duration-1000 shadow-[4px_4px_0px_rgba(0,0,0,0.8)] opacity-0 pointer-events-auto" style="transform: translateX(calc(-50vw + 11.5rem)) translateX(-50%);">REPLAY</button>
+
     <main id="main-content" class="hidden opacity-0 transition-opacity duration-1000 pt-20 bg-[#00000A]">
-        
         <section id="about" class="min-h-[100vh] flex flex-col items-center justify-center py-16 px-4 md:px-8 border-t-2 border-[#1a1f24] scroll-mt-20">
             <div class="max-w-5xl w-full text-center relative z-10">
                 <h2 class="font-audiowide text-[#ff007f] text-2xl mb-12 tracking-widest drop-shadow-[0_0_8px_rgba(255,0,127,0.5)]">ABOUT ME</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch text-left">
-                    <div class="w-full min-h-[350px] flex items-end justify-center overflow-hidden group relative pt-12">
-                         <!-- Portal Animation -->
-                         <div class="absolute bottom-[-70px] md:bottom-[-100px] left-1/2 -translate-x-1/2 z-10 flex justify-center items-center pointer-events-none">
-                             <img src="pictures/portal to me.gif" alt="Portal" class="h-[260px] md:h-[340px] max-w-none rotate-90 group-hover:scale-[1.15] transition-transform duration-500 opacity-90" />
+                    <div class="w-full min-h-[400px] md:min-h-[450px] flex items-end justify-center group relative pt-12 pb-16 md:pb-24">
+                         <div class="absolute bottom-[-90px] md:bottom-[-101px] left-1/2 -translate-x-1/2 z-10 flex justify-center items-center pointer-events-none">
+                             <img src="pictures/portal to me.gif" alt="Portal" class="h-[300px] md:h-[400px] max-w-none rotate-90 opacity-90 translate-x-[8px]" />
                          </div>
-
-                         <!-- Photo -->
-                         <img src="pictures/me-Photoroom.png" alt="Dieuwe Buijink" class="relative z-20 w-[70%] max-w-[240px] object-contain drop-shadow-[0_0_15px_rgba(255,0,127,0.4)] group-hover:scale-105 transition-transform duration-500" />
+                         <img src="pictures/me-Photoroom.png" alt="Dieuwe Buijink" class="relative z-20 w-[80%] max-w-[280px] md:max-w-[320px] object-contain drop-shadow-[0_0_15px_rgba(255,0,127,0.4)]" style="clip-path: polygon(0 0, 100% 0, 100% 56%, 81% 100%, 0 100%);" />
                     </div>
                     <div class="brutalist-card p-8 md:p-10 cursor-default hover:translate-x-0 hover:translate-y-0 hover:border-[#1a1f24] hover:shadow-[8px_8px_0px_rgba(0,0,0,0.8)] h-full flex flex-col justify-center">
                         <p class="text-gray-300 text-lg leading-relaxed font-normal-sans">
@@ -300,20 +286,14 @@
         </section>
 
         <section id="work" class="min-h-screen flex flex-col items-center justify-center py-16 px-4 md:px-8 border-t-2 border-[#1a1f24] scroll-mt-20 relative overflow-hidden">
-            <!-- Background Accent -->
             <div class="absolute top-0 right-0 w-[30vw] h-[30vw] bg-[#00ffcc] opacity-5 blur-[120px] rounded-full pointer-events-none"></div>
-            
             <h2 class="font-audiowide text-[#00ffcc] text-2xl mb-12 tracking-widest drop-shadow-[0_0_8px_rgba(0,255,204,0.5)]">SELECTED WORKS</h2>
-            
-            <!-- Carousel Wrapper for Work -->
             <div id="work-wrapper" class="relative w-full max-w-[95vw] xl:max-w-[1400px] z-10 group">
-                <!-- Navigation Prev -->
                 <div class="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-20 opacity-0 group-hover:opacity-100 transition-opacity hidden md:flex">
                     <button id="work-prev" class="nav-arrow nav-arrow-cyan text-[#00ffcc] w-12 h-12 flex items-center justify-center font-audiowide text-xl">&lt;</button>
                 </div>
-
                 <div id="work-container" class="carousel-mode-work gap-8 w-full py-4 px-4 no-scrollbar cursor-grab active:cursor-grabbing">
-                    <div class="brutalist-card cyan-hover p-8 text-left cursor-pointer popup-trigger flex flex-col justify-between min-h-[250px]" data-title="Neon Interface" data-desc="A full conceptual UI for an interactive experience. Heavily inspired by 80s outrun aesthetics and modern media design principles." data-img="NEON_PREVIEW">
+                    <div class="brutalist-card cyan-hover p-8 text-left cursor-pointer popup-trigger flex flex-col justify-between min-h-[250px]" data-title="Neon Interface" data-desc="A full conceptual UI for an interactive experience." data-img="NEON_PREVIEW">
                         <div>
                             <h3 class="font-audiowide text-xl text-[#e2e8f0] mb-2 group-hover:text-[#00ffcc] transition-colors">Neon Interface</h3>
                             <p class="text-gray-400 text-sm font-normal-sans mb-4">Web / UI Design</p>
@@ -323,8 +303,7 @@
                             <span class="text-xs font-audiowide tracking-wider text-[#00ffcc] opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-[0_0_5px_rgba(0,255,204,0.8)]">VIEW</span>
                         </div>
                     </div>
-
-                    <div class="brutalist-card p-8 text-left cursor-pointer popup-trigger flex flex-col justify-between min-h-[250px]" data-title="Atmospheric OS" data-desc="A web-based interactive experience featuring smooth transitions, customized typography, and a tailored visual identity." data-img="ATMOS_PREVIEW">
+                    <div class="brutalist-card p-8 text-left cursor-pointer popup-trigger flex flex-col justify-between min-h-[250px]" data-title="Atmospheric OS" data-desc="A web-based interactive experience featuring smooth transitions." data-img="ATMOS_PREVIEW">
                         <div>
                             <h3 class="font-audiowide text-xl text-[#e2e8f0] mb-2 group-hover:text-[#ff007f] transition-colors">Atmospheric OS</h3>
                             <p class="text-gray-400 text-sm font-normal-sans mb-4">Experience Design</p>
@@ -334,8 +313,7 @@
                             <span class="text-xs font-audiowide tracking-wider text-[#ff007f] opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-[0_0_5px_rgba(255,0,127,0.8)]">VIEW</span>
                         </div>
                     </div>
-
-                    <div class="brutalist-card cyan-hover p-8 text-left cursor-pointer popup-trigger flex flex-col justify-between min-h-[250px]" data-title="Grid Runner" data-desc="An interactive browser game utilizing HTML5 Canvas, featuring custom physics and a dynamic day/night cycle to emphasize atmosphere." data-img="GRID_PREVIEW">
+                    <div class="brutalist-card cyan-hover p-8 text-left cursor-pointer popup-trigger flex flex-col justify-between min-h-[250px]" data-title="Grid Runner" data-desc="An interactive browser game utilizing HTML5 Canvas." data-img="GRID_PREVIEW">
                         <div>
                             <h3 class="font-audiowide text-xl text-[#e2e8f0] mb-2 group-hover:text-[#00ffcc] transition-colors">Grid Runner</h3>
                             <p class="text-gray-400 text-sm font-normal-sans mb-4">Interactive Media</p>
@@ -345,7 +323,6 @@
                             <span class="text-xs font-audiowide tracking-wider text-[#00ffcc] opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-[0_0_5px_rgba(0,255,204,0.8)]">VIEW</span>
                         </div>
                     </div>
-
                     <div class="brutalist-card p-8 text-left cursor-pointer popup-trigger flex flex-col justify-between min-h-[250px]" data-title="Void Protocol" data-desc="A brutalist e-commerce concept for brutalist street wear." data-img="VOID_PREVIEW">
                         <div>
                             <h3 class="font-audiowide text-xl text-[#e2e8f0] mb-2 group-hover:text-[#ff007f] transition-colors">Void Protocol</h3>
@@ -356,7 +333,6 @@
                             <span class="text-xs font-audiowide tracking-wider text-[#ff007f] opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-[0_0_5px_rgba(255,0,127,0.8)]">VIEW</span>
                         </div>
                     </div>
-
                     <div class="brutalist-card cyan-hover p-8 text-left cursor-pointer popup-trigger flex flex-col justify-between min-h-[250px]" data-title="Data Synthesizer" data-desc="An immersive dashboard visualizing real-time data flows." data-img="DATA_PREVIEW">
                         <div>
                             <h3 class="font-audiowide text-xl text-[#e2e8f0] mb-2 group-hover:text-[#00ffcc] transition-colors">Data Synthesizer</h3>
@@ -368,74 +344,53 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Navigation Next -->
                 <div class="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-20 opacity-0 group-hover:opacity-100 transition-opacity hidden md:flex">
                     <button id="work-next" class="nav-arrow nav-arrow-cyan text-[#00ffcc] w-12 h-12 flex items-center justify-center font-audiowide text-xl">&gt;</button>
                 </div>
             </div>
-            
             <button id="work-toggle" class="mt-10 brutalist-card font-audiowide text-xs md:text-sm text-gray-400 hover:text-[#00ffcc] px-8 py-4 tracking-widest relative z-10 transition-colors uppercase">SHOW ALL</button>
         </section>
 
         <section id="skills" class="min-h-[80vh] flex flex-col items-center justify-center py-16 px-4 md:px-8 border-t-2 border-[#1a1f24] scroll-mt-20 relative overflow-hidden">
             <h2 class="font-audiowide text-[#ffaa00] text-2xl mb-12 tracking-widest drop-shadow-[0_0_8px_rgba(255,170,0,0.5)]">SKILLS & TOOLS</h2>
-            
-            <!-- Carousel Wrapper for Skills -->
             <div id="skills-wrapper" class="relative w-full max-w-[95vw] xl:max-w-[1400px] z-10 group">
-                <!-- Navigation Prev -->
                 <div class="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-20 opacity-0 group-hover:opacity-100 transition-opacity hidden md:flex">
                     <button id="skills-prev" class="nav-arrow nav-arrow-orange text-[#ffaa00] w-12 h-12 flex items-center justify-center font-audiowide text-xl">&lt;</button>
                 </div>
-
                 <div id="skills-container" class="carousel-mode-skills gap-8 w-full py-4 px-4 no-scrollbar cursor-grab active:cursor-grabbing">
                     <div class="brutalist-card p-6 border-[#333] hover:border-[#ffaa00] hover:shadow-[12px_12px_0px_rgba(255,170,0,0.1)]">
-                        <h3 class="font-audiowide text-lg text-[#e2e8f0] mb-4 flex justify-between">
-                            <span>DESIGN</span>
-                        </h3>
+                        <h3 class="font-audiowide text-lg text-[#e2e8f0] mb-4 flex justify-between"><span>DESIGN</span></h3>
                         <div class="w-full bg-[#00000A] border border-[#2a2a2e] h-3 p-[1px]">
                             <div class="bg-gradient-to-r from-[#cc3300] to-[#ffaa00] w-[90%] h-full shadow-[0_0_8px_rgba(255,170,0,0.5)]"></div>
                         </div>
                         <p class="text-gray-500 text-xs mt-4 font-audiowide tracking-wider leading-relaxed">FIGMA, ADOBE CC, UI/UX, SPLINE 3D</p>
                     </div>
-
                     <div class="brutalist-card p-6 border-[#333] hover:border-[#ffaa00] hover:shadow-[12px_12px_0px_rgba(255,170,0,0.1)]">
-                        <h3 class="font-audiowide text-lg text-[#e2e8f0] mb-4 flex justify-between">
-                            <span>DEVELOPMENT</span>
-                        </h3>
+                        <h3 class="font-audiowide text-lg text-[#e2e8f0] mb-4 flex justify-between"><span>DEVELOPMENT</span></h3>
                         <div class="w-full bg-[#00000A] border border-[#2a2a2e] h-3 p-[1px]">
                             <div class="bg-gradient-to-r from-[#cc3300] to-[#ffaa00] w-[85%] h-full shadow-[0_0_8px_rgba(255,170,0,0.5)]"></div>
                         </div>
                         <p class="text-gray-500 text-xs mt-4 font-audiowide tracking-wider leading-relaxed">HTML, CSS, JS, REACT, TAILWIND</p>
                     </div>
-
                     <div class="brutalist-card p-6 border-[#333] hover:border-[#ffaa00] hover:shadow-[12px_12px_0px_rgba(255,170,0,0.1)]">
-                        <h3 class="font-audiowide text-lg text-[#e2e8f0] mb-4 flex justify-between">
-                            <span>SYSTEMS</span>
-                        </h3>
+                        <h3 class="font-audiowide text-lg text-[#e2e8f0] mb-4 flex justify-between"><span>SYSTEMS</span></h3>
                         <div class="w-full bg-[#00000A] border border-[#2a2a2e] h-3 p-[1px]">
                             <div class="bg-gradient-to-r from-[#cc3300] to-[#ffaa00] w-[60%] h-full shadow-[0_0_8px_rgba(255,170,0,0.5)]"></div>
                         </div>
                         <p class="text-gray-500 text-xs mt-4 font-audiowide tracking-wider leading-relaxed">BASH, LINUX, DOCKER, GIT</p>
                     </div>
-
                     <div class="brutalist-card p-6 border-[#333] hover:border-[#ffaa00] hover:shadow-[12px_12px_0px_rgba(255,170,0,0.1)]">
-                        <h3 class="font-audiowide text-lg text-[#e2e8f0] mb-4 flex justify-between">
-                            <span>DATABASES</span>
-                        </h3>
+                        <h3 class="font-audiowide text-lg text-[#e2e8f0] mb-4 flex justify-between"><span>DATABASES</span></h3>
                         <div class="w-full bg-[#00000A] border border-[#2a2a2e] h-3 p-[1px]">
                             <div class="bg-gradient-to-r from-[#cc3300] to-[#ffaa00] w-[50%] h-full shadow-[0_0_8px_rgba(255,170,0,0.5)]"></div>
                         </div>
                         <p class="text-gray-500 text-xs mt-4 font-audiowide tracking-wider leading-relaxed">SQL, MONGODB, FIREBASE</p>
                     </div>
                 </div>
-
-                <!-- Navigation Next -->
                 <div class="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-20 opacity-0 group-hover:opacity-100 transition-opacity hidden md:flex">
                     <button id="skills-next" class="nav-arrow nav-arrow-orange text-[#ffaa00] w-12 h-12 flex items-center justify-center font-audiowide text-xl">&gt;</button>
                 </div>
             </div>
-            
             <button id="skills-toggle" class="mt-10 brutalist-card font-audiowide text-xs md:text-sm text-gray-400 hover:text-[#ffaa00] px-8 py-4 tracking-widest relative z-10 transition-colors uppercase">SHOW ALL</button>
         </section>
 
@@ -443,15 +398,12 @@
              <button class="brutalist-card font-audiowide text-[#ff007f] p-8 text-xl tracking-widest hover:text-[#00000A] hover:bg-[#ff007f] transition-all duration-300">LET'S CONNECT</button>
         </section>
 
-        <!-- Footer directly after About -->
         <footer class="relative border-t-2 border-[#1a1f24] bg-[#00000A] pt-20 pb-6 px-6 md:px-12 overflow-hidden min-h-[50vh] flex flex-col justify-between">
             <div class="absolute bottom-0 -left-[50%] w-[200%] h-[85%] perspective-grid-footer pointer-events-none z-0"></div>
             <div class="relative z-10 grid grid-cols-1 lg:grid-cols-3 items-center w-full max-w-[1400px] mx-auto gap-12 lg:gap-4">
-                
                 <div class="flex justify-center lg:justify-start w-full">
                     <h2 class="footer-name font-audiowide text-[#ff3333] tracking-tighter leading-none uppercase">Dieuwe<br/>Buijink</h2>
                 </div>
-
                 <div class="flex justify-center w-full">
                     <div id="footer-cat-container" class="w-32 h-32 md:w-48 md:h-48 relative z-20">
                         <svg viewBox="0 0 400 300" class="w-full h-full drop-shadow-[0_0_15px_rgba(0,0,0,0.8)]">
@@ -487,57 +439,29 @@
                     </div>
                 </div>
             </div>
-            <div class="relative z-10 w-full max-w-[1400px] mx-auto mt-24 flex justify-start items-end">
-                <!-- Copyright line removed as requested -->
-            </div>
+            <div class="relative z-10 w-full max-w-[1400px] mx-auto mt-24 flex justify-start items-end"></div>
         </footer>
     </main>
 
-    <!-- Modal Overlay -->
     <div id="modal-overlay" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
         <div id="modal-bg" class="absolute inset-0 bg-[#00000A]/90 backdrop-blur-md transition-opacity duration-300 opacity-0 cursor-pointer"></div>
         <div id="modal-content" class="relative bg-[#0d0f12] border-2 border-[#00ffcc] p-1 max-w-3xl w-full shadow-[0_0_30px_rgba(0,255,204,0.15)] transform scale-95 opacity-0 transition-all duration-300">
-            <!-- Inner Bezel -->
             <div class="border border-[#1a1f24] p-6 bg-[#0a0c0e]">
                 <button id="modal-close" class="absolute top-4 right-4 text-gray-500 hover:text-[#ff007f] font-normal-sans font-bold text-lg transition-colors p-2 hover:border-[#ff007f]">×</button>
                 <h3 id="modal-title" class="font-audiowide text-3xl text-[#00ffcc] mb-6 drop-shadow-[0_0_8px_rgba(0,255,204,0.5)]">Title</h3>
-                
                 <div class="bg-[#00000A] aspect-video w-full border-2 border-[#1a1f24] mb-8 flex items-center justify-center relative overflow-hidden group">
                     <div class="absolute inset-0 bg-[linear-gradient(rgba(0,255,204,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(0,255,204,0.05)_1px,transparent_1px)] bg-[size:10px_10px]"></div>
                     <span id="modal-img-text" class="font-audiowide text-[#ff007f] tracking-widest relative z-10 group-hover:scale-110 transition-transform duration-500">IMG_PREVIEW</span>
                 </div>
-                
                 <p id="modal-desc" class="text-gray-300 font-normal-sans text-lg leading-relaxed border-l-2 border-[#ff007f] pl-4">Description goes here.</p>
             </div>
         </div>
     </div>
 
-    <button id="replay" class="fixed bottom-6 left-6 z-50 bg-[#00000A] text-gray-500 border-2 border-[#2a2a2e] font-audiowide text-[10px] px-4 py-3 tracking-widest hover:border-[#ffaa00] hover:text-[#ffaa00] transition-all shadow-[4px_4px_0px_rgba(0,0,0,0.8)]">REPLAY</button>
-
     <script>
         const state = {
-            angry: {
-                dLeft: "M 175 146 C 130 110, 60 90, 35 100 C 30 150, 110 185, 175 146 Z",
-                dRight: "M 225 146 C 270 110, 340 90, 365 100 C 370 150, 290 185, 225 146 Z",
-                dNose: "M 190 196 C 195 192, 205 192, 210 196 L 200 206 Z",
-                pupilLX: 103, pupilLY: 118, pupilRX: 292, pupilRY: 118,
-                pupilRXval: 7.5, pupilRYval: 20,
-                highLX: 115, highLY: 130, highRX: 280, highRY: 130, highR: 2.5,
-                rotL: -5, rotR: 5,
-                blur1: 3, blur2: 10,
-                colorMid: '#ffaa00', colorEnd: '#cc3300'
-            },
-            blep: {
-                dLeft: "M 170 140 C 170 75, 60 75, 60 140 C 60 205, 170 205, 170 140 Z",
-                dRight: "M 230 140 C 230 75, 340 75, 340 140 C 340 205, 230 205, 230 140 Z",
-                dNose: "M 190 194 C 196 189, 204 189, 210 194 L 200 204 Z",
-                pupilLX: 115, pupilLY: 140, pupilRX: 285, pupilRY: 140,
-                pupilRXval: 38, pupilRYval: 38,
-                highLX: 130, highLY: 120, highRX: 300, highRY: 120, highR: 6.5,
-                rotL: 0, rotR: 0,
-                blur1: 5, blur2: 15,
-                colorMid: '#ffcc00', colorEnd: '#cc6600'
-            }
+            angry: { dLeft: "M 175 146 C 130 110, 60 90, 35 100 C 30 150, 110 185, 175 146 Z", dRight: "M 225 146 C 270 110, 340 90, 365 100 C 370 150, 290 185, 225 146 Z", dNose: "M 190 196 C 195 192, 205 192, 210 196 L 200 206 Z", pupilLX: 103, pupilLY: 118, pupilRX: 292, pupilRY: 118, pupilRXval: 7.5, pupilRYval: 20, highLX: 115, highLY: 130, highRX: 280, highRY: 130, highR: 2.5, rotL: -5, rotR: 5, blur1: 3, blur2: 10, colorMid: '#ffaa00', colorEnd: '#cc3300' },
+            blep: { dLeft: "M 170 140 C 170 75, 60 75, 60 140 C 60 205, 170 205, 170 140 Z", dRight: "M 230 140 C 230 75, 340 75, 340 140 C 340 205, 230 205, 230 140 Z", dNose: "M 190 194 C 196 189, 204 189, 210 194 L 200 204 Z", pupilLX: 115, pupilLY: 140, pupilRX: 285, pupilRY: 140, pupilRXval: 38, pupilRYval: 38, highLX: 130, highLY: 120, highRX: 300, highRY: 120, highR: 6.5, rotL: 0, rotR: 0, blur1: 5, blur2: 15, colorMid: '#ffcc00', colorEnd: '#cc6600' }
         };
 
         const els = {
@@ -553,6 +477,9 @@
             textWrap: document.getElementById('text-wrap'), nameTag: document.getElementById('name-tag'),
             topNav: document.getElementById('top-nav'), main: document.getElementById('main-content'),
             floorGrid: document.getElementById('floor-grid'),
+            phTL: document.getElementById('placeholder-tl'), 
+            phBR: document.getElementById('placeholder-br'),
+            replayBtn: document.getElementById('replay'),
             footerPupilL: document.getElementById('footer-pupilL'), footerPupilR: document.getElementById('footer-pupilR'),
             footerHighL: document.getElementById('footer-highL'), footerHighR: document.getElementById('footer-highR')
         };
@@ -561,19 +488,15 @@
         let mouseX = 0; let mouseY = 0;
 
         document.addEventListener('mousemove', (e) => {
-            const normalizedX = Math.min(1, Math.max(0, e.clientX / window.innerWidth));
-            const normalizedY = Math.min(1, Math.max(0, e.clientY / window.innerHeight));
-            mouseX = (normalizedX - 0.5) * 2;
-            mouseY = (normalizedY - 0.5) * 2;
+            mouseX = (Math.min(1, Math.max(0, e.clientX / window.innerWidth)) - 0.5) * 2;
+            mouseY = (Math.min(1, Math.max(0, e.clientY / window.innerHeight)) - 0.5) * 2;
             updatePupils();
         });
 
         function updatePupils() {
             const d = state[currentMode];
-            const safeX = Math.max(-1, Math.min(1, mouseX));
-            const safeY = Math.max(-1, Math.min(1, mouseY));
-            const dx = safeX * 10;
-            const dy = safeY * 12;
+            const dx = Math.max(-1, Math.min(1, mouseX)) * 10;
+            const dy = Math.max(-1, Math.min(1, mouseY)) * 12;
             els.pupilL.setAttribute('transform', `translate(${dx}, ${dy}) rotate(${d.rotL} ${d.pupilLX} ${d.pupilLY})`);
             els.pupilR.setAttribute('transform', `translate(${dx}, ${dy}) rotate(${d.rotR} ${d.pupilRX} ${d.pupilRY})`);
             els.highL.setAttribute('transform', `translate(${dx}, ${dy})`); els.highR.setAttribute('transform', `translate(${dx}, ${dy})`);
@@ -621,7 +544,6 @@
             els.nameTag.classList.remove('font-audiowide');
             els.nameTag.classList.add('font-press-start', 'glitch');
             els.nameTag.style.fontSize = window.innerWidth < 768 ? "24px" : "48px";
-            
             glitchTimeout = setTimeout(() => {
                 els.nameTag.classList.remove('glitch', 'font-press-start');
                 els.nameTag.classList.add('font-audiowide');
@@ -633,38 +555,22 @@
         function triggerSequence() {
             clearTimeout(glitchTimeout); clearTimeout(randomLoop);
             
-            // --- NEW: Skip animation if coming directly to #about ---
             if (window.location.hash === '#about') {
                 document.body.style.overflow = "auto";
-                els.main.classList.remove('hidden'); 
-                els.main.style.opacity = "1";
-                
-                els.topNav.style.opacity = "1"; 
-                els.topNav.style.transform = "translateY(0)";
-                
-                els.catSvg.classList.add('shrink-corner'); 
-                els.cat.style.opacity = "1";
-                
-                els.textWrap.style.opacity = "1"; 
-                els.textWrap.style.transform = "scale(1)";
-                
+                els.main.classList.remove('hidden'); els.main.style.opacity = "1";
+                els.topNav.style.opacity = "1"; els.topNav.style.transform = "translateY(0)";
+                els.catSvg.classList.add('shrink-corner'); els.cat.style.opacity = "1";
+                els.textWrap.style.opacity = "1"; els.textWrap.style.transform = "scale(1)";
                 els.floorGrid.style.opacity = "1";
-                
-                els.nameTag.classList.remove('font-press-start', 'glitch'); 
-                els.nameTag.classList.add('font-audiowide'); 
-                els.nameTag.style.fontSize = "";
+                els.nameTag.classList.remove('font-press-start', 'glitch'); els.nameTag.classList.add('font-audiowide'); els.nameTag.style.fontSize = "";
+                if (els.phTL) els.phTL.style.opacity = "1";
+                if (els.phBR) els.phBR.style.opacity = "1";
+                if (els.replayBtn) els.replayBtn.style.opacity = "1";
 
-                setFace('blep');
-                randomLoop = setTimeout(triggerRandomGlitch, 3000);
-                
-                // Scroll down to the about section
-                setTimeout(() => {
-                    const aboutSection = document.getElementById('about');
-                    if(aboutSection) aboutSection.scrollIntoView({ behavior: 'smooth' });
-                }, 100);
-                return; // Stop the rest of the intro sequence from playing
+                setFace('blep'); randomLoop = setTimeout(triggerRandomGlitch, 3000);
+                setTimeout(() => { const aboutSection = document.getElementById('about'); if(aboutSection) aboutSection.scrollIntoView({ behavior: 'smooth' }); }, 100);
+                return; 
             }
-            // --------------------------------------------------------
 
             document.body.style.overflow = "hidden";
             els.main.classList.add('hidden'); els.main.style.opacity = "0";
@@ -673,6 +579,9 @@
             els.topNav.style.opacity = "0"; els.topNav.style.transform = "translateY(-100%)";
             els.floorGrid.style.opacity = "0";
             els.nameTag.classList.remove('font-press-start', 'glitch'); els.nameTag.classList.add('font-audiowide'); els.nameTag.style.fontSize = "";
+            if (els.phTL) els.phTL.style.opacity = "0";
+            if (els.phBR) els.phBR.style.opacity = "0";
+            if (els.replayBtn) els.replayBtn.style.opacity = "0";
 
             setFace('angry');
             setTimeout(() => els.cat.style.opacity = "1", 500);
@@ -680,229 +589,95 @@
             setTimeout(() => setFace('blep'), 3000);
             setTimeout(() => els.catSvg.classList.add('shrink-corner'), 5500);
             setTimeout(() => { els.textWrap.style.opacity = "1"; els.textWrap.style.transform = "scale(1)"; }, 5900);
-            setTimeout(() => {
-                els.nameTag.classList.remove('font-audiowide'); els.nameTag.classList.add('font-press-start', 'glitch');
-                els.nameTag.style.fontSize = window.innerWidth < 768 ? "24px" : "48px";
-            }, 7300);
+            setTimeout(() => { els.nameTag.classList.remove('font-audiowide'); els.nameTag.classList.add('font-press-start', 'glitch'); els.nameTag.style.fontSize = window.innerWidth < 768 ? "24px" : "48px"; }, 7300);
             setTimeout(() => {
                 els.nameTag.classList.remove('glitch', 'font-press-start'); els.nameTag.classList.add('font-audiowide'); els.nameTag.style.fontSize = "";
                 els.topNav.style.opacity = "1"; els.topNav.style.transform = "translateY(0)";
                 els.main.classList.remove('hidden');
-                setTimeout(() => { els.main.style.opacity = "1"; document.body.style.overflow = "auto"; }, 100);
+                setTimeout(() => { 
+                    els.main.style.opacity = "1"; document.body.style.overflow = "auto";
+                    if (els.replayBtn) els.replayBtn.style.opacity = "1";
+                    if (els.phTL) els.phTL.style.opacity = "1";
+                    if (els.phBR) els.phBR.style.opacity = "1";
+                }, 100);
                 randomLoop = setTimeout(triggerRandomGlitch, 3000);
             }, 7800);
         }
 
-        document.getElementById('replay').onclick = triggerSequence;
+        if (els.replayBtn) els.replayBtn.onclick = triggerSequence;
+        if (els.catSvg) els.catSvg.onclick = triggerSequence;
         window.onload = triggerSequence;
 
-        // --- Restored Modal Logic ---
         const modalOverlay = document.getElementById('modal-overlay');
         const modalBg = document.getElementById('modal-bg');
         const modalContentEl = document.getElementById('modal-content');
         const modalClose = document.getElementById('modal-close');
-        const modalTitle = document.getElementById('modal-title');
-        const modalDesc = document.getElementById('modal-desc');
-        const modalImgText = document.getElementById('modal-img-text');
-
         function openModal(title, desc, imgText) {
-            if(!modalTitle) return;
-            modalTitle.textContent = title;
-            modalDesc.textContent = desc;
-            modalImgText.textContent = imgText;
-            
-            modalOverlay.classList.remove('hidden');
-            modalOverlay.classList.add('flex');
-            
-            setTimeout(() => {
-                modalBg.classList.remove('opacity-0');
-                modalBg.classList.add('opacity-100');
-                modalContentEl.classList.remove('scale-95', 'opacity-0');
-                modalContentEl.classList.add('scale-100', 'opacity-100');
-            }, 10);
-            
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-desc').textContent = desc;
+            document.getElementById('modal-img-text').textContent = imgText;
+            modalOverlay.classList.remove('hidden'); modalOverlay.classList.add('flex');
+            setTimeout(() => { modalBg.classList.remove('opacity-0'); modalBg.classList.add('opacity-100'); modalContentEl.classList.remove('scale-95', 'opacity-0'); modalContentEl.classList.add('scale-100', 'opacity-100'); }, 10);
             clearTimeout(randomLoop);
         }
-
         function closeModal() {
-            modalBg.classList.remove('opacity-100');
-            modalBg.classList.add('opacity-0');
-            modalContentEl.classList.remove('scale-100', 'opacity-100');
-            modalContentEl.classList.add('scale-95', 'opacity-0');
-            
-            setTimeout(() => {
-                modalOverlay.classList.add('hidden');
-                modalOverlay.classList.remove('flex');
-                randomLoop = setTimeout(triggerRandomGlitch, 3000);
-            }, 300);
+            modalBg.classList.remove('opacity-100'); modalBg.classList.add('opacity-0');
+            modalContentEl.classList.remove('scale-100', 'opacity-100'); modalContentEl.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => { modalOverlay.classList.add('hidden'); modalOverlay.classList.remove('flex'); randomLoop = setTimeout(triggerRandomGlitch, 3000); }, 300);
         }
-
         document.body.addEventListener('click', (e) => {
             const trigger = e.target.closest('.popup-trigger');
-            if (trigger) {
-                e.preventDefault();
-                const title = trigger.getAttribute('data-title');
-                const desc = trigger.getAttribute('data-desc');
-                const imgText = trigger.getAttribute('data-img');
-                openModal(title, desc, imgText);
-            }
+            if (trigger) { e.preventDefault(); openModal(trigger.getAttribute('data-title'), trigger.getAttribute('data-desc'), trigger.getAttribute('data-img')); }
         });
-
         if(modalClose) modalClose.addEventListener('click', closeModal);
         if(modalBg) modalBg.addEventListener('click', closeModal);
 
-        // --- Restored Infinite Carousel Logic ---
         function setupInfiniteCarousel(wrapperId, containerId, toggleBtnId, carouselClass, gridClassesArr, prevBtnId, nextBtnId) {
-            const wrapper = document.getElementById(wrapperId);
-            const container = document.getElementById(containerId);
-            const toggleBtn = document.getElementById(toggleBtnId);
-            const prevBtn = document.getElementById(prevBtnId);
-            const nextBtn = document.getElementById(nextBtnId);
-            
+            const wrapper = document.getElementById(wrapperId), container = document.getElementById(containerId), toggleBtn = document.getElementById(toggleBtnId), prevBtn = document.getElementById(prevBtnId), nextBtn = document.getElementById(nextBtnId);
             if(!container || !toggleBtn || !wrapper) return;
-
-            // Duplicate items for infinite loop
-            const items = Array.from(container.children);
-            items.forEach(item => {
-                const clone = item.cloneNode(true);
-                clone.classList.add('carousel-clone');
-                container.appendChild(clone);
-            });
-
-            let isDown = false;
-            let startX;
-            let scrollLeft;
-            let isCarousel = true;
-            let autoScrollSpeed = 0.5;
-
-            // Mouse Dragging
-            container.addEventListener('mousedown', (e) => {
-                if(!isCarousel) return;
-                isDown = true;
-                container.classList.add('cursor-grabbing');
-                container.classList.remove('cursor-grab');
-                startX = e.pageX - container.offsetLeft;
-                scrollLeft = container.scrollLeft;
-                container.style.scrollBehavior = 'auto';
-            });
-
-            window.addEventListener('mouseup', () => {
-                isDown = false;
-                container.classList.remove('cursor-grabbing');
-                if (isCarousel) container.classList.add('cursor-grab');
-            });
-
-            window.addEventListener('mousemove', (e) => {
-                if (!isDown || !isCarousel) return;
-                e.preventDefault();
-                const x = e.pageX - container.offsetLeft;
-                const walk = (x - startX) * 1.5;
-                container.scrollLeft = scrollLeft - walk;
-            });
-
-            // Navigation Buttons
-            const scrollAmount = window.innerWidth > 768 ? 400 : 300; 
-            const smoothScroll = (amount) => {
-                container.style.scrollBehavior = 'smooth';
-                container.scrollLeft += amount;
-                setTimeout(() => {
-                    if (isCarousel) container.style.scrollBehavior = 'auto';
-                }, 400);
-            };
-
-            if(prevBtn) prevBtn.addEventListener('click', () => smoothScroll(-scrollAmount));
-            if(nextBtn) nextBtn.addEventListener('click', () => smoothScroll(scrollAmount));
-
-            // Infinite Loop + Auto Scroll
+            Array.from(container.children).forEach(item => { const clone = item.cloneNode(true); clone.classList.add('carousel-clone'); container.appendChild(clone); });
+            let isDown = false, startX, scrollLeft, isCarousel = true, autoScrollSpeed = 0.5;
+            container.addEventListener('mousedown', (e) => { if(!isCarousel) return; isDown = true; container.classList.add('cursor-grabbing'); container.classList.remove('cursor-grab'); startX = e.pageX - container.offsetLeft; scrollLeft = container.scrollLeft; container.style.scrollBehavior = 'auto'; });
+            window.addEventListener('mouseup', () => { isDown = false; container.classList.remove('cursor-grabbing'); if (isCarousel) container.classList.add('cursor-grab'); });
+            window.addEventListener('mousemove', (e) => { if (!isDown || !isCarousel) return; e.preventDefault(); container.scrollLeft = scrollLeft - ((e.pageX - container.offsetLeft) - startX) * 1.5; });
+            const smoothScroll = (amount) => { container.style.scrollBehavior = 'smooth'; container.scrollLeft += amount; setTimeout(() => { if (isCarousel) container.style.scrollBehavior = 'auto'; }, 400); };
+            if(prevBtn) prevBtn.addEventListener('click', () => smoothScroll(-(window.innerWidth > 768 ? 400 : 300)));
+            if(nextBtn) nextBtn.addEventListener('click', () => smoothScroll(window.innerWidth > 768 ? 400 : 300));
             function loop() {
                 if (isCarousel) {
                     const origWidth = container.scrollWidth / 2;
-                    
-                    if (!isDown && !wrapper.matches(':hover')) {
-                        container.style.scrollBehavior = 'auto';
-                        container.scrollLeft += autoScrollSpeed;
-                    }
-
-                    if (container.scrollLeft >= origWidth) {
-                        container.style.scrollBehavior = 'auto';
-                        container.scrollLeft -= origWidth;
-                    } else if (container.scrollLeft <= 0) {
-                        container.style.scrollBehavior = 'auto';
-                        container.scrollLeft += origWidth;
-                    }
+                    if (!isDown && !wrapper.matches(':hover')) { container.style.scrollBehavior = 'auto'; container.scrollLeft += autoScrollSpeed; }
+                    if (container.scrollLeft >= origWidth) { container.style.scrollBehavior = 'auto'; container.scrollLeft -= origWidth; } 
+                    else if (container.scrollLeft <= 0) { container.style.scrollBehavior = 'auto'; container.scrollLeft += origWidth; }
                 }
                 requestAnimationFrame(loop);
             }
             requestAnimationFrame(loop);
-
-            // Toggle "SHOW ALL"
             toggleBtn.addEventListener('click', () => {
                 isCarousel = container.classList.contains(carouselClass);
-                
                 if (isCarousel) {
-                    container.classList.remove(carouselClass, 'cursor-grab', 'cursor-grabbing', 'overflow-x-auto');
-                    container.classList.add('grid', ...gridClassesArr);
-                    toggleBtn.innerText = "SHOW LESS";
-                    
-                    if(prevBtn) prevBtn.parentElement.style.display = 'none'; 
-                    if(nextBtn) nextBtn.parentElement.style.display = 'none';
-                    
-                    container.querySelectorAll('.carousel-clone').forEach(el => el.classList.add('hidden'));
-                    isCarousel = false;
+                    container.classList.remove(carouselClass, 'cursor-grab', 'cursor-grabbing', 'overflow-x-auto'); container.classList.add('grid', ...gridClassesArr); toggleBtn.innerText = "SHOW LESS";
+                    if(prevBtn) prevBtn.parentElement.style.display = 'none'; if(nextBtn) nextBtn.parentElement.style.display = 'none';
+                    container.querySelectorAll('.carousel-clone').forEach(el => el.classList.add('hidden')); isCarousel = false;
                 } else {
-                    container.classList.add(carouselClass, 'cursor-grab', 'overflow-x-auto');
-                    container.classList.remove('grid', ...gridClassesArr);
-                    toggleBtn.innerText = "SHOW ALL";
-                    
-                    if(prevBtn) prevBtn.parentElement.style.display = '';
-                    if(nextBtn) nextBtn.parentElement.style.display = '';
-                    
-                    container.querySelectorAll('.carousel-clone').forEach(el => el.classList.remove('hidden'));
-                    isCarousel = true;
-                    container.scrollLeft = 0; 
+                    container.classList.add(carouselClass, 'cursor-grab', 'overflow-x-auto'); container.classList.remove('grid', ...gridClassesArr); toggleBtn.innerText = "SHOW ALL";
+                    if(prevBtn) prevBtn.parentElement.style.display = ''; if(nextBtn) nextBtn.parentElement.style.display = '';
+                    container.querySelectorAll('.carousel-clone').forEach(el => el.classList.remove('hidden')); isCarousel = true; container.scrollLeft = 0; 
                 }
             });
         }
-
-        // Initialize Infinite Carousels
         setupInfiniteCarousel('work-wrapper', 'work-container', 'work-toggle', 'carousel-mode-work', ['grid-cols-1', 'md:grid-cols-2', 'lg:grid-cols-3'], 'work-prev', 'work-next');
         setupInfiniteCarousel('skills-wrapper', 'skills-container', 'skills-toggle', 'carousel-mode-skills', ['grid-cols-1', 'md:grid-cols-2'], 'skills-prev', 'skills-next');
 
-        // --- Burger Menu Logic ---
-        function setupBurgerMenu() {
-            const navToggle = document.getElementById('nav-toggle');
-            const navLinks = document.querySelector('#top-nav .nav-links');
-            const navOverlay = document.getElementById('nav-overlay');
+        (function setupBurgerMenu() {
+            const navToggle = document.getElementById('nav-toggle'), navLinks = document.querySelector('#top-nav .nav-links'), navOverlay = document.getElementById('nav-overlay');
             if (!navToggle || !navLinks || !navOverlay) return;
-
-            const closeMenu = () => {
-                navLinks.classList.remove('open');
-                navOverlay.classList.remove('active');
-                navToggle.setAttribute('aria-expanded', 'false');
-            };
-
-            navToggle.addEventListener('click', () => {
-                const isOpen = navLinks.classList.toggle('open');
-                navOverlay.classList.toggle('active', isOpen);
-                navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-            });
-
+            const closeMenu = () => { navLinks.classList.remove('open'); navOverlay.classList.remove('active'); navToggle.setAttribute('aria-expanded', 'false'); };
+            navToggle.addEventListener('click', () => { const isOpen = navLinks.classList.toggle('open'); navOverlay.classList.toggle('active', isOpen); navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false'); });
             navOverlay.addEventListener('click', closeMenu);
-            
-            // Close the menu if screen resizes to desktop
-            window.addEventListener('resize', () => {
-                if (window.innerWidth > 768) closeMenu();
-            });
-
-            // Make sure clicking the actual links closes the menu too
-            document.querySelectorAll('#top-nav .nav-links a').forEach((link) => {
-                link.addEventListener('click', closeMenu);
-            });
-        }
-        setupBurgerMenu();
-
+            window.addEventListener('resize', () => { if (window.innerWidth > 768) closeMenu(); });
+            document.querySelectorAll('#top-nav .nav-links a').forEach((link) => { link.addEventListener('click', closeMenu); });
+        })();
     </script>
 </body>
 </html>
-
-

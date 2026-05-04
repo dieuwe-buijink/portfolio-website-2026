@@ -38,27 +38,105 @@
             gap: 0.7rem !important;
         }
 
-        /* Metallic Nav Buttons */
-        .metal-nav-btn {
-            font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; letter-spacing: 0.05em;
-            font-size: clamp(0.98rem, 1.8vw, 1.2rem);
-            padding: 0.8rem 1rem;
-            background: linear-gradient(180deg, #2a2d30 0%, #151718 100%); color: #a0aec0;
-            border: 1px solid #000; border-top: 1px solid #4a5568; border-radius: 2px;
-            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05), 0 4px 6px rgba(0, 0, 0, 0.8), 0 1px 3px rgba(0, 0, 0, 0.9);
-            text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px); transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); overflow: hidden; position: relative;
+        /* =========================================
+           STYLE 11: SMPTE BROADCAST GLITCH BUTTONS
+           (For Logo and CV Download)
+           ========================================= */
+        .btn-smpte-glitch {
+            position: relative; border-radius: 8px; padding: 2px;
+            background: #050012; overflow: hidden; display: inline-flex; transition: transform 0.3s ease;
         }
-        .metal-nav-btn::after {
-            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0) 100%);
-            transform: skewX(-25deg); transition: left 0.5s ease;
+        .btn-smpte-glitch::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: repeating-conic-gradient(#ffffff 0deg 4deg, #fdff00 4deg 8deg, #00fffc 8deg 12deg, #00ff00 12deg 16deg, #ff00fe 16deg 20deg, #ff0000 20deg 24deg, #0000fc 24deg 28deg, transparent 28deg 40deg);
+            animation: spin 4s linear infinite;
         }
-        .metal-nav-btn:hover { 
-            color: #00ffcc; transform: translateY(-2px); border-top: 1px solid #00ffcc; 
-            background: linear-gradient(180deg, #3a4043 0%, #1a1c1d 100%);
-            box-shadow: inset 0 1px 5px rgba(0, 255, 204, 0.2), 0 6px 12px rgba(0, 0, 0, 0.9), 0 0 10px rgba(0, 255, 204, 0.3);
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .btn-smpte-glitch:hover { transform: translateY(-2px); box-shadow: 0 0 20px rgba(255, 255, 255, 0.2); }
+        .btn-smpte-glitch:hover::before { animation: spin 0.2s steps(5) infinite; }
+        .btn-gradient-inner { position: relative; z-index: 1; background: #050012; overflow: hidden; transition: none; border-radius: 6px; }
+        .btn-smpte-glitch:hover .btn-gradient-inner { background: linear-gradient(to right, #ffffff 0% 14.28%, #fdff00 14.28% 28.57%, #00fffc 28.57% 42.85%, #00ff00 42.85% 57.14%, #ff00fe 57.14% 71.42%, #ff0000 71.42% 85.71%, #0000fc 85.71% 100%); color: #050012; font-weight: 900; }
+        .btn-smpte-glitch:hover .btn-gradient-inner span.relative { text-shadow: 2px 2px 0px rgba(255,255,255,0.9), -2px -2px 0px rgba(255,255,255,0.9); mix-blend-mode: hard-light; }
+        .btn-smpte-glitch .glitch-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to right, #ffffff 0% 14.28%, #fdff00 14.28% 28.57%, #00fffc 28.57% 42.85%, #00ff00 42.85% 57.14%, #ff00fe 57.14% 71.42%, #ff0000 71.42% 85.71%, #0000fc 85.71% 100%); opacity: 0; z-index: 2; pointer-events: none; filter: contrast(1.5) saturate(1.5); }
+        .btn-smpte-glitch:hover .glitch-layer { opacity: 1; animation: smpte-tear 0.3s infinite linear alternate-reverse; }
+        .btn-smpte-glitch:hover .btn-gradient-inner::after { content: ""; position: absolute; inset: 0; background-image: repeating-linear-gradient(transparent 0, transparent 2px, rgba(0,0,0,0.5) 2px, rgba(0,0,0,0.5) 4px); z-index: 3; pointer-events: none; animation: static-flicker 0.05s infinite; }
+        
+        @keyframes smpte-tear { 0% { clip-path: inset(10% -20% 80% -20%); transform: translateX(8px); } 20% { clip-path: inset(80% -20% 5% -20%); transform: translateX(-8px); } 40% { clip-path: inset(40% -20% 30% -20%); transform: translateX(12px); } 60% { clip-path: inset(15% -20% 60% -20%); transform: translateX(-6px); } 80% { clip-path: inset(60% -20% 10% -20%); transform: translateX(10px); } 100% { clip-path: inset(30% -20% 50% -20%); transform: translateX(-12px); } }
+        @keyframes static-flicker { 0% { background-position: 0px 0px; } 50% { background-position: 2px -2px; } 100% { background-position: -2px 2px; } }
+
+        /* =========================================
+           STYLE 16: CHROMATIC OVERLOAD
+           (For Navbar Links)
+           ========================================= */
+        .btn-chromatic {
+            position: relative;
+            background: #000000; /* Replaced transparent with solid black */
+            color: #ffffff;
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            padding: 8px 24px;
+            border-radius: 4px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            z-index: 1;
+            overflow: hidden;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
         }
-        .metal-nav-btn:hover::after { left: 200%; }
+        .btn-chromatic::before, .btn-chromatic::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0;
+            background: #000000; /* Ensure the glitch layers are also solid black */
+            z-index: 2;
+        }
+        .btn-chromatic::before { 
+            color: #00ff00; 
+            text-shadow: -2px 0 #00fffc, 2px 2px #fdff00; 
+        }
+        .btn-chromatic::after { 
+            color: #ff0000; 
+            text-shadow: 2px 0 #ff00fe, -2px -2px #0000fc; 
+        }
+        .btn-chromatic:hover {
+            border-color: transparent !important; 
+            color: transparent !important; 
+            box-shadow: -4px -4px 0 rgba(0, 255, 204, 0.8), 4px 4px 0 rgba(255, 0, 127, 0.8); 
+        }
+        .btn-chromatic:hover::before {
+            opacity: 1;
+            animation: chrom-glitch-1 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+        }
+        .btn-chromatic:hover::after {
+            opacity: 1;
+            animation: chrom-glitch-2 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite reverse;
+        }
+        .btn-chromatic:active {
+            box-shadow: -1px -1px 0 rgba(0, 255, 204, 0.8), 1px 1px 0 rgba(255, 0, 127, 0.8);
+            transform: translate(2px, 2px);
+        }
+
+        @keyframes chrom-glitch-1 {
+            0% { clip-path: inset(20% 0 80% 0); transform: translate(-2px, 1px); }
+            20% { clip-path: inset(60% 0 10% 0); transform: translate(2px, -1px); }
+            40% { clip-path: inset(40% 0 50% 0); transform: translate(-2px, 2px); }
+            60% { clip-path: inset(80% 0 5% 0); transform: translate(2px, -2px); }
+            80% { clip-path: inset(10% 0 70% 0); transform: translate(-1px, 1px); }
+            100% { clip-path: inset(30% 0 20% 0); transform: translate(1px, -1px); }
+        }
+        @keyframes chrom-glitch-2 {
+            0% { clip-path: inset(10% 0 60% 0); transform: translate(2px, -1px); }
+            20% { clip-path: inset(30% 0 20% 0); transform: translate(-2px, 1px); }
+            40% { clip-path: inset(70% 0 10% 0); transform: translate(2px, -2px); }
+            60% { clip-path: inset(20% 0 50% 0); transform: translate(-2px, 2px); }
+            80% { clip-path: inset(50% 0 30% 0); transform: translate(1px, -1px); }
+            100% { clip-path: inset(5% 0 80% 0); transform: translate(-1px, 1px); }
+        }
 
         .footer-name { font-size: clamp(2rem, 4vw, 4rem); line-height: 1.05; margin: 0; }
         footer { font-size: 1.1rem; }
@@ -80,7 +158,6 @@
         @media (max-width: 1024px) {
             .footer-name { font-size: clamp(1.8rem, 5vw, 3.5rem); }
             #top-nav nav { gap: 0.5rem !important; }
-            .metal-nav-btn { font-size: clamp(0.9rem, 2.2vw, 1.05rem); padding: 0.65rem 0.9rem; }
         }
 
         @media (max-width: 768px) {
@@ -91,10 +168,10 @@
                 flex-direction: column; align-items: center; padding: 2rem 0; 
                 border-top: 1px solid #1a1f24; border-bottom: 2px solid #00ffcc;
                 z-index: 60; box-shadow: 0 10px 30px rgba(0,0,0,0.9);
+                gap: 1rem;
             }
             #top-nav .nav-links.open { display: flex !important; }
             .footer-name { font-size: clamp(1.8rem, 6vw, 3.3rem); }
-            .metal-nav-btn { padding: 0.5rem 0.75rem; }
         }
         
         @media (min-width: 769px) {
@@ -120,29 +197,15 @@
         }
 
         /* --- SPOTLIGHT BACKGROUND EFFECT (REVEAL CLEAR IMAGE) --- */
-        
-        /* 1. The crisp, clear background image sitting at the very bottom */
         #spotlight-base-img {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 90vh;
-            z-index: 0;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 90vh; z-index: 0;
             background-image: url('pictures/cats-in-the-blue-lake-731334.gif'); 
-            background-size: cover;
-            background-position: center;
+            background-size: cover; background-position: center;
         }
-
-        /* 2. The LIGHTER blurred overlay masked by the SVG Star */
         #spotlight-blur-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: 1;
-            pointer-events: none; /* Let clicks pass through */
-            background: rgba(5, 0, 18, 0.4); /* Lighter Deep dark purple/blue wash */
-            backdrop-filter: blur(7px); /* Lighter blur on the base image */
-            
-            /* Apply the inline SVG Mask to cut out the star shape */
-            -webkit-mask-image: url(#starMask);
-            mask-image: url(#starMask);
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1;
+            pointer-events: none; background: rgba(5, 0, 18, 0.4); backdrop-filter: blur(7px); 
+            -webkit-mask-image: url(#starMask); mask-image: url(#starMask);
         }
 
     </style>
@@ -152,15 +215,11 @@
     <!-- INLINE SVG MASK FOR THE STAR SPOTLIGHT -->
     <svg width="0" height="0" class="absolute pointer-events-none">
         <defs>
-            <!-- Filter to soften the star's edges -->
             <filter id="starBlur" x="-50%" y="-50%" width="200%" height="200%">
                 <feGaussianBlur stdDeviation="25" />
             </filter>
-            <!-- The mask configuration -->
             <mask id="starMask">
-                <!-- A massive white rectangle keeps the blur overlay visible everywhere by default -->
                 <rect width="10000" height="10000" fill="white" x="-5000" y="-5000" />
-                <!-- A black star shape that moves with the cursor. Black hides the blur, revealing the image below -->
                 <g id="star-shape" style="transform: translate(50vw, 50vh);">
                     <polygon points="0,-250 59,-81 238,-77 95,31 147,202 0,100 -147,202 -95,31 -238,-77 -59,-81" fill="black" filter="url(#starBlur)"/>
                 </g>
@@ -177,9 +236,13 @@
     <header id="top-nav" class="fixed top-0 left-0 w-full z-50 px-6 py-4">
         <div class="flex items-center justify-between w-full max-w-7xl mx-auto relative">
             
+            <!-- Logo Button (SMPTE Glitch) -->
             <div class="relative z-50">
-                <a href="index.html" class="metal-nav-btn inline-block px-5 py-2.5 text-sm whitespace-nowrap uppercase">
-                    Dieuwe Buijink
+                <a href="index.html" class="btn-smpte-glitch p-[2px] inline-flex">
+                    <div class="btn-gradient-inner flex items-center justify-center px-4 md:px-5 py-2 text-sm whitespace-nowrap uppercase font-audiowide tracking-wider text-gray-300 w-full h-full">
+                        <span class="relative z-10">Dieuwe Buijink</span>
+                        <div class="glitch-layer"></div>
+                    </div>
                 </a>
             </div>
 
@@ -187,17 +250,16 @@
                 ☰
             </button>
 
+            <!-- Navigation Links (Chromatic Static Glitch) -->
             <div class="nav-links w-full md:w-auto">
                 <nav class="flex flex-col md:flex-row gap-3 md:gap-4 items-center w-full md:w-auto">
-                    <a href="index.html#about" class="metal-nav-btn inline-block px-4 md:px-5 py-2.5 text-xs md:text-sm uppercase w-[85%] md:w-auto text-center">About</a>
-                    <a href="work.html" class="metal-nav-btn inline-block px-4 md:px-5 py-2.5 text-xs md:text-sm uppercase w-[85%] md:w-auto text-center">Work</a>
-                    <a href="skills.html" class="metal-nav-btn inline-block px-4 md:px-5 py-2.5 text-xs md:text-sm uppercase w-[85%] md:w-auto text-center">Skills</a>
+                    <a href="index.html#about" class="btn-chromatic font-audiowide text-xs md:text-sm w-[85%] md:w-auto" data-text="About">About</a>
+                    <a href="work.html" class="btn-chromatic font-audiowide text-xs md:text-sm w-[85%] md:w-auto" data-text="Work">Work</a>
+                    <a href="skills.html" class="btn-chromatic font-audiowide text-xs md:text-sm w-[85%] md:w-auto" data-text="Skills">Skills</a>
                 </nav>
 
-                <div class="mt-4 md:mt-0 flex justify-center w-full md:w-auto">
-                    <a href="contact.html" class="metal-nav-btn inline-block px-5 py-2.5 text-sm whitespace-nowrap text-[#ff007f] hover:text-[#ff007f] border-t-[#ff007f] uppercase w-[85%] md:w-auto text-center">
-                        Let's connect!
-                    </a>
+                <div class="mt-4 md:mt-0 flex justify-center w-full md:w-auto md:ml-4">
+                    <a href="contact.html" class="btn-chromatic font-audiowide text-sm w-[85%] md:w-auto" data-text="Let's connect!">Let's connect!</a>
                 </div>
             </div>
 
@@ -207,7 +269,7 @@
 
     <div id="page-slide-wrapper" class="w-full min-h-screen flex flex-col pt-24 relative z-10">
         
-        <!-- MAIN CONTENT: Spacing adjusted to match wireframe exactly -->
+        <!-- MAIN CONTENT -->
         <main class="flex-grow flex items-center justify-center w-full px-6 py-12 md:py-16">
             <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
                 
@@ -250,14 +312,19 @@
                                 <a href="tel:+31621597179" class="hover:text-[#00ffcc] transition-colors font-semibold tracking-wide border-b-2 border-transparent hover:border-[#00ffcc] pb-0.5">+31 6 21597179</a>
                             </div>
 
-                            <!-- NEW: CV Available Here Button -->
-                            <div class="pt-3">
+                            <!-- CV Button (SMPTE Glitch) -->
+                            <div class="pt-3 w-full sm:w-auto">
                                 <a href="pictures/CV-Dieuwe-Buijink-English.pdf" target="_blank" rel="noopener noreferrer" 
-                                   class="metal-nav-btn inline-flex items-center justify-center gap-3 px-6 py-3.5 text-sm md:text-base uppercase tracking-wider group w-full sm:w-auto">
-                                    <svg class="w-5 h-5 text-[#00ffcc] group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                    </svg>
-                                    CV Available Here
+                                   class="btn-smpte-glitch p-[2px] inline-flex w-full">
+                                    <div class="btn-gradient-inner flex items-center justify-center px-6 py-3.5 text-sm md:text-base uppercase font-audiowide tracking-wider text-gray-300 w-full h-full">
+                                        <span class="relative z-10 flex items-center gap-3">
+                                            <svg class="w-5 h-5 text-[#00ffcc]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                            </svg>
+                                            CV Available Here
+                                        </span>
+                                        <div class="glitch-layer"></div>
+                                    </div>
                                 </a>
                             </div>
 
@@ -320,14 +387,13 @@
                 </div>
             </div>
             <div class="relative z-10 w-full max-w-[1400px] mx-auto mt-24 flex justify-start items-end">
-                </div>
+            </div>
         </footer>
     </div>
 
     <script src="transition.js"></script>
     <script>
         // --- SPOTLIGHT MOUSE TRACKING SCRIPT (NOW STAR MASK) ---
-        // Instead of updating CSS variables, we move the entire SVG mask polygon
         const starShape = document.getElementById('star-shape');
         
         if(starShape) {
@@ -335,7 +401,6 @@
                 starShape.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
             });
 
-            // Touch support for dragging the spotlight
             window.addEventListener('touchmove', (e) => {
                 if (e.touches.length > 0) {
                     const touch = e.touches[0];
