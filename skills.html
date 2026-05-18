@@ -95,6 +95,99 @@
         @keyframes chrom-glitch-1 { 0% { clip-path: inset(20% 0 80% 0); transform: translate(-2px, 1px); } 20% { clip-path: inset(60% 0 10% 0); transform: translate(2px, -1px); } 40% { clip-path: inset(40% 0 50% 0); transform: translate(-2px, 2px); } 60% { clip-path: inset(80% 0 5% 0); transform: translate(2px, -2px); } 80% { clip-path: inset(10% 0 70% 0); transform: translate(-1px, 1px); } 100% { clip-path: inset(30% 0 20% 0); transform: translate(1px, -1px); } }
         @keyframes chrom-glitch-2 { 0% { clip-path: inset(10% 0 60% 0); transform: translate(2px, -1px); } 20% { clip-path: inset(30% 0 20% 0); transform: translate(-2px, 1px); } 40% { clip-path: inset(70% 0 10% 0); transform: translate(2px, -2px); } 60% { clip-path: inset(20% 0 50% 0); transform: translate(-2px, 2px); } 80% { clip-path: inset(50% 0 30% 0); transform: translate(1px, -1px); } 100% { clip-path: inset(5% 0 80% 0); transform: translate(-1px, 1px); } }
 
+        /* =========================================
+           GLOBAL PULSING HEATMAP & DOTS
+          
+           ========================================= */
+        .page-heatmap {
+            position: absolute;
+            top: -6rem;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 0;
+            background: 
+                radial-gradient(circle at 10% 15%, rgba(0, 255, 204, 0.25), transparent 45%),
+                radial-gradient(circle at 85% 25%, rgba(255, 0, 127, 0.2), transparent 50%),
+                radial-gradient(circle at 40% 50%, rgba(0, 100, 255, 0.25), transparent 50%),
+                radial-gradient(circle at 75% 70%, rgba(255, 170, 0, 0.2), transparent 45%),
+                radial-gradient(circle at 20% 85%, rgba(0, 255, 204, 0.2), transparent 50%);
+            filter: blur(80px);
+            animation: pulseHeatmapSmooth 8s infinite ease-in-out;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .page-dots {
+            position: absolute;
+            inset: -6rem 0 0 0; /* Expanded upwards */
+            background-image: url('pictures/');
+            background-repeat: repeat;
+            background-position: 0 0;
+            background-size: auto;
+            pointer-events: none;
+            opacity: 0.12;
+            z-index: 0; /* Lowered z-index below the cards */
+        }
+
+        @keyframes pulseHeatmapSmooth {
+            0% { opacity: 0.5; filter: blur(80px) brightness(0.9) hue-rotate(0deg); }
+            12.5% { opacity: 0.65; filter: blur(75px) brightness(1.1) hue-rotate(30deg); }
+            25% { opacity: 0.8; filter: blur(85px) brightness(1.0) hue-rotate(60deg); }
+            37.5% { opacity: 0.65; filter: blur(78px) brightness(1.05) hue-rotate(90deg); }
+            50% { opacity: 0.5; filter: blur(80px) brightness(0.9) hue-rotate(120deg); }
+            62.5% { opacity: 0.65; filter: blur(75px) brightness(1.1) hue-rotate(150deg); }
+            75% { opacity: 0.8; filter: blur(85px) brightness(1.0) hue-rotate(180deg); }
+            87.5% { opacity: 0.65; filter: blur(78px) brightness(1.05) hue-rotate(210deg); }
+            100% { opacity: 0.5; filter: blur(80px) brightness(0.9) hue-rotate(360deg); }
+        }
+
+        .skill-line-top {
+            background-image: 
+                linear-gradient(to right, white 100%, transparent 100%),
+                radial-gradient(circle 5px at 20px 0px, white 100%, transparent 100%),
+                radial-gradient(circle 5px at 40px 0px, white 100%, transparent 100%),
+                radial-gradient(circle 5px at 60px 0px, white 100%, transparent 100%);
+            background-size: 100% 2px, 20px 20px, 20px 20px, 20px 20px;
+            background-position: 0 0, 10px -8px, 30px -8px, 50px -8px;
+            background-repeat: repeat-x;
+        }
+
+        .skill-line-bottom {
+            background-image: 
+                linear-gradient(to right, white 100%, transparent 100%),
+                radial-gradient(circle 5px at 20px 0px, white 100%, transparent 100%),
+                radial-gradient(circle 5px at 40px 0px, white 100%, transparent 100%),
+                radial-gradient(circle 5px at 60px 0px, white 100%, transparent 100%);
+            background-size: 100% 2px, 20px 20px, 20px 20px, 20px 20px;
+            background-position: 0 0, 10px 8px, 30px 8px, 50px 8px;
+            background-repeat: repeat-x;
+        }
+
+        /* --- SOUNDBAR EQ EFFECT --- */
+        .eq-bar {
+            flex: 1;
+            min-width: 2px;
+            max-width: 8px;
+            height: 100%;
+            background: linear-gradient(to top, #00ffcc, #0088ff);
+            border-radius: 2px 2px 0 0;
+            transform-origin: bottom;
+            animation: eq-bounce 4s infinite ease-in-out alternate;
+            opacity: 0.9;
+            box-shadow: 0 0 5px rgba(0, 255, 204, 0.3);
+        }
+        .eq-bar.down {
+            background: linear-gradient(to bottom, #00ffcc, #0088ff);
+            border-radius: 0 0 2px 2px;
+            transform-origin: top;
+        }
+        @keyframes eq-bounce {
+            0% { transform: scaleY(0.1); opacity: 0.4; }
+            50% { transform: scaleY(0.7); opacity: 0.8; }
+            100% { transform: scaleY(1); opacity: 1; }
+        }
+
         .footer-name { font-size: clamp(2rem, 4vw, 4rem); line-height: 1.05; margin: 0; }
         footer { font-size: 1.1rem; }
         
@@ -139,8 +232,6 @@
             min-height: 500px;
             overflow: hidden; 
             position: relative;
-            -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
-            mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
         }
         @media (min-width: 768px) {
             .carousel-wrapper { min-height: 650px; }
@@ -314,16 +405,26 @@
     </header>
     <div class="nav-overlay" id="nav-overlay"></div>
 
-    <div id="page-slide-wrapper" class="w-full min-h-screen flex flex-col pt-24">
-        <main class="flex-grow flex flex-col items-center justify-start w-full px-6 md:px-12 pb-16">
+    <div id="page-slide-wrapper" class="w-full min-h-screen flex flex-col pt-24 relative">
+        
+        <!-- Global Pulsing Heatmap Background (Starts Below About Me) -->
+        <div class="page-heatmap"></div>
+        <!-- Global Dot Pattern Overlay (starts a few pixels lower and repeats over page) -->
+        <div class="page-dots"></div>
+
+        <!-- Container for the rest of the site with Heatmap Background -->
+        <div class="relative w-full z-10 flex-grow flex flex-col">
+
+        <main class="flex-grow flex flex-col items-center justify-start w-full px-6 md:px-12 pb-16 relative z-10">
             
-            <div class="w-full max-w-7xl flex flex-col mb-8 mt-4">
+            <div class="w-full max-w-7xl flex flex-col mb-0 mt-4">
                 <h1 class="font-audiowide text-5xl md:text-7xl text-white text-center mb-2 drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]">skills</h1>
-                <div class="font-audiowide text-sm md:text-base border-b-2 border-white pb-2 text-left">
+                <div class="font-audiowide text-sm md:text-base pb-2 text-left">
                     <span id="toggle-slider" class="cursor-pointer text-[#00ffcc] transition-colors">slider</span> 
                     <span class="text-white mx-1">/</span> 
                     <span id="toggle-list" class="cursor-pointer text-gray-500 hover:text-white transition-colors">list</span>
                 </div>
+                <div id="soundbar-top" class="w-full h-8 mt-1 flex items-end gap-[2px] md:gap-1 overflow-hidden border-b-2 border-white pb-0"></div>
             </div>
 
             <!-- Carousel Columns (Reduced gap to gap-3 on mobile to fit cards better) -->
@@ -335,9 +436,13 @@
             <!-- List View -->
             <div id="view-list" class="w-full max-w-7xl hidden grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
 
-        </main>
+            <!-- Bottom Line with Soundbar -->
+            <div id="soundbar-bottom" class="w-full max-w-7xl h-8 mt-0 flex items-start gap-[2px] md:gap-1 overflow-hidden border-t-2 border-white pt-0"></div>
 
-        <footer class="relative border-t-2 border-[#1a1f24] bg-[#00000A] pt-20 pb-6 px-6 md:px-12 overflow-hidden min-h-[50vh] flex flex-col justify-between">
+        </main>
+        </div>
+
+        <footer class="relative border-t-2 border-[#1a1f24] bg-[#00000A] pt-0 pb-6 px-6 md:px-12 overflow-hidden min-h-[50vh] flex flex-col justify-between">
             <div class="absolute bottom-0 -left-[50%] w-[200%] h-[85%] perspective-grid-footer pointer-events-none z-0"></div>
             <div class="relative z-10 grid grid-cols-1 lg:grid-cols-3 items-center w-full max-w-[1400px] mx-auto gap-12 lg:gap-4">
                 <div class="flex justify-center lg:justify-start w-full">
@@ -592,7 +697,34 @@
             if (e.target === modalOverlay) closeModal();
         });
 
-        document.addEventListener('DOMContentLoaded', initCarousels);
+        // --- SOUNDBAR INITIALIZATION ---
+        function initSoundBars() {
+            const topBar = document.getElementById('soundbar-top');
+            const bottomBar = document.getElementById('soundbar-bottom');
+            const numBars = 120; // Enough bars to span screens
+            
+            const createBars = (container, isDown) => {
+                if(!container) return;
+                container.innerHTML = '';
+                for(let i = 0; i < numBars; i++) {
+                    const bar = document.createElement('div');
+                    bar.className = `eq-bar ${isDown ? 'down' : ''}`;
+                    const duration = 0.3 + Math.random() * 0.8;
+                    const delay = Math.random() * -3; 
+                    bar.style.animationDuration = `${duration}s`;
+                    bar.style.animationDelay = `${delay}s`;
+                    container.appendChild(bar);
+                }
+            }
+            
+            createBars(topBar, false);
+            createBars(bottomBar, true);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initCarousels();
+            initSoundBars();
+        });
 
         // --- FOOTER EYE TRACKING & NAV ---
         function setFooterEyeTracking(e) {

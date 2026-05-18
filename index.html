@@ -213,23 +213,7 @@
             100% { transform: scale(1.05) translate(-15px, -20px); opacity: 0.9; }
         }
 
-        .page-dots {
-            position: absolute;
-            inset: 0;
-            z-index: 1;
-            /* ========================================================================= */
-            /* 🔵 REPLACE THIS URL WITH YOUR DOT PATTERN PNG MAP                       */
-            /* Paste the direct URL to your transparent PNG inside the url('') below.    */
-            /* Example: background-image: url('pictures/my-dots.png');                   */
-            /* ========================================================================= */
-            background-image: url('data:image/svg+xml;utf8,<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="1.5" fill="rgba(255,255,255,0.06)"/></svg>');
-            background-repeat: repeat;
-            pointer-events: none;
-            mix-blend-mode: overlay; 
-            /* Softly fades out the dots at the top and bottom of the section */
-            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%);
-            mask-image: linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%);
-        }
+    
 
         /* --- Realistic CRT FX --- */
         .crt-overlay { position: absolute; inset: 0; z-index: 45; pointer-events: none; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)); background-size: 100% 3px, 6px 100%; }
@@ -447,9 +431,9 @@
         <section id="about" class="min-h-[100vh] flex flex-col items-center justify-center py-16 px-4 md:px-8 scroll-mt-20 relative z-10 overflow-hidden">
             
             <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-                <div class="absolute inset-0 bg-cover bg-center opacity-15 mix-blend-luminosity" style="background-image: url('pictures/N_b6N3.png');"></div>
-                <div class="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-[#00000A] via-[#00000A]/80 to-transparent"></div>
-                <div class="absolute inset-x-0 bottom-0 h-6 bg-gradient-to-t from-[#00000A] via-[#00000A]/80 to-transparent"></div>
+                <div class="absolute inset-0 bg-cover bg-center opacity-35 mix-blend-multiply" style="background-image: url('pictures/N_b6N3.png');"></div>
+                <div class="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-[#00000A] via-[#00000A]/90 to-transparent"></div>
+                <div class="absolute inset-x-0 bottom-0 h-6 bg-gradient-to-t from-[#00000A] via-[#00000A]/90 to-transparent"></div>
             </div>
            
 
