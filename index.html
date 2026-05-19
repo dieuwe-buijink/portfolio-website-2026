@@ -47,6 +47,14 @@
             cursor: pointer;
         }
 
+        #cat-speech-bubble {
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .shrink-corner:hover #cat-speech-bubble {
+            opacity: 1;
+        }
+
         .glitch { animation: glitch-anim 0.3s infinite; position: relative; }
         .glitch::before, .glitch::after { content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: transparent; font-family: inherit; }
         .glitch::before { left: 4px; text-shadow: -4px 0 #ff007f, 4px 0 #00ffcc; clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%); animation: glitch-anim-2 0.4s infinite linear alternate-reverse; }
@@ -287,6 +295,33 @@
 
         .perspective-grid-footer { background-image: linear-gradient(transparent 95%, rgba(255, 204, 0, 0.7) 100%), linear-gradient(90deg, transparent 95%, rgba(255, 204, 0, 0.7) 100%); background-size: 80px 50px; transform: perspective(400px) rotateX(60deg) scaleY(1.5); transform-origin: bottom; -webkit-mask-image: radial-gradient(120% 100% at bottom center, black 0%, transparent 100%); mask-image: radial-gradient(120% 100% at bottom center, black 0%, transparent 100%); }
 
+        /* Footer Cat Link Styling */
+        .footer-cat-link {
+            display: inline-block;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        #footer-cat-container {
+            transition: transform 0.3s ease;
+        }
+
+        /* Page Transition Curtain */
+        #page-transition-curtain {
+            position: fixed;
+            inset: 0;
+            background-color: #00000A;
+            z-index: 49;
+            transform: translateY(100%);
+            transition: transform 0.6s cubic-bezier(0.77, 0, 0.17, 1);
+            pointer-events: none;
+        }
+
+        #page-transition-curtain.curtain-active {
+            transform: translateY(0%);
+        }
+
     </style>
 </head>
 <body class="selection:bg-[#ff007f] selection:text-white font-normal-sans select-none overflow-hidden">
@@ -421,10 +456,14 @@
             <path id="tongue" d="M 184 208 C 184 250, 216 250, 216 208 Z" fill="#ff7da6" class="transition-all duration-1000" />
             <path id="tongueSlit" d="M 200 210 L 200 235" stroke="#d44a7a" stroke-width="2" stroke-linecap="round" class="transition-all duration-1000" />
             <path id="nose" d="" fill="#4a2e1b" />
+            
+            <!-- Speech Bubble -->
+            <g id="cat-speech-bubble" transform="translate(220, 0)">
+                <path d="M 0 0 L 160 0 L 160 60 L 60 60 L 25 95 L 45 60 L 0 60 Z" fill="#0d0f12" stroke="#ffaa00" stroke-width="3" />
+                <text x="80" y="38" fill="#ffaa00" font-family="'Audiowide', sans-serif" font-size="24" text-anchor="middle" font-weight="bold">REPLAY</text>
+            </g>
         </svg>
     </div>
-
-    <button id="replay" class="hidden md:block fixed bottom-10 left-1/2 z-40 bg-[#00000A] text-gray-500 border-2 border-[#2a2a2e] font-audiowide text-[10px] px-4 py-3 tracking-widest hover:border-[#ffaa00] hover:text-[#ffaa00] transition-all duration-1000 shadow-[4px_4px_0px_rgba(0,0,0,0.8)] opacity-0 pointer-events-auto" style="transform: translateX(calc(-50vw + 11.5rem)) translateX(-50%);">REPLAY</button>
 
     <main id="main-content" class="hidden opacity-0 transition-opacity duration-1000 pt-20 bg-[#00000A] relative">
 
@@ -591,25 +630,27 @@
                     <h2 class="footer-name font-audiowide text-[#ff3333] tracking-tighter leading-none uppercase">Dieuwe<br/>Buijink</h2>
                 </div>
                 <div class="flex justify-center w-full">
-                    <div id="footer-cat-container" class="w-32 h-32 md:w-48 md:h-48 relative z-20">
-                        <svg viewBox="0 0 400 300" class="w-full h-full drop-shadow-[0_0_15px_rgba(0,0,0,0.8)]">
+                    <a href="index.html" class="footer-cat-link">
+                        <div id="footer-cat-container" class="w-32 h-32 md:w-48 md:h-48 relative z-20 cursor-pointer">
+                            <svg viewBox="0 0 400 300" class="w-full h-full drop-shadow-[0_0_15px_rgba(0,0,0,0.8)]">
                             <defs>
-                                <radialGradient id="eyeGradLeftFooter" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffffff" /><stop offset="10%" stop-color="#ffff00" /><stop offset="50%" stop-color="#ffcc00" /><stop offset="100%" stop-color="#cc6600" /></radialGradient>
-                                <radialGradient id="eyeGradRightFooter" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffffff" /><stop offset="10%" stop-color="#ffff00" /><stop offset="50%" stop-color="#ffcc00" /><stop offset="100%" stop-color="#cc6600" /></radialGradient>
-                                <clipPath id="eyeMaskLeftFooter"><path d="M 170 140 C 170 75, 60 75, 60 140 C 60 205, 170 205, 170 140 Z" /></clipPath>
-                                <clipPath id="eyeMaskRightFooter"><path d="M 230 140 C 230 75, 340 75, 340 140 C 340 205, 230 205, 230 140 Z" /></clipPath>
+                                <radialGradient id="eyeGradLeftFooter" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffffff" /><stop offset="10%" stop-color="#ffff00" /><stop id="footer-gradLeftMid" offset="50%" stop-color="#ffcc00" /><stop id="footer-gradLeftEnd" offset="100%" stop-color="#cc6600" /></radialGradient>
+                                <radialGradient id="eyeGradRightFooter" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffffff" /><stop offset="10%" stop-color="#ffff00" /><stop id="footer-gradRightMid" offset="50%" stop-color="#ffcc00" /><stop id="footer-gradRightEnd" offset="100%" stop-color="#cc6600" /></radialGradient>
+                                <clipPath id="eyeMaskLeftFooter"><path id="footer-pathL" d="M 170 140 C 170 75, 60 75, 60 140 C 60 205, 170 205, 170 140 Z" class="transition-all duration-1000 ease" /></clipPath>
+                                <clipPath id="eyeMaskRightFooter"><path id="footer-pathR" d="M 230 140 C 230 75, 340 75, 340 140 C 340 205, 230 205, 230 140 Z" class="transition-all duration-1000 ease" /></clipPath>
                             </defs>
-                            <g>
-                                <path d="M 170 140 C 170 75, 60 75, 60 140 C 60 205, 170 205, 170 140 Z" fill="url(#eyeGradLeftFooter)" />
-                                <g clip-path="url(#eyeMaskLeftFooter)"><ellipse id="footer-pupilL" cx="115" cy="140" rx="38" ry="38" fill="#00000A" class="transition-transform duration-100 ease-out" /><circle id="footer-highL" cx="130" cy="120" r="6.5" fill="white" opacity="0.9" class="transition-transform duration-100 ease-out" /></g>
-                                <path d="M 230 140 C 230 75, 340 75, 340 140 C 340 205, 230 205, 230 140 Z" fill="url(#eyeGradRightFooter)" />
-                                <g clip-path="url(#eyeMaskRightFooter)"><ellipse id="footer-pupilR" cx="285" cy="140" rx="38" ry="38" fill="#00000A" class="transition-transform duration-100 ease-out" /><circle id="footer-highR" cx="300" cy="120" r="6.5" fill="white" opacity="0.9" class="transition-transform duration-100 ease-out" /></g>
+                            <g filter="url(#eyeGlow)">
+                                <path id="footer-baseL" d="M 170 140 C 170 75, 60 75, 60 140 C 60 205, 170 205, 170 140 Z" fill="url(#eyeGradLeftFooter)" class="transition-all duration-1000 ease" />
+                                <g clip-path="url(#eyeMaskLeftFooter)"><ellipse id="footer-pupilL" cx="115" cy="140" rx="38" ry="38" fill="#00000A" class="transition-all duration-1000 ease" /><circle id="footer-highL" cx="130" cy="120" r="6.5" fill="white" opacity="0.9" class="transition-all duration-1000 ease" /></g>
+                                <path id="footer-baseR" d="M 230 140 C 230 75, 340 75, 340 140 C 340 205, 230 205, 230 140 Z" fill="url(#eyeGradRightFooter)" class="transition-all duration-1000 ease" />
+                                <g clip-path="url(#eyeMaskRightFooter)"><ellipse id="footer-pupilR" cx="285" cy="140" rx="38" ry="38" fill="#00000A" class="transition-all duration-1000 ease" /><circle id="footer-highR" cx="300" cy="120" r="6.5" fill="white" opacity="0.9" class="transition-all duration-1000 ease" /></g>
                             </g>
-                            <path d="M 184 208 C 184 250, 216 250, 216 208 Z" fill="#ff7da6" />
-                            <path d="M 200 210 L 200 235" stroke="#d44a7a" stroke-width="2" stroke-linecap="round" />
-                            <path d="M 190 194 C 196 189, 204 189, 210 194 L 200 204 Z" fill="#2a1a10" />
+                            <path id="footer-tongue" d="M 184 208 C 184 250, 216 250, 216 208 Z" fill="#ff7da6" class="transition-all duration-1000 ease" />
+                            <path id="footer-tongueSlit" d="M 200 210 L 200 235" stroke="#d44a7a" stroke-width="2" stroke-linecap="round" class="transition-all duration-1000 ease" />
+                            <path id="footer-nose" d="M 190 194 C 196 189, 204 189, 210 194 L 200 204 Z" fill="#2a1a10" class="transition-all duration-1000 ease" />
                         </svg>
                     </div>
+                    </a>
                 </div>
                 <div class="flex flex-row justify-center lg:justify-center items-end gap-10 lg:gap-16 w-full text-left">
                     <div class="flex flex-col gap-2 font-normal-sans text-xs md:text-sm text-[#ff3333] pb-[2px]">
@@ -661,14 +702,15 @@
             gradR1: document.getElementById('gradRightMid'), gradR2: document.getElementById('gradRightEnd'),
             textWrap: document.getElementById('text-wrap'), nameTag: document.getElementById('name-tag'),
             topNav: document.getElementById('top-nav'), main: document.getElementById('main-content'),
+            floorGrid: document.getElementById('floor-grid'),
             phTL: document.getElementById('placeholder-tl'), 
             phBR: document.getElementById('placeholder-br'),
-            replayBtn: document.getElementById('replay'),
             footerPupilL: document.getElementById('footer-pupilL'), footerPupilR: document.getElementById('footer-pupilR'),
             footerHighL: document.getElementById('footer-highL'), footerHighR: document.getElementById('footer-highR')
         };
 
         let currentMode = 'angry';
+        let footerCatMode = 'blep';
         let mouseX = 0; let mouseY = 0;
 
         document.addEventListener('mousemove', (e) => {
@@ -679,13 +721,14 @@
 
         function updatePupils() {
             const d = state[currentMode];
+            const df = (typeof footerCatMode !== 'undefined') ? state[footerCatMode] : state['blep'];
             const dx = Math.max(-1, Math.min(1, mouseX)) * 10;
             const dy = Math.max(-1, Math.min(1, mouseY)) * 12;
             els.pupilL.setAttribute('transform', `translate(${dx}, ${dy}) rotate(${d.rotL} ${d.pupilLX} ${d.pupilLY})`);
             els.pupilR.setAttribute('transform', `translate(${dx}, ${dy}) rotate(${d.rotR} ${d.pupilRX} ${d.pupilRY})`);
             els.highL.setAttribute('transform', `translate(${dx}, ${dy})`); els.highR.setAttribute('transform', `translate(${dx}, ${dy})`);
-            if(els.footerPupilL) els.footerPupilL.setAttribute('transform', `translate(${dx}, ${dy})`);
-            if(els.footerPupilR) els.footerPupilR.setAttribute('transform', `translate(${dx}, ${dy})`);
+            if(els.footerPupilL) els.footerPupilL.setAttribute('transform', `translate(${dx}, ${dy}) rotate(${df.rotL} ${df.pupilLX} ${df.pupilLY})`);
+            if(els.footerPupilR) els.footerPupilR.setAttribute('transform', `translate(${dx}, ${dy}) rotate(${df.rotR} ${df.pupilRX} ${df.pupilRY})`);
             if(els.footerHighL) els.footerHighL.setAttribute('transform', `translate(${dx}, ${dy})`);
             if(els.footerHighR) els.footerHighR.setAttribute('transform', `translate(${dx}, ${dy})`);
         }
@@ -759,10 +802,10 @@
                 els.topNav.style.opacity = "1"; els.topNav.style.transform = "translateY(0)";
                 els.catSvg.classList.add('shrink-corner'); els.cat.style.opacity = "1";
                 els.textWrap.style.opacity = "1"; els.textWrap.style.transform = "scale(1)";
+                els.floorGrid.style.opacity = "1";
                 els.nameTag.classList.remove('font-press-start', 'glitch'); els.nameTag.classList.add('font-audiowide'); els.nameTag.style.fontSize = "";
                 if (els.phTL) els.phTL.style.opacity = "1";
                 if (els.phBR) els.phBR.style.opacity = "1";
-                if (els.replayBtn) els.replayBtn.style.opacity = "1";
 
                 setFace('blep'); randomLoop = setTimeout(triggerRandomGlitch, 3000);
                 setTimeout(() => { const aboutSection = document.getElementById('about'); if(aboutSection) aboutSection.scrollIntoView({ behavior: 'smooth' }); }, 100);
@@ -774,10 +817,10 @@
             els.catSvg.classList.remove('shrink-corner'); els.cat.style.opacity = "0";
             els.textWrap.style.opacity = "0"; els.textWrap.style.transform = "scale(0.95)";
             els.topNav.style.opacity = "0"; els.topNav.style.transform = "translateY(-100%)";
+            els.floorGrid.style.opacity = "0";
             els.nameTag.classList.remove('font-press-start', 'glitch'); els.nameTag.classList.add('font-audiowide'); els.nameTag.style.fontSize = "";
             if (els.phTL) els.phTL.style.opacity = "0";
             if (els.phBR) els.phBR.style.opacity = "0";
-            if (els.replayBtn) els.replayBtn.style.opacity = "0";
 
             setFace('angry');
             setTimeout(() => els.cat.style.opacity = "1", 500);
@@ -791,7 +834,6 @@
                 els.main.classList.remove('hidden');
                 setTimeout(() => { 
                     els.main.style.opacity = "1"; document.body.style.overflow = "auto";
-                    if (els.replayBtn) els.replayBtn.style.opacity = "1";
                     if (els.phTL) els.phTL.style.opacity = "1";
                     if (els.phBR) els.phBR.style.opacity = "1";
                 }, 100);
@@ -799,8 +841,86 @@
             }, 7800);
         }
 
-        if (els.replayBtn) els.replayBtn.onclick = triggerSequence;
-        if (els.catSvg) els.catSvg.onclick = triggerSequence;
+        if (els.catSvg) {
+            els.catSvg.onclick = triggerSequence;
+            els.catSvg.addEventListener('mouseenter', () => {
+                if (els.catSvg.classList.contains('shrink-corner')) setFace('angry');
+            });
+            els.catSvg.addEventListener('mouseleave', () => {
+                if (els.catSvg.classList.contains('shrink-corner')) setFace('blep');
+            });
+        }
+
+        // Footer Cat Morphing and Click Handling
+        const footerCatLink = document.querySelector('.footer-cat-link');
+        
+        if (footerCatLink) {
+            const footerEls = {
+                pupilL: els.footerPupilL, pupilR: els.footerPupilR,
+                highL: els.footerHighL, highR: els.footerHighR,
+                baseL: document.getElementById('footer-baseL'), baseR: document.getElementById('footer-baseR'),
+                pathL: document.getElementById('footer-pathL'), pathR: document.getElementById('footer-pathR'),
+                nose: document.getElementById('footer-nose'),
+                tongue: document.getElementById('footer-tongue'), tongueSlit: document.getElementById('footer-tongueSlit'),
+                gradL1: document.getElementById('footer-gradLeftMid'), gradL2: document.getElementById('footer-gradLeftEnd'),
+                gradR1: document.getElementById('footer-gradRightMid'), gradR2: document.getElementById('footer-gradRightEnd')
+            };
+
+            function setFooterCatFace(mode) {
+                footerCatMode = mode;
+                const d = state[mode];
+                const isAngry = mode === 'angry';
+                
+                if(!footerEls.baseL) return;
+
+                footerEls.baseL.setAttribute('d', d.dLeft); footerEls.baseR.setAttribute('d', d.dRight);
+                footerEls.pathL.setAttribute('d', d.dLeft); footerEls.pathR.setAttribute('d', d.dRight);
+                footerEls.nose.setAttribute('d', d.dNose); footerEls.nose.setAttribute('fill', isAngry ? '#4a2e1b' : '#2a1a10');
+                
+                footerEls.pupilL.setAttribute('cx', d.pupilLX); footerEls.pupilL.setAttribute('cy', d.pupilLY);
+                footerEls.pupilL.setAttribute('rx', d.pupilRXval); footerEls.pupilL.setAttribute('ry', d.pupilRYval);
+                footerEls.pupilR.setAttribute('cx', d.pupilRX); footerEls.pupilR.setAttribute('cy', d.pupilRY);
+                footerEls.pupilR.setAttribute('rx', d.pupilRXval); footerEls.pupilR.setAttribute('ry', d.pupilRYval);
+                
+                footerEls.pupilL.style.transition = footerEls.pupilR.style.transition = footerEls.highL.style.transition = footerEls.highR.style.transition = "all 1s ease";
+                
+                setTimeout(() => {
+                    if(!footerEls.pupilL) return;
+                    footerEls.pupilL.style.transition = footerEls.pupilR.style.transition = "cx 1s, cy 1s, rx 1s, ry 1s, transform 0.1s ease-out";
+                    footerEls.highL.style.transition = footerEls.highR.style.transition = "cx 1s, cy 1s, r 1s, transform 0.1s ease-out";
+                    updatePupils();
+                }, 1000);
+
+                footerEls.highL.setAttribute('cx', d.highLX); footerEls.highL.setAttribute('cy', d.highLY); footerEls.highL.setAttribute('r', d.highR);
+                footerEls.highR.setAttribute('cx', d.highRX); footerEls.highR.setAttribute('cy', d.highRY); footerEls.highR.setAttribute('r', d.highR);
+                
+                footerEls.gradL1.setAttribute('stop-color', d.colorMid); footerEls.gradR1.setAttribute('stop-color', d.colorMid);
+                footerEls.gradL2.setAttribute('stop-color', d.colorEnd); footerEls.gradR2.setAttribute('stop-color', d.colorEnd);
+
+                if (!isAngry) {
+                    footerEls.tongue.style.opacity = "1"; footerEls.tongue.style.transform = "translateY(0)";
+                    footerEls.tongueSlit.style.opacity = "0.7"; footerEls.tongueSlit.style.transform = "translateY(0)";
+                } else {
+                    footerEls.tongue.style.opacity = "0"; footerEls.tongue.style.transform = "translateY(-25px)";
+                    footerEls.tongueSlit.style.opacity = "0"; footerEls.tongueSlit.style.transform = "translateY(-25px)";
+                }
+                
+                updatePupils();
+            }
+            
+            // Morph on hover - ONLY footer cat
+            footerCatLink.addEventListener('mouseenter', () => setFooterCatFace('angry'));
+            footerCatLink.addEventListener('mouseleave', () => setFooterCatFace('blep'));
+            
+            // Handle click with page transition
+            footerCatLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                const curtain = document.getElementById('page-transition-curtain');
+                if (curtain) curtain.classList.add('curtain-active');
+                setTimeout(() => window.location.href = 'index.html', 600);
+            });
+        }
+        
         window.onload = () => {
             triggerSequence();
             initBrokenScreenFlicker();
@@ -1008,5 +1128,6 @@
             document.querySelectorAll('#top-nav .nav-links a').forEach((link) => { link.addEventListener('click', closeMenu); });
         })();
     </script>
+    <div id="page-transition-curtain"></div>
 </body>
 </html>
