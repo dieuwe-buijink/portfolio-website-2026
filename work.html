@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -17,6 +17,28 @@
         @import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Press+Start+2P&family=Bebas+Neue&family=Caveat:wght@700&display=swap');
         
         body { background-color: #00000A; color: white; margin: 0; font-family: 'Audiowide', sans-serif; }
+
+        /* Work page background video (sticky/fixed only on work.html) */
+        #page-bg-work {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            /* raise the visible area so the bottom is less in frame */
+            object-position: center 100%;
+            /* slightly darker */
+            filter: brightness(0.65) saturate(0.95);
+            /* slight zoom to crop more bottom */
+            transform: scale(1.30);
+            transform-origin: center center;
+            will-change: transform;
+            z-index: -1;
+            pointer-events: none;
+            background: #00000A;
+        }
+
+        /* autoplay-fallback UI removed (no play button) */
         .font-audiowide { font-family: 'Audiowide', sans-serif; }
         .font-normal-sans { font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; }
 
@@ -282,6 +304,12 @@
     </style>
 </head>
 <body class="selection:bg-[#ff007f] selection:text-white font-normal-sans select-none overflow-x-hidden">
+
+    <video id="page-bg-work" autoplay muted loop playsinline preload="metadata" poster="pictures/noire_night_v2_poster.jpg">
+        <source src="pictures/noire_night_v2.mp4" type="video/mp4">
+    </video>
+
+    <!-- autoplay-fallback removed: video will remain autoplay/muted; no UI inserted -->
 
     <div id="page-transition-curtain"></div>
 
@@ -622,3 +650,4 @@
     </script>
 </body>
 </html>
+
