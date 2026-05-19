@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dieuwe Buijink | Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="site.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Press+Start+2P&display=swap');
 
@@ -1118,15 +1119,6 @@
             animate();
         }
 
-        (function setupBurgerMenu() {
-            const navToggle = document.getElementById('nav-toggle'), navLinks = document.querySelector('#top-nav .nav-links'), navOverlay = document.getElementById('nav-overlay');
-            if (!navToggle || !navLinks || !navOverlay) return;
-            const closeMenu = () => { navLinks.classList.remove('open'); navOverlay.classList.remove('active'); navToggle.setAttribute('aria-expanded', 'false'); };
-            navToggle.addEventListener('click', () => { const isOpen = navLinks.classList.toggle('open'); navOverlay.classList.toggle('active', isOpen); navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false'); });
-            navOverlay.addEventListener('click', closeMenu);
-            window.addEventListener('resize', () => { if (window.innerWidth > 768) closeMenu(); });
-            document.querySelectorAll('#top-nav .nav-links a').forEach((link) => { link.addEventListener('click', closeMenu); });
-        })();
     </script>
     <div id="page-transition-curtain"></div>
 </body>

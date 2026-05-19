@@ -12,6 +12,7 @@
 
     <!-- Lenis for Smooth Scrolling -->
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
+    <script defer src="site.js"></script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Press+Start+2P&family=Bebas+Neue&family=Caveat:wght@700&display=swap');
@@ -164,6 +165,11 @@
             }
             #top-nav .nav-links.open { display: flex !important; }
             .footer-name { font-size: clamp(1.8rem, 6vw, 3.3rem); }
+        }
+
+        @media (max-width: 768px) {
+            #top-nav .nav-links a { display: block; width: 100%; text-align: center; padding: 0.75rem 1rem; }
+            #top-nav .nav-links a.active, #top-nav .nav-links a[aria-current="page"] { background: rgba(0,255,204,0.06); color: #00ffcc; font-weight: 700; border-radius: 6px; }
         }
         
         @media (min-width: 769px) { #top-nav .nav-links { display: contents; } }
@@ -384,25 +390,27 @@
                     <h2 class="footer-name font-audiowide text-[#ff3333] tracking-tighter leading-none uppercase">Dieuwe<br/>Buijink</h2>
                 </div>
                 <div class="flex justify-center w-full">
-                    <div id="footer-cat-container" class="w-32 h-32 md:w-48 md:h-48 relative z-20">
-                        <svg viewBox="0 0 400 300" class="w-full h-full drop-shadow-[0_0_15px_rgba(0,0,0,0.8)]">
+                    <a href="index.html" class="footer-cat-link">
+                        <div id="footer-cat-container" class="w-32 h-32 md:w-48 md:h-48 relative z-20 cursor-pointer">
+                            <svg viewBox="0 0 400 300" class="w-full h-full drop-shadow-[0_0_15px_rgba(0,0,0,0.8)]">
                             <defs>
-                                <radialGradient id="eyeGradLeftFooter" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffffff" /><stop offset="10%" stop-color="#ffff00" /><stop offset="50%" stop-color="#ffcc00" /><stop offset="100%" stop-color="#cc6600" /></radialGradient>
-                                <radialGradient id="eyeGradRightFooter" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffffff" /><stop offset="10%" stop-color="#ffff00" /><stop offset="50%" stop-color="#ffcc00" /><stop offset="100%" stop-color="#cc6600" /></radialGradient>
-                                <clipPath id="eyeMaskLeftFooter"><path d="M 170 140 C 170 75, 60 75, 60 140 C 60 205, 170 205, 170 140 Z" /></clipPath>
-                                <clipPath id="eyeMaskRightFooter"><path d="M 230 140 C 230 75, 340 75, 340 140 C 340 205, 230 205, 230 140 Z" /></clipPath>
+                                <radialGradient id="eyeGradLeftFooter" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffffff" /><stop offset="10%" stop-color="#ffff00" /><stop id="footer-gradLeftMid" offset="50%" stop-color="#ffcc00" /><stop id="footer-gradLeftEnd" offset="100%" stop-color="#cc6600" /></radialGradient>
+                                <radialGradient id="eyeGradRightFooter" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffffff" /><stop offset="10%" stop-color="#ffff00" /><stop id="footer-gradRightMid" offset="50%" stop-color="#ffcc00" /><stop id="footer-gradRightEnd" offset="100%" stop-color="#cc6600" /></radialGradient>
+                                <clipPath id="eyeMaskLeftFooter"><path id="footer-pathL" d="M 170 140 C 170 75, 60 75, 60 140 C 60 205, 170 205, 170 140 Z" class="transition-all duration-1000 ease" /></clipPath>
+                                <clipPath id="eyeMaskRightFooter"><path id="footer-pathR" d="M 230 140 C 230 75, 340 75, 340 140 C 340 205, 230 205, 230 140 Z" class="transition-all duration-1000 ease" /></clipPath>
                             </defs>
-                            <g>
-                                <path d="M 170 140 C 170 75, 60 75, 60 140 C 60 205, 170 205, 170 140 Z" fill="url(#eyeGradLeftFooter)" />
-                                <g clip-path="url(#eyeMaskLeftFooter)"><ellipse id="footer-pupilL" cx="115" cy="140" rx="38" ry="38" fill="#00000A" class="transition-transform duration-100 ease-out" /><circle id="footer-highL" cx="130" cy="120" r="6.5" fill="white" opacity="0.9" class="transition-transform duration-100 ease-out" /></g>
-                                <path d="M 230 140 C 230 75, 340 75, 340 140 C 340 205, 230 205, 230 140 Z" fill="url(#eyeGradRightFooter)" />
-                                <g clip-path="url(#eyeMaskRightFooter)"><ellipse id="footer-pupilR" cx="285" cy="140" rx="38" ry="38" fill="#00000A" class="transition-transform duration-100 ease-out" /><circle id="footer-highR" cx="300" cy="120" r="6.5" fill="white" opacity="0.9" class="transition-transform duration-100 ease-out" /></g>
+                            <g filter="url(#eyeGlow)">
+                                <path id="footer-baseL" d="M 170 140 C 170 75, 60 75, 60 140 C 60 205, 170 205, 170 140 Z" fill="url(#eyeGradLeftFooter)" class="transition-all duration-1000 ease" />
+                                <g clip-path="url(#eyeMaskLeftFooter)"><ellipse id="footer-pupilL" cx="115" cy="140" rx="38" ry="38" fill="#00000A" class="transition-all duration-1000 ease" /><circle id="footer-highL" cx="130" cy="120" r="6.5" fill="white" opacity="0.9" class="transition-all duration-1000 ease" /></g>
+                                <path id="footer-baseR" d="M 230 140 C 230 75, 340 75, 340 140 C 340 205, 230 205, 230 140 Z" fill="url(#eyeGradRightFooter)" class="transition-all duration-1000 ease" />
+                                <g clip-path="url(#eyeMaskRightFooter)"><ellipse id="footer-pupilR" cx="285" cy="140" rx="38" ry="38" fill="#00000A" class="transition-all duration-1000 ease" /><circle id="footer-highR" cx="300" cy="120" r="6.5" fill="white" opacity="0.9" class="transition-all duration-1000 ease" /></g>
                             </g>
-                            <path d="M 184 208 C 184 250, 216 250, 216 208 Z" fill="#ff7da6" />
-                            <path d="M 200 210 L 200 235" stroke="#d44a7a" stroke-width="2" stroke-linecap="round" />
-                            <path d="M 190 194 C 196 189, 204 189, 210 194 L 200 204 Z" fill="#2a1a10" />
-                        </svg>
-                    </div>
+                            <path id="footer-tongue" d="M 184 208 C 184 250, 216 250, 216 208 Z" fill="#ff7da6" class="transition-all duration-1000 ease" />
+                            <path id="footer-tongueSlit" d="M 200 210 L 200 235" stroke="#d44a7a" stroke-width="2" stroke-linecap="round" class="transition-all duration-1000 ease" />
+                            <path id="footer-nose" d="M 190 194 C 196 189, 204 189, 210 194 L 200 204 Z" fill="#2a1a10" class="transition-all duration-1000 ease" />
+                            </svg>
+                        </div>
+                    </a>
                 </div>
                 <div class="flex flex-row justify-center lg:justify-center items-end gap-10 lg:gap-16 w-full text-left">
                     <div class="flex flex-col gap-2 font-normal-sans text-xs md:text-sm text-[#ff3333] pb-[2px]">
@@ -632,30 +640,6 @@
         projectModalOverlay.addEventListener('click', (e) => { if (e.target === projectModalOverlay) closeProjectModal(); });
         document.addEventListener('DOMContentLoaded', initProjects);
 
-        function setFooterEyeTracking(e) {
-            const pupilL = document.getElementById('footer-pupilL');
-            const pupilR = document.getElementById('footer-pupilR');
-            const highL = document.getElementById('footer-highL');
-            const highR = document.getElementById('footer-highR');
-            if (!pupilL || !pupilR || !highL || !highR) return;
-            const x = (e.clientX / window.innerWidth - 0.5) * 12;
-            const y = (e.clientY / window.innerHeight - 0.5) * 12;
-            const translate = `translate(${x}, ${y})`;
-            pupilL.setAttribute('transform', translate);
-            pupilR.setAttribute('transform', translate);
-            highL.setAttribute('transform', translate);
-            highR.setAttribute('transform', translate);
-        }
-        window.addEventListener('mousemove', setFooterEyeTracking);
-        (function setupBurgerMenu() {
-            const navToggle = document.getElementById('nav-toggle'), navLinks = document.querySelector('#top-nav .nav-links'), navOverlay = document.getElementById('nav-overlay');
-            if (!navToggle || !navLinks || !navOverlay) return;
-            const closeMenu = () => { navLinks.classList.remove('open'); navOverlay.classList.remove('active'); navToggle.setAttribute('aria-expanded', 'false'); };
-            navToggle.addEventListener('click', () => { const isOpen = navLinks.classList.toggle('open'); navOverlay.classList.toggle('active', isOpen); navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false'); });
-            navOverlay.addEventListener('click', closeMenu);
-            window.addEventListener('resize', () => { if (window.innerWidth > 768) closeMenu(); });
-            document.querySelectorAll('#top-nav .nav-links a').forEach((link) => { link.addEventListener('click', closeMenu); });
-        })();
     </script>
 </body>
 </html>

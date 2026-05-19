@@ -5,28 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Skills | Dieuwe Buijink</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="site.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Press+Start+2P&display=swap');
         body { background-color: #00000A; color: white; margin: 0; font-family: 'Audiowide', sans-serif; }
         .font-audiowide { font-family: 'Audiowide', sans-serif; }
         .font-normal-sans { font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; }
-
-        ::-webkit-scrollbar {
-            width: 12px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #00000A;
-            border-left: 1px solid #1a1f24;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #0fbf9f, #1f4fbf, #c04f8f, #c08a2f, #2fbf4f);
-            border-radius: 6px;
-            border: 2px solid #00000A; /* Creates an inset padding effect */
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(180deg, #bf4f8f, #0fbf9f, #c08a2f, #2fbf4f, #1f4fbf);
-        }
-        
         /* The "Slide in from bottom" entrance animation */
         #page-slide-wrapper {
             transform: translateY(100vh);
@@ -471,25 +455,27 @@
                     <h2 class="footer-name font-audiowide text-[#ff3333] tracking-tighter leading-none uppercase">Dieuwe<br/>Buijink</h2>
                 </div>
                 <div class="flex justify-center w-full">
-                    <div id="footer-cat-container" class="w-32 h-32 md:w-48 md:h-48 relative z-20">
-                        <svg viewBox="0 0 400 300" class="w-full h-full drop-shadow-[0_0_15px_rgba(0,0,0,0.8)]">
+                    <a href="index.html" class="footer-cat-link">
+                        <div id="footer-cat-container" class="w-28 h-28 sm:w-32 sm:h-32 md:w-48 md:h-48 relative z-20 cursor-pointer">
+                            <svg viewBox="0 0 400 300" class="w-full h-full drop-shadow-[0_0_15px_rgba(0,0,0,0.8)]">
                             <defs>
-                                <radialGradient id="eyeGradLeftFooter" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffffff" /><stop offset="10%" stop-color="#ffff00" /><stop offset="50%" stop-color="#ffcc00" /><stop offset="100%" stop-color="#cc6600" /></radialGradient>
-                                <radialGradient id="eyeGradRightFooter" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffffff" /><stop offset="10%" stop-color="#ffff00" /><stop offset="50%" stop-color="#ffcc00" /><stop offset="100%" stop-color="#cc6600" /></radialGradient>
-                                <clipPath id="eyeMaskLeftFooter"><path d="M 170 140 C 170 75, 60 75, 60 140 C 60 205, 170 205, 170 140 Z" /></clipPath>
-                                <clipPath id="eyeMaskRightFooter"><path d="M 230 140 C 230 75, 340 75, 340 140 C 340 205, 230 205, 230 140 Z" /></clipPath>
+                                <radialGradient id="eyeGradLeftFooter" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffffff" /><stop offset="10%" stop-color="#ffff00" /><stop id="footer-gradLeftMid" offset="50%" stop-color="#ffcc00" /><stop id="footer-gradLeftEnd" offset="100%" stop-color="#cc6600" /></radialGradient>
+                                <radialGradient id="eyeGradRightFooter" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffffff" /><stop offset="10%" stop-color="#ffff00" /><stop id="footer-gradRightMid" offset="50%" stop-color="#ffcc00" /><stop id="footer-gradRightEnd" offset="100%" stop-color="#cc6600" /></radialGradient>
+                                <clipPath id="eyeMaskLeftFooter"><path id="footer-pathL" d="M 170 140 C 170 75, 60 75, 60 140 C 60 205, 170 205, 170 140 Z" class="transition-all duration-1000 ease" /></clipPath>
+                                <clipPath id="eyeMaskRightFooter"><path id="footer-pathR" d="M 230 140 C 230 75, 340 75, 340 140 C 340 205, 230 205, 230 140 Z" class="transition-all duration-1000 ease" /></clipPath>
                             </defs>
-                            <g>
-                                <path d="M 170 140 C 170 75, 60 75, 60 140 C 60 205, 170 205, 170 140 Z" fill="url(#eyeGradLeftFooter)" />
-                                <g clip-path="url(#eyeMaskLeftFooter)"><ellipse id="footer-pupilL" cx="115" cy="140" rx="38" ry="38" fill="#00000A" class="transition-transform duration-100 ease-out" /><circle id="footer-highL" cx="130" cy="120" r="6.5" fill="white" opacity="0.9" class="transition-transform duration-100 ease-out" /></g>
-                                <path d="M 230 140 C 230 75, 340 75, 340 140 C 340 205, 230 205, 230 140 Z" fill="url(#eyeGradRightFooter)" />
-                                <g clip-path="url(#eyeMaskRightFooter)"><ellipse id="footer-pupilR" cx="285" cy="140" rx="38" ry="38" fill="#00000A" class="transition-transform duration-100 ease-out" /><circle id="footer-highR" cx="300" cy="120" r="6.5" fill="white" opacity="0.9" class="transition-transform duration-100 ease-out" /></g>
+                            <g filter="url(#eyeGlow)">
+                                <path id="footer-baseL" d="M 170 140 C 170 75, 60 75, 60 140 C 60 205, 170 205, 170 140 Z" fill="url(#eyeGradLeftFooter)" class="transition-all duration-1000 ease" />
+                                <g clip-path="url(#eyeMaskLeftFooter)"><ellipse id="footer-pupilL" cx="115" cy="140" rx="38" ry="38" fill="#00000A" class="transition-all duration-1000 ease" /><circle id="footer-highL" cx="130" cy="120" r="6.5" fill="white" opacity="0.9" class="transition-all duration-1000 ease" /></g>
+                                <path id="footer-baseR" d="M 230 140 C 230 75, 340 75, 340 140 C 340 205, 230 205, 230 140 Z" fill="url(#eyeGradRightFooter)" class="transition-all duration-1000 ease" />
+                                <g clip-path="url(#eyeMaskRightFooter)"><ellipse id="footer-pupilR" cx="285" cy="140" rx="38" ry="38" fill="#00000A" class="transition-all duration-1000 ease" /><circle id="footer-highR" cx="300" cy="120" r="6.5" fill="white" opacity="0.9" class="transition-all duration-1000 ease" /></g>
                             </g>
-                            <path d="M 184 208 C 184 250, 216 250, 216 208 Z" fill="#ff7da6" />
-                            <path d="M 200 210 L 200 235" stroke="#d44a7a" stroke-width="2" stroke-linecap="round" />
-                            <path d="M 190 194 C 196 189, 204 189, 210 194 L 200 204 Z" fill="#2a1a10" />
+                            <path id="footer-tongue" d="M 184 208 C 184 250, 216 250, 216 208 Z" fill="#ff7da6" class="transition-all duration-1000 ease" />
+                            <path id="footer-tongueSlit" d="M 200 210 L 200 235" stroke="#d44a7a" stroke-width="2" stroke-linecap="round" class="transition-all duration-1000 ease" />
+                            <path id="footer-nose" d="M 190 194 C 196 189, 204 189, 210 194 L 200 204 Z" fill="#2a1a10" class="transition-all duration-1000 ease" />
                         </svg>
-                    </div>
+                        </div>
+                    </a>
                 </div>
                 <div class="flex flex-row justify-center lg:justify-center items-end gap-10 lg:gap-16 w-full text-left">
                     <div class="flex flex-col gap-2 font-normal-sans text-xs md:text-sm text-[#ff3333] pb-[2px]">
