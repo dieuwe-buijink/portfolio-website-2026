@@ -647,6 +647,15 @@
             highR.setAttribute('transform', translate);
         }
         window.addEventListener('mousemove', setFooterEyeTracking);
+        (function setupBurgerMenu() {
+            const navToggle = document.getElementById('nav-toggle'), navLinks = document.querySelector('#top-nav .nav-links'), navOverlay = document.getElementById('nav-overlay');
+            if (!navToggle || !navLinks || !navOverlay) return;
+            const closeMenu = () => { navLinks.classList.remove('open'); navOverlay.classList.remove('active'); navToggle.setAttribute('aria-expanded', 'false'); };
+            navToggle.addEventListener('click', () => { const isOpen = navLinks.classList.toggle('open'); navOverlay.classList.toggle('active', isOpen); navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false'); });
+            navOverlay.addEventListener('click', closeMenu);
+            window.addEventListener('resize', () => { if (window.innerWidth > 768) closeMenu(); });
+            document.querySelectorAll('#top-nav .nav-links a').forEach((link) => { link.addEventListener('click', closeMenu); });
+        })();
     </script>
 </body>
 </html>
