@@ -29,7 +29,7 @@
             /* raise the visible area so the bottom is less in frame */
             object-position: center 100%;
             /* slightly darker */
-            filter: brightness(0.65) saturate(0.95);
+            filter: brightness(0.90) saturate(0.95);
             /* slight zoom to crop more bottom */
             transform: scale(1.30);
             transform-origin: center center;
@@ -222,6 +222,41 @@
             color: rgba(255,255,255,0.1); 
         }
 
+        .work-scroll-cue {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 1.25rem;
+            color: rgba(255, 255, 255, 0.82);
+            filter: drop-shadow(0 0 12px rgba(0, 255, 204, 0.2));
+        }
+
+        .work-scroll-cue .cue-arrow {
+            width: clamp(2.8rem, 4vw, 4rem);
+            height: clamp(2.8rem, 4vw, 4rem);
+            animation: cue-bob 1.8s ease-in-out infinite;
+        }
+
+        @keyframes cue-bob {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(8px); }
+        }
+
+        .warp-model-shell {
+            opacity: 0;
+            transform: translateY(22px) scale(0.98);
+            filter: blur(6px);
+            transition: opacity 0.7s ease, transform 0.7s ease, filter 0.7s ease;
+            will-change: opacity, transform, filter;
+        }
+
+        .warp-model-shell.is-visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0);
+        }
+
         /* Project Grid Block */
         .project-block-img {
             background-color: #111; border-radius: 8px; overflow: hidden; position: relative; cursor: pointer;
@@ -352,22 +387,29 @@
                 <h1 class="font-audiowide text-6xl md:text-8xl text-white text-center">My Work</h1>
             </div>
 
+            <div class="work-scroll-cue" aria-hidden="true">
+                <svg class="cue-arrow" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14 24L32 42L50 24" stroke="#00ffcc" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M20 44L32 56L44 44" stroke="#00ffcc" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+                </svg>
+            </div>
+
             <section class="w-full h-[400vh] relative" id="scroll-warp-section">
                 <div class="sticky top-0 w-full h-screen flex items-center justify-center overflow-hidden">
-                    <div class="w-full max-w-7xl mx-auto px-6 flex flex-col lg:flex-row gap-12 relative pt-16 md:pt-0">
+                    <div class="w-full max-w-7xl mx-auto px-6 flex flex-col lg:flex-row gap-6 lg:gap-12 relative pt-10 md:pt-0 items-center">
                         
-                        <div class="w-full lg:w-1/2 flex items-center justify-center relative h-full min-h-[400px] top-8 md:top-12">
+                        <div class="w-full lg:w-1/2 flex items-center justify-center relative h-full min-h-[250px] md:min-h-[400px] top-4 md:top-12 order-1">
                             <h2 class="text-[4.5rem] md:text-[7rem] lg:text-[9rem] scroll-word word-bold enter">Bold</h2>
                             <h2 class="text-[4.5rem] md:text-[7rem] lg:text-[9rem] scroll-word word-creative enter">Creative</h2>
                             <h2 class="text-[3.5rem] md:text-[6rem] lg:text-[7rem] scroll-word word-sleek enter">Sleek</h2>
                             <h2 class="text-[3.5rem] md:text-[6rem] lg:text-[7rem] scroll-word word-adaptive enter">Adaptive</h2>
                         </div>
 
-                        <div class="w-full lg:w-1/2 flex justify-center items-center h-full hidden lg:flex">
-                            <div id="warp-container" class="w-[90%] max-w-[550px] aspect-square flex items-center justify-center relative">
+                        <div class="w-full lg:w-1/2 flex justify-center items-center h-full order-2">
+                            <div id="warp-container" class="warp-model-shell w-[72%] sm:w-[68%] md:w-[60%] lg:w-[90%] max-w-[390px] lg:max-w-[550px] aspect-square flex items-center justify-center relative">
                                 <canvas id="model-canvas" class="absolute inset-0 w-full h-full outline-none"></canvas>
                                 <div id="model-loading" class="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
-                                    <span class="text-[#00ffcc] font-audiowide text-xl tracking-widest animate-pulse drop-shadow-[0_0_10px_rgba(0,255,204,0.8)]">Loading 3D Asset...</span>
+                                    <span class="text-[#00ffcc] font-audiowide text-sm sm:text-base lg:text-xl tracking-widest animate-pulse drop-shadow-[0_0_10px_rgba(0,255,204,0.8)]">Loading 3D Asset...</span>
                                 </div>
                             </div>
                         </div>
@@ -543,6 +585,35 @@
         const warpSection = document.getElementById('scroll-warp-section');
         const scrollWords = document.querySelectorAll('.scroll-word');
         const totalWords = scrollWords.length;
+        const warpContainerShell = document.getElementById('warp-container');
+        const revealPointRatio = 0.18;
+
+        function updateWorkReveal(shouldReveal) {
+            if (!warpContainerShell) return;
+            warpContainerShell.classList.toggle('is-visible', shouldReveal);
+        }
+
+        function updateScrollWords(progress, shouldReveal) {
+            if (!scrollWords.length) return;
+
+            if (!shouldReveal) {
+                scrollWords.forEach((word) => {
+                    word.classList.remove('active', 'exit');
+                    word.classList.add('enter');
+                });
+                return;
+            }
+
+            const segment = 1 / totalWords;
+            const activeIndex = Math.min(totalWords - 1, Math.floor(progress / segment));
+
+            scrollWords.forEach((word, index) => {
+                word.classList.remove('enter', 'active', 'exit');
+                if (index === activeIndex) word.classList.add('active');
+                else if (index < activeIndex) word.classList.add('exit');
+                else word.classList.add('enter');
+            });
+        }
 
         window.addEventListener('scroll', () => {
             if(!warpSection || !warpContainer) return;
@@ -550,6 +621,8 @@
             const sectionTop = rect.top;
             const sectionHeight = rect.height;
             const windowHeight = window.innerHeight;
+            const revealPoint = windowHeight * revealPointRatio;
+            const shouldReveal = window.scrollY > revealPoint;
             
             let progress = 0;
             if (sectionTop <= 0) {
@@ -558,15 +631,8 @@
             }
             progress = Math.max(0, Math.min(1, progress));
 
-            const segment = 1 / totalWords; 
-            let activeIndex = Math.min(totalWords - 1, Math.floor(progress / segment));
-
-            scrollWords.forEach((word, index) => {
-                word.classList.remove('enter', 'active', 'exit');
-                if (index === activeIndex) word.classList.add('active');
-                else if (index < activeIndex) word.classList.add('exit');
-                else word.classList.add('enter');
-            });
+            updateWorkReveal(shouldReveal);
+            updateScrollWords(progress, shouldReveal);
 
             if (loadedModel) {
                 loadedModel.rotation.y = progress * Math.PI * 2; 

@@ -80,51 +80,9 @@
         @keyframes chrom-glitch-2 { 0% { clip-path: inset(10% 0 60% 0); transform: translate(2px, -1px); } 20% { clip-path: inset(30% 0 20% 0); transform: translate(-2px, 1px); } 40% { clip-path: inset(70% 0 10% 0); transform: translate(2px, -2px); } 60% { clip-path: inset(20% 0 50% 0); transform: translate(-2px, 2px); } 80% { clip-path: inset(50% 0 30% 0); transform: translate(1px, -1px); } 100% { clip-path: inset(5% 0 80% 0); transform: translate(-1px, 1px); } }
 
         /* =========================================
-           GLOBAL PULSING HEATMAP & DOTS
+           GLOBAL BACKGROUND (Moved to Iframe)
           
            ========================================= */
-        .page-heatmap {
-            position: absolute;
-            top: -6rem;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 0;
-            background: 
-                radial-gradient(circle at 10% 15%, rgba(0, 255, 204, 0.25), transparent 45%),
-                radial-gradient(circle at 85% 25%, rgba(255, 0, 127, 0.2), transparent 50%),
-                radial-gradient(circle at 40% 50%, rgba(0, 100, 255, 0.25), transparent 50%),
-                radial-gradient(circle at 75% 70%, rgba(255, 170, 0, 0.2), transparent 45%),
-                radial-gradient(circle at 20% 85%, rgba(0, 255, 204, 0.2), transparent 50%);
-            filter: blur(80px);
-            animation: pulseHeatmapSmooth 8s infinite ease-in-out;
-            pointer-events: none;
-            opacity: 0.7;
-        }
-
-        .page-dots {
-            position: absolute;
-            inset: -6rem 0 0 0; /* Expanded upwards */
-            background-image: url('pictures/');
-            background-repeat: repeat;
-            background-position: 0 0;
-            background-size: auto;
-            pointer-events: none;
-            opacity: 0.12;
-            z-index: 0; /* Lowered z-index below the cards */
-        }
-
-        @keyframes pulseHeatmapSmooth {
-            0% { opacity: 0.5; filter: blur(80px) brightness(0.9) hue-rotate(0deg); }
-            12.5% { opacity: 0.65; filter: blur(75px) brightness(1.1) hue-rotate(30deg); }
-            25% { opacity: 0.8; filter: blur(85px) brightness(1.0) hue-rotate(60deg); }
-            37.5% { opacity: 0.65; filter: blur(78px) brightness(1.05) hue-rotate(90deg); }
-            50% { opacity: 0.5; filter: blur(80px) brightness(0.9) hue-rotate(120deg); }
-            62.5% { opacity: 0.65; filter: blur(75px) brightness(1.1) hue-rotate(150deg); }
-            75% { opacity: 0.8; filter: blur(85px) brightness(1.0) hue-rotate(180deg); }
-            87.5% { opacity: 0.65; filter: blur(78px) brightness(1.05) hue-rotate(210deg); }
-            100% { opacity: 0.5; filter: blur(80px) brightness(0.9) hue-rotate(360deg); }
-        }
 
         .skill-line-top {
             background-image: 
@@ -154,15 +112,15 @@
             min-width: 2px;
             max-width: 8px;
             height: 100%;
-            background: linear-gradient(to top, #00ffcc, #0088ff);
+            background: linear-gradient(to top, #00ffcc, #ff00cc);
             border-radius: 2px 2px 0 0;
             transform-origin: bottom;
             animation: eq-bounce 4s infinite ease-in-out alternate;
             opacity: 0.9;
-            box-shadow: 0 0 5px rgba(0, 255, 204, 0.3);
+            box-shadow: 0 0 5px rgba(255, 0, 204, 0.3);
         }
         .eq-bar.down {
-            background: linear-gradient(to bottom, #00ffcc, #0088ff);
+            background: linear-gradient(to bottom, #00ffcc, #ff00cc);
             border-radius: 0 0 2px 2px;
             transform-origin: top;
         }
@@ -411,14 +369,12 @@
     </header>
     <div class="nav-overlay" id="nav-overlay"></div>
 
-    <div id="page-slide-wrapper" class="w-full min-h-screen flex flex-col pt-24 relative">
+    <div id="page-slide-wrapper" class="w-full min-h-screen flex flex-col pt-24 relative overflow-hidden">
         
-        <!-- Global Pulsing Heatmap Background (Starts Below About Me) -->
-        <div class="page-heatmap"></div>
-        <!-- Global Dot Pattern Overlay (starts a few pixels lower and repeats over page) -->
-        <div class="page-dots"></div>
+        <!-- WebGPU Background -->
+        <iframe id="myIframe" src="https://flux.logie.lol/" title="Flux Screensaver" class="fixed inset-0 w-full h-full border-0 -z-10 pointer-events-none blur-lg saturate-[0.55] scale-105 opacity-90"></iframe>
 
-        <!-- Container for the rest of the site with Heatmap Background -->
+        <!-- Container for the rest of the site -->
         <div class="relative w-full z-10 flex-grow flex flex-col">
 
         <main class="flex-grow flex flex-col items-center justify-start w-full px-6 md:px-12 pb-16 relative z-10">
