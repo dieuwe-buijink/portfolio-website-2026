@@ -9,19 +9,19 @@
     <title>Dieuwe Buijink | Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Press+Start+2P&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Press+Start+2P&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap');
 
         body {
             background-color: #00000A;
             color: white;
             margin: 0;
             overflow-x: hidden;
-            font-family: 'Audiowide', sans-serif;
+            font-family: 'Source Code Pro', monospace;
         }
 
         .font-audiowide { font-family: 'Audiowide', sans-serif; }
         .font-press-start { font-family: 'Press Start 2P', cursive; }
-        .font-normal-sans { font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        .font-normal-sans { font-family: 'Source Code Pro', monospace; }
         
         path, circle, ellipse { transition: d 1s cubic-bezier(0.4, 0, 0.2, 1), fill 1s ease, opacity 1s ease; }
 
@@ -124,9 +124,9 @@
         @keyframes chrom-glitch-2 { 0% { clip-path: inset(10% 0 60% 0); transform: translate(2px, -1px); } 20% { clip-path: inset(30% 0 20% 0); transform: translate(-2px, 1px); } 40% { clip-path: inset(70% 0 10% 0); transform: translate(2px, -2px); } 60% { clip-path: inset(20% 0 50% 0); transform: translate(-2px, 2px); } 80% { clip-path: inset(50% 0 30% 0); transform: translate(1px, -1px); } 100% { clip-path: inset(5% 0 80% 0); transform: translate(-1px, 1px); } }
 
 
-        .footer-name { font-size: clamp(2rem, 4vw, 4rem); line-height: 1.05; margin: 0; }
-        footer, footer p, footer a, footer span, footer h2, footer h3, footer div { font-size: 1.1rem; }
-        footer .text-xs { font-size: 1rem; }
+        .footer-name { font-size: clamp(2.1rem, 4.5vw, 4.2rem); line-height: 1.05; margin: 0; }
+        footer, footer p, footer a, footer span, footer h2, footer h3, footer div { font-size: 1.15rem; }
+        footer .text-xs { font-size: 1.05rem; }
 
         .nav-toggle { display: none; font-size: 1.5rem; color: #00ffcc; background: rgba(0, 0, 0, 0.5); border: 1px solid #00ffcc; border-radius: 4px; padding: 0.3rem 0.6rem; cursor: pointer; line-height: 1; }
         .nav-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(3px); z-index: 49; }
@@ -134,7 +134,7 @@
 
         @media (max-width: 1024px) {
             #top-nav nav { gap: 0.5rem !important; }
-            .footer-name { font-size: clamp(1.8rem, 5vw, 3.5rem); }
+            .footer-name { font-size: clamp(1.9rem, 5.2vw, 3.6rem); }
         }
 
         @media (max-width: 768px) {
@@ -145,7 +145,7 @@
                 gap: 1rem;
             }
             #top-nav .nav-links.open { display: flex !important; }
-            .footer-name { font-size: clamp(1.8rem, 6vw, 3.3rem); }
+            .footer-name { font-size: clamp(1.9rem, 6.2vw, 3.4rem); }
             .shrink-corner { transform: translate(4.5rem, calc(-50vh + 2.25rem)) scale(0.2) !important; }
         }
         @media (min-width: 769px) { #top-nav .nav-links { display: contents; } }
@@ -155,7 +155,7 @@
         .brutalist-card:hover { border-color: #ff007f; transform: translate(-4px, -4px); box-shadow: 12px 12px 0px rgba(255, 0, 127, 0.2), 0 0 20px rgba(255, 0, 127, 0.1) inset; }
 
         .perspective-grid { background-image: linear-gradient(transparent 95%, rgba(0, 255, 204, 0.2) 100%), linear-gradient(90deg, transparent 95%, rgba(0, 255, 204, 0.2) 100%); background-size: 50px 50px; transform: perspective(600px) rotateX(75deg); transform-origin: bottom; -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 60%); mask-image: linear-gradient(to bottom, transparent 0%, black 60%); }
-        .perspective-grid-footer { background-image: linear-gradient(transparent 95%, rgba(255, 204, 0, 0.7) 100%), linear-gradient(90deg, transparent 95%, rgba(255, 204, 0, 0.7) 100%); background-size: 80px 50px; transform: perspective(400px) rotateX(60deg) scaleY(1.5); transform-origin: bottom; -webkit-mask-image: radial-gradient(120% 100% at bottom center, black 0%, transparent 100%); mask-image: radial-gradient(120% 100% at bottom center, black 0%, transparent 100%); }
+        .perspective-grid-footer { background-image: linear-gradient(transparent 95%, rgba(255, 51, 51, 0.7) 100%), linear-gradient(90deg, transparent 95%, rgba(255, 51, 51, 0.7) 100%); background-size: 80px 50px; transform: perspective(400px) rotateX(60deg) scaleY(1.5); transform-origin: bottom; -webkit-mask-image: radial-gradient(120% 100% at bottom center, black 0%, transparent 100%); mask-image: radial-gradient(120% 100% at bottom center, black 0%, transparent 100%); }
 
         /* --- Realistic CRT FX --- */
         .crt-overlay { position: absolute; inset: 0; z-index: 45; pointer-events: none; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)); background-size: 100% 3px, 6px 100%; }

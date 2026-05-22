@@ -15,9 +15,9 @@
     <script defer src="site.js"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Press+Start+2P&family=Bebas+Neue&family=Caveat:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Press+Start+2P&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&family=Bebas+Neue&family=Caveat:wght@700&display=swap');
         
-        body { background-color: #00000A; color: white; margin: 0; font-family: 'Audiowide', sans-serif; }
+        body { background-color: #00000A; color: white; margin: 0; font-family: 'Source Code Pro', monospace; }
 
         /* Work page background video (sticky/fixed only on work.html) */
         #page-bg-work {
@@ -41,7 +41,7 @@
 
         /* autoplay-fallback UI removed (no play button) */
         .font-audiowide { font-family: 'Audiowide', sans-serif; }
-        .font-normal-sans { font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; }
+        .font-normal-sans { font-family: 'Source Code Pro', monospace; }
 
         /* Lenis Smooth Scroll Base CSS */
         html.lenis { height: auto; }
@@ -135,8 +135,10 @@
         @keyframes chrom-glitch-1 { 0% { clip-path: inset(20% 0 80% 0); transform: translate(-2px, 1px); } 20% { clip-path: inset(60% 0 10% 0); transform: translate(2px, -1px); } 40% { clip-path: inset(40% 0 50% 0); transform: translate(-2px, 2px); } 60% { clip-path: inset(80% 0 5% 0); transform: translate(2px, -2px); } 80% { clip-path: inset(10% 0 70% 0); transform: translate(-1px, 1px); } 100% { clip-path: inset(30% 0 20% 0); transform: translate(1px, -1px); } }
         @keyframes chrom-glitch-2 { 0% { clip-path: inset(10% 0 60% 0); transform: translate(2px, -1px); } 20% { clip-path: inset(30% 0 20% 0); transform: translate(-2px, 1px); } 40% { clip-path: inset(70% 0 10% 0); transform: translate(2px, -2px); } 60% { clip-path: inset(20% 0 50% 0); transform: translate(-2px, 2px); } 80% { clip-path: inset(50% 0 30% 0); transform: translate(1px, -1px); } 100% { clip-path: inset(5% 0 80% 0); transform: translate(-1px, 1px); } }
 
-        .footer-name { font-size: clamp(2rem, 4vw, 4rem); line-height: 1.05; margin: 0; }
-        footer { font-size: 1.1rem; }
+        .footer-name { font-size: clamp(2.1rem, 4.5vw, 4.2rem); line-height: 1.05; margin: 0; }
+        footer { font-size: 1.15rem; }
+        footer, footer p, footer a, footer span, footer h2, footer h3, footer div { font-size: 1.15rem; }
+        footer .text-xs { font-size: 1.05rem; }
         
         .nav-toggle {
             display: none; font-size: 1.5rem; color: #00ffcc;
@@ -150,7 +152,7 @@
         .nav-overlay.active { display: block; }
 
         @media (max-width: 1024px) {
-            .footer-name { font-size: clamp(1.8rem, 5vw, 3.5rem); }
+            .footer-name { font-size: clamp(1.9rem, 5.2vw, 3.6rem); }
             #top-nav nav { gap: 0.5rem !important; }
         }
 
@@ -164,7 +166,7 @@
                 z-index: 60; box-shadow: 0 10px 30px rgba(0,0,0,0.9); gap: 1rem;
             }
             #top-nav .nav-links.open { display: flex !important; }
-            .footer-name { font-size: clamp(1.8rem, 6vw, 3.3rem); }
+            .footer-name { font-size: clamp(1.9rem, 6.2vw, 3.4rem); }
         }
 
         @media (max-width: 768px) {
@@ -178,16 +180,28 @@
         .curtain-active { transform: translateY(0) !important; pointer-events: auto !important; }
 
         .perspective-grid-footer {
-            background-image: linear-gradient(transparent 95%, rgba(255, 204, 0, 0.7) 100%), linear-gradient(90deg, transparent 95%, rgba(255, 204, 0, 0.7) 100%);
+            background-image: linear-gradient(transparent 95%, rgba(255, 51, 51, 0.7) 100%), linear-gradient(90deg, transparent 95%, rgba(255, 51, 51, 0.7) 100%);
             background-size: 80px 50px; transform: perspective(400px) rotateX(60deg) scaleY(1.5);
             transform-origin: bottom; -webkit-mask-image: radial-gradient(120% 100% at bottom center, black 0%, transparent 100%);
             mask-image: radial-gradient(120% 100% at bottom center, black 0%, transparent 100%);
         }
 
+        /* Footer Cat Link Styling */
+        .footer-cat-link {
+            display: inline-block;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        #footer-cat-container {
+            transition: transform 0.3s ease;
+        }
+
         /* Unique Typography for Scroll Words */
         .word-bold { font-family: 'Bebas Neue', sans-serif; letter-spacing: 2px; }
         .word-creative { font-family: 'Caveat', cursive; font-weight: 700; }
-        .word-sleek { font-family: ui-sans-serif, system-ui; font-weight: 200; letter-spacing: 0.15em; text-transform: uppercase; }
+        .word-sleek { font-family: 'Source Code Pro', monospace; font-weight: 200; letter-spacing: 0.15em; text-transform: uppercase; }
         .word-adaptive { font-family: 'Audiowide', sans-serif; text-transform: lowercase; }
 
         /* Smooth 3D animation for the centered words */
@@ -279,7 +293,7 @@
             width: 95%; max-width: 1400px; max-height: 85vh; 
             display: flex; flex-direction: column; position: relative;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+            font-family: 'Source Code Pro', monospace;
             overflow: hidden;
             border-radius: 16px;
 
@@ -326,7 +340,7 @@
             .modal-content-box h2 { font-size: 2.5rem !important; padding-right: 0; margin-bottom: 0.5rem; }
         }
 
-        .modal-content-box p { color: rgba(255, 255, 255, 0.85); font-weight: 300; line-height: 1.6; font-size: 0.95rem; }
+        .modal-content-box p { color: rgba(255, 255, 255, 0.85); font-weight: 300; line-height: 1.6; font-size: 0.95rem; word-spacing: -0.2em; }
         @media (min-width: 768px) {
             .modal-content-box p { line-height: 1.8; font-size: 1.05rem; }
         }
@@ -425,7 +439,7 @@
 
         </main>
 
-        <footer class="relative border-t-2 border-[#1a1f24] bg-[#00000A] pt-20 pb-6 px-6 md:px-12 overflow-hidden min-h-[50vh] flex flex-col justify-between">
+        <footer class="relative bg-[#00000A] pt-20 pb-6 px-6 md:px-12 overflow-hidden min-h-[50vh] flex flex-col justify-between">
             <div class="absolute bottom-0 -left-[50%] w-[200%] h-[85%] perspective-grid-footer pointer-events-none z-0"></div>
             <div class="relative z-10 grid grid-cols-1 lg:grid-cols-3 items-center w-full max-w-[1400px] mx-auto gap-12 lg:gap-4">
                 <div class="flex justify-center lg:justify-start w-full">
@@ -450,8 +464,8 @@
                             <path id="footer-tongue" d="M 184 208 C 184 250, 216 250, 216 208 Z" fill="#ff7da6" class="transition-all duration-1000 ease" />
                             <path id="footer-tongueSlit" d="M 200 210 L 200 235" stroke="#d44a7a" stroke-width="2" stroke-linecap="round" class="transition-all duration-1000 ease" />
                             <path id="footer-nose" d="M 190 194 C 196 189, 204 189, 210 194 L 200 204 Z" fill="#2a1a10" class="transition-all duration-1000 ease" />
-                            </svg>
-                        </div>
+                        </svg>
+                    </div>
                     </a>
                 </div>
                 <div class="flex flex-row justify-center lg:justify-center items-end gap-10 lg:gap-16 w-full text-left">
@@ -460,13 +474,14 @@
                         <a href="mailto:dieuwebuijink@gmail.com" class="hover:text-white transition-colors">dieuwebuijink@gmail.com</a>
                     </div>
                     <div>
-                        <a href="https://www.linkedin.com/in/dieuwe-buijink/" target="_blank" rel="noopener noreferrer" class="hover:text-white text-[#ff3333] transition-colors flex flex-col items-start gap-2 group w-14">
+                        <a href="https://www.linkedin.com/in/dieuwe-buijink/" target="_blank" rel="noopener noreferrer" class="hover:text-white text-[#ff3333] transition-colors flex flex-col items-start gap-2 group w-16">
                             <svg class="w-full h-auto group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
                             <span class="w-full text-left text-xs md:text-sm">LinkedIn</span>
                         </a>
                     </div>
                 </div>
             </div>
+            <div class="relative z-10 w-full max-w-[1400px] mx-auto mt-24 flex justify-start items-end"></div>
         </footer>
     </div>
 
@@ -645,12 +660,12 @@
 
         // --- PROJECT DATA ---
         const projectsData = [
-            { id: 1, name: "Neon Nights", img: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=600", imgSmall: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=400", desc1: "A fully immersive WebGL experience using custom shaders and Three.js.", desc2: "I handled the entire pipeline from 3D asset creation in Blender to final optimization.", desc3: "Architecture built with React Three Fiber and Web Audio API integration.", theme: { primary: '#00e5ff', hover: '#d946ef', glow1: 'rgba(0, 229, 255, 0.15)', glow2: 'rgba(217, 70, 239, 0.15)', shadow: 'rgba(0, 229, 255, 0.4)' } },
-            { id: 2, name: "Echo Engine", img: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&q=80&w=600", imgSmall: "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?auto=format&fit=crop&q=80&w=400", desc1: "Custom audio-visualization tool built for live DJ performances.", desc2: "Reacts in real-time to frequency bands, morphing generative geometry.", desc3: "Built using C++ and openFrameworks for absolute minimal latency.", theme: { primary: '#a3e635', hover: '#fde047', glow1: 'rgba(163, 230, 53, 0.15)', glow2: 'rgba(253, 224, 71, 0.15)', shadow: 'rgba(163, 230, 53, 0.4)' } },
-            { id: 3, name: "Project Adaptive", img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=600", imgSmall: "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&q=80&w=400", desc1: "A massive e-commerce platform overhaul focusing on responsive architecture.", desc2: "Rebuilt with React and Tailwind CSS, improving load times by 40%.", desc3: "Headless architecture with Next.js for SSR and static generation.", theme: { primary: '#3b82f6', hover: '#60a5fa', glow1: 'rgba(59, 130, 246, 0.15)', glow2: 'rgba(96, 165, 250, 0.15)', shadow: 'rgba(59, 130, 246, 0.4)' } },
-            { id: 4, name: "Cyber Grid", img: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&q=80&w=600", imgSmall: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&q=80&w=400", desc1: "Procedural level generator and balancing tool for Unity.", desc2: "Helping game developers rapidly iterate on grid-based puzzle designs.", desc3: "Utilizes Wave Function Collapse and A* pathfinding algorithms.", theme: { primary: '#ef4444', hover: '#fca5a5', glow1: 'rgba(239, 68, 68, 0.15)', glow2: 'rgba(252, 165, 165, 0.15)', shadow: 'rgba(239, 68, 68, 0.4)' } },
-            { id: 5, name: "Vanguard UI", img: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=600", imgSmall: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&q=80&w=400", desc1: "Enterprise fintech dashboard design focusing on data clarity.", desc2: "Simplified complex financial metrics into interactive charts.", desc3: "Constructed with Vue 3 and custom-built ECharts WebGL layer.", theme: { primary: '#8b5cf6', hover: '#c4b5fd', glow1: 'rgba(139, 92, 246, 0.15)', glow2: 'rgba(196, 181, 253, 0.15)', shadow: 'rgba(139, 92, 246, 0.4)' } },
-            { id: 6, name: "Data Visualization", img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=600", imgSmall: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=400", desc1: "Transforming massive datasets into interactive 3D globe visualizations.", desc2: "Inspired by sci-fi HUDs with glowing nodes and connecting lines.", desc3: "Powered by deck.gl and Mapbox with custom GPU shaders.", theme: { primary: '#f97316', hover: '#fbbf24', glow1: 'rgba(249, 115, 22, 0.15)', glow2: 'rgba(251, 191, 36, 0.15)', shadow: 'rgba(249, 115, 22, 0.4)' } }
+            { id: 1, name: "Virtual humans project", img: "pictures/work page/Virtual humans.png", imgSmall: "pictures/work page/Virtual humans.png", desc1: "A fully immersive WebGL experience using custom shaders and Three.js.", desc2: "I handled the entire pipeline from 3D asset creation in Blender to final optimization.", desc3: "Architecture built with React Three Fiber and Web Audio API integration.", theme: { primary: '#00e5ff', hover: '#d946ef', glow1: 'rgba(0, 229, 255, 0.15)', glow2: 'rgba(217, 70, 239, 0.15)', shadow: 'rgba(0, 229, 255, 0.4)' } },
+            { id: 2, name: "Jägermeister Health campaign", img: "pictures/work page/Jagermeister health.png", imgSmall: "pictures/work page/Jagermeister health.png", desc1: "Custom audio-visualization tool built for live DJ performances.", desc2: "Reacts in real-time to frequency bands, morphing generative geometry.", desc3: "Built using C++ and openFrameworks for absolute minimal latency.", theme: { primary: '#a3e635', hover: '#fde047', glow1: 'rgba(163, 230, 53, 0.15)', glow2: 'rgba(253, 224, 71, 0.15)', shadow: 'rgba(163, 230, 53, 0.4)' } },
+            { id: 3, name: "Desertion game", img: "pictures/work page/Dessertion.png", imgSmall: "pictures/work page/Dessertion.png", desc1: "A massive e-commerce platform overhaul focusing on responsive architecture.", desc2: "Rebuilt with React and Tailwind CSS, improving load times by 40%.", desc3: "Headless architecture with Next.js for SSR and static generation.", theme: { primary: '#3b82f6', hover: '#60a5fa', glow1: 'rgba(59, 130, 246, 0.15)', glow2: 'rgba(96, 165, 250, 0.15)', shadow: 'rgba(59, 130, 246, 0.4)' } },
+            { id: 4, name: "AVK website design and game", img: "pictures/work page/AVK.png", imgSmall: "pictures/work page/AVK.png", desc1: "Procedural level generator and balancing tool for Unity.", desc2: "Helping game developers rapidly iterate on grid-based puzzle designs.", desc3: "Utilizes Wave Function Collapse and A* pathfinding algorithms.", theme: { primary: '#ef4444', hover: '#fca5a5', glow1: 'rgba(239, 68, 68, 0.15)', glow2: 'rgba(252, 165, 165, 0.15)', shadow: 'rgba(239, 68, 68, 0.4)' } },
+            { id: 5, name: "Bits and bobs", img: "pictures/work page/bits and bobs.gif", imgSmall: "pictures/work page/bits and bobs.gif", desc1: "Enterprise fintech dashboard design focusing on data clarity.", desc2: "Simplified complex financial metrics into interactive charts.", desc3: "Constructed with Vue 3 and custom-built ECharts WebGL layer.", theme: { primary: '#8b5cf6', hover: '#c4b5fd', glow1: 'rgba(139, 92, 246, 0.15)', glow2: 'rgba(196, 181, 253, 0.15)', shadow: 'rgba(139, 92, 246, 0.4)' } },
+            { id: 6, name: "Photo portfolio", img: "pictures/work page/photo album.jpg", imgSmall: "pictures/work page/photo album.jpg", desc1: "Transforming massive datasets into interactive 3D globe visualizations.", desc2: "Inspired by sci-fi HUDs with glowing nodes and connecting lines.", desc3: "Powered by deck.gl and Mapbox with custom GPU shaders.", theme: { primary: '#f97316', hover: '#fbbf24', glow1: 'rgba(249, 115, 22, 0.15)', glow2: 'rgba(251, 191, 36, 0.15)', shadow: 'rgba(249, 115, 22, 0.4)' } }
         ];
 
         function initProjects() {

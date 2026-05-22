@@ -7,10 +7,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="site.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Press+Start+2P&display=swap');
-        body { background-color: #00000A; color: white; margin: 0; font-family: 'Audiowide', sans-serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Press+Start+2P&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap');
+        body { background-color: #00000A; color: white; margin: 0; font-family: 'Source Code Pro', monospace; }
         .font-audiowide { font-family: 'Audiowide', sans-serif; }
-        .font-normal-sans { font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; }
+        .font-normal-sans { font-family: 'Source Code Pro', monospace; }
         /* The "Slide in from bottom" entrance animation */
         #page-slide-wrapper {
             transform: translateY(100vh);
@@ -130,8 +130,10 @@
             100% { transform: scaleY(1); opacity: 1; }
         }
 
-        .footer-name { font-size: clamp(2rem, 4vw, 4rem); line-height: 1.05; margin: 0; }
-        footer { font-size: 1.1rem; }
+        .footer-name { font-size: clamp(2.1rem, 4.5vw, 4.2rem); line-height: 1.05; margin: 0; }
+        footer { font-size: 1.15rem; }
+        footer, footer p, footer a, footer span, footer h2, footer h3, footer div { font-size: 1.15rem; }
+        footer .text-xs { font-size: 1.05rem; }
         
         .nav-toggle {
             display: none; font-size: 1.5rem; color: #00ffcc; background: rgba(0, 0, 0, 0.5); border: 1px solid #00ffcc;
@@ -141,7 +143,7 @@
         .nav-overlay.active { display: block; }
 
         @media (max-width: 1024px) {
-            .footer-name { font-size: clamp(1.8rem, 5vw, 3.5rem); }
+            .footer-name { font-size: clamp(1.9rem, 5.2vw, 3.6rem); }
             #top-nav nav { gap: 0.5rem !important; }
         }
         @media (max-width: 768px) {
@@ -154,7 +156,7 @@
                 z-index: 60; box-shadow: 0 10px 30px rgba(0,0,0,0.9); gap: 1rem;
             }
             #top-nav .nav-links.open { display: flex !important; }
-            .footer-name { font-size: clamp(1.8rem, 6vw, 3.3rem); }
+            .footer-name { font-size: clamp(1.9rem, 6.2vw, 3.4rem); }
         }
         @media (min-width: 769px) { #top-nav .nav-links { display: contents; } }
 
@@ -162,10 +164,22 @@
         .curtain-active { transform: translateY(0) !important; pointer-events: auto !important; }
 
         .perspective-grid-footer {
-            background-image: linear-gradient(transparent 95%, rgba(255, 204, 0, 0.7) 100%), linear-gradient(90deg, transparent 95%, rgba(255, 204, 0, 0.7) 100%);
+            background-image: linear-gradient(transparent 95%, rgba(255, 51, 51, 0.7) 100%), linear-gradient(90deg, transparent 95%, rgba(255, 51, 51, 0.7) 100%);
             background-size: 80px 50px; transform: perspective(400px) rotateX(60deg) scaleY(1.5);
             transform-origin: bottom; -webkit-mask-image: radial-gradient(120% 100% at bottom center, black 0%, transparent 100%);
             mask-image: radial-gradient(120% 100% at bottom center, black 0%, transparent 100%);
+        }
+
+        /* Footer Cat Link Styling */
+        .footer-cat-link {
+            display: inline-block;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        #footer-cat-container {
+            transition: transform 0.3s ease;
         }
 
         /* --- SKILLS CAROUSEL --- */
@@ -220,14 +234,14 @@
 
         .skill-card-text {
             position: relative; z-index: 10; 
-            font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+            font-family: 'Source Code Pro', monospace;
             font-weight: bold; font-size: 1.2rem;
             color: #fff; text-align: center;
             background: rgba(10, 10, 15, 0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
             border: 1px solid rgba(255,255,255,0.2);
             padding: 0.6rem 1rem;
             border-radius: 8px; transition: all 0.3s ease;
-            width: 85%; word-wrap: break-word;
+            width: 85%; word-wrap: break-word; word-spacing: -0.2em;
         }
         @media (min-width: 768px) {
             .skill-card-text { font-size: 1.75rem; padding: 0.75rem 1.5rem; width: auto; max-width: 90%; }
@@ -268,7 +282,7 @@
             max-height: 85vh; 
             display: flex; flex-direction: column; position: relative;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+            font-family: 'Source Code Pro', monospace;
             overflow: hidden;
 
             /* Dynamic CSS Variables assigned via JS */
@@ -315,7 +329,7 @@
             .modal-content-box h2 { font-size: 2.5rem !important; padding-right: 0; margin-bottom: 0.5rem; }
         }
 
-        .modal-content-box p { color: rgba(255, 255, 255, 0.85); font-weight: 300; line-height: 1.6; font-size: 0.95rem; }
+        .modal-content-box p { color: rgba(255, 255, 255, 0.85); font-weight: 300; line-height: 1.6; font-size: 0.95rem; word-spacing: -0.2em; }
         @media (min-width: 768px) {
             .modal-content-box p { line-height: 1.8; font-size: 1.05rem; }
         }
@@ -412,7 +426,7 @@
                 </div>
                 <div class="flex justify-center w-full">
                     <a href="index.html" class="footer-cat-link">
-                        <div id="footer-cat-container" class="w-28 h-28 sm:w-32 sm:h-32 md:w-48 md:h-48 relative z-20 cursor-pointer">
+                        <div id="footer-cat-container" class="w-32 h-32 md:w-48 md:h-48 relative z-20 cursor-pointer">
                             <svg viewBox="0 0 400 300" class="w-full h-full drop-shadow-[0_0_15px_rgba(0,0,0,0.8)]">
                             <defs>
                                 <radialGradient id="eyeGradLeftFooter" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffffff" /><stop offset="10%" stop-color="#ffff00" /><stop id="footer-gradLeftMid" offset="50%" stop-color="#ffcc00" /><stop id="footer-gradLeftEnd" offset="100%" stop-color="#cc6600" /></radialGradient>
@@ -430,7 +444,7 @@
                             <path id="footer-tongueSlit" d="M 200 210 L 200 235" stroke="#d44a7a" stroke-width="2" stroke-linecap="round" class="transition-all duration-1000 ease" />
                             <path id="footer-nose" d="M 190 194 C 196 189, 204 189, 210 194 L 200 204 Z" fill="#2a1a10" class="transition-all duration-1000 ease" />
                         </svg>
-                        </div>
+                    </div>
                     </a>
                 </div>
                 <div class="flex flex-row justify-center lg:justify-center items-end gap-10 lg:gap-16 w-full text-left">
@@ -439,7 +453,7 @@
                         <a href="mailto:dieuwebuijink@gmail.com" class="hover:text-white transition-colors">dieuwebuijink@gmail.com</a>
                     </div>
                     <div>
-                        <a href="https://www.linkedin.com/in/dieuwe-buijink/" target="_blank" rel="noopener noreferrer" class="hover:text-white text-[#ff3333] transition-colors flex flex-col items-start gap-2 group w-14">
+                        <a href="https://www.linkedin.com/in/dieuwe-buijink/" target="_blank" rel="noopener noreferrer" class="hover:text-white text-[#ff3333] transition-colors flex flex-col items-start gap-2 group w-16">
                             <svg class="w-full h-auto group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
                             <span class="w-full text-left text-xs md:text-sm">LinkedIn</span>
                         </a>
@@ -492,7 +506,7 @@
         const skillsData = [
             { 
                 id: 1, name: "Website development", 
-                img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=400", 
+                img: "pictures/skills/website development.jpeg", 
                 desc1: "Extensive experience in creating responsive, dynamic web applications that not only look stunning but perform flawlessly across all devices. I specialize in building scalable, component-driven architectures using modern frameworks like React, Vue, and Tailwind CSS. Whether it's a high-converting landing page, a complex e-commerce platform, or an interactive data dashboard, I ensure every pixel is perfectly aligned and every interaction feels incredibly smooth. My workflow heavily emphasizes accessibility (a11y), SEO best practices, and lightning-fast load times, making sure your audience gets the best possible experience from the moment they land on the page.", 
                 desc2: "Focused on clean code architecture, performance optimization, and robust backend integrations. I don't just build the frontend; I construct the entire ecosystem. From designing efficient RESTful APIs to managing serverless deployments and CI/CD pipelines, I handle the full lifecycle of web development. I thrive in collaborative environments, conducting rigorous code reviews, and maintaining strict adherence to SOLID principles to ensure the codebase remains maintainable and scalable for years to come.",
                 desc3: "Under the hood, I leverage tools like Webpack, Vite, and Babel for optimal asset bundling. State management is handled gracefully using Redux, Zustand, or native Context APIs depending on project scale. I also have deep experience integrating third-party services, payment gateways (Stripe, PayPal), and real-time database syncing through WebSockets and Firebase. Testing is fully automated via Jest and Cypress to guarantee zero regressions during deployment phases.",
@@ -500,7 +514,7 @@
             },
             { 
                 id: 2, name: "3D modelling", 
-                img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=400", 
+                img: "pictures/skills/bladerunnerfinal 3D moddeling.png", 
                 desc1: "Creating high-fidelity 3D assets and optimizing models for both pre-rendered cinematics and real-time game engines. I handle the entire 3D pipeline from initial block-outs and high-poly sculpting to retopology, UV mapping, and final texture baking. My expertise covers both hard-surface modeling for vehicles and architecture, as well as organic sculpting for characters and creatures. I bring concepts to life with meticulous attention to detail, ensuring edge loops flow perfectly for animation and silhouettes remain strong from every angle.", 
                 desc2: "Proficient in industry-standard software including Blender, ZBrush, Maya, and Substance Painter. I specialize in creating PBR (Physically Based Rendering) materials that react realistically to lighting environments. Whether it's crafting a weathered, cyberpunk aesthetic or a clean, stylized look, I adapt my texturing workflow to match the specific art direction of the project. I also heavily optimize poly-counts and utilize LOD (Level of Detail) systems to ensure maximum performance in VR and mobile applications.",
                 desc3: "Technical execution includes advanced rigging setups with inverse kinematics (IK), custom bone constraints, and weight painting for seamless deformations. I frequently use Python scripting within Blender to automate repetitive tasks like renaming vertex groups or batch-exporting assets to FBX/GLTF formats. Additionally, I have extensive experience setting up complex material nodes, utilizing procedural generation techniques to create infinite variations of textures without relying on heavy image files.",
@@ -508,7 +522,7 @@
             },
             { 
                 id: 3, name: "Game development", 
-                img: "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?auto=format&fit=crop&q=80&w=400", 
+                img: "pictures/skills/game design.png", 
                 desc1: "Developing interactive mechanics and gameplay loops that keep players engaged for hours. My approach to game design is heavily iterative, focusing on prototyping core mechanics rapidly to find the 'fun factor' before scaling up production. I have a deep understanding of game architecture, component-based entity systems, and state machines, allowing me to build robust systems for player controllers, enemy AI, and complex inventory management. From 2D platformers to 3D open-world adventures, I bridge the gap between creative vision and technical execution.", 
                 desc2: "Experience with level design, integrating storytelling, and balancing in-game economies. I use tools like Unity and Unreal Engine to construct immersive environments, paying close attention to pacing, player guidance, and spatial audio cues. I am adept at writing efficient C# and C++ scripts, optimizing garbage collection, and managing physics calculations to maintain a rock-solid 60+ FPS target. Furthermore, I implement robust save systems and cross-platform controller support to ensure a seamless experience for all players.",
                 desc3: "I frequently utilize post-processing stacks, custom shaders (HLSL/GLSL), and particle systems to create stunning visual effects that give the game its unique identity. Networking architecture is another strong suit, utilizing reliable UDP protocols to synchronize player states in fast-paced multiplayer environments. I also integrate analytical hooks to track player behavior, allowing for data-driven decisions during post-launch patching and content updates.",
@@ -524,7 +538,7 @@
             },
             { 
                 id: 5, name: "Photography", 
-                img: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&q=80&w=400", 
+                img: "pictures/skills/photography.jpg", 
                 desc1: "Capturing high-quality images and freezing fleeting moments with a distinct, cinematic eye. Whether it's a fast-paced event, an intimate portrait session, or structural architectural photography, I focus on composition, lighting, and narrative. I am highly proficient with full-frame DSLR and mirrorless systems, utilizing a deep understanding of the exposure triangle to shoot purely in manual mode. I constantly hunt for unique angles and natural framing elements to guide the viewer's eye exactly where it needs to go.", 
                 desc2: "Editing and color grading are where the images truly come alive. I spend hours in Adobe Lightroom and Photoshop developing the RAW files to achieve the perfect aesthetic. I don't just apply preset filters; I carefully manipulate tone curves, HSL sliders, and split toning to establish a mood that resonates with the subject matter. My retouching process is non-destructive, focusing on subtle dodge and burn techniques to enhance depth without making the final image look unnatural or heavily processed.",
                 desc3: "On the technical side, I maintain an incredibly rigorous data management workflow, utilizing redundant NAS backups and strict metadata tagging to ensure no file is ever lost. I have extensive experience with off-camera flash (OCF) setups, utilizing softboxes, grids, and gels to entirely reconstruct lighting environments on location. For commercial clients, I deliver files strictly optimized for their final destination, whether that entails CMYK conversion for high-end print or sRGB compression for rapid web loading.",
@@ -532,7 +546,7 @@
             },
             { 
                 id: 6, name: "Media marketing", 
-                img: "https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?auto=format&fit=crop&q=80&w=400", 
+                img: "pictures/skills/media marketing.png", 
                 desc1: "Creating and executing dynamic digital marketing campaigns that cut through the noise and drive measurable engagement. I don't believe in a one-size-fits-all approach; I tailor strategies specifically to the platform and the target demographic. From viral short-form video content on TikTok and Instagram Reels to long-form, SEO-optimized thought leadership articles on LinkedIn, I know how to hack the algorithm to maximize organic reach. I craft compelling copy that hooks the reader instantly and clearly communicates the brand's core value proposition.", 
                 desc2: "Analyzing engagement metrics and driving growth is the foundation of my marketing philosophy. I live in the analytics dashboards, tracking CTR, bounce rates, and conversion funnels to understand exactly what content resonates and what falls flat. I utilize A/B testing on ad creatives and landing pages to relentlessly optimize the return on ad spend (ROAS). By combining raw creative intuition with hardcore data analysis, I consistently scale campaigns and generate high-quality leads for diverse client portfolios.",
                 desc3: "Technical implementations involve managing complex ad accounts across Google Ads and Meta Business Manager, utilizing custom lookalike audiences and retargeting pixels. I am proficient with marketing automation tools like HubSpot and Mailchimp, designing intricate email drip campaigns triggered by specific user behaviors. Furthermore, I implement advanced UTM tracking and Google Tag Manager setups to ensure multi-touch attribution models are perfectly accurate, proving exactly where the ROI is coming from.",
@@ -540,7 +554,7 @@
             },
             { 
                 id: 7, name: "Language & culture", 
-                img: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=400", 
+                img: "pictures/skills/language and culture.jpg", 
                 desc1: "Understanding and bridging cultural nuances is absolutely critical in today's globalized digital landscape. It's not just about direct translation; it's about localization and cultural adaptation. I possess a deep understanding of sociolinguistics, allowing me to tailor messaging, tone, and visual imagery so that it authentically resonates with diverse international audiences. Whether entering a new market or managing a multicultural community, I ensure that the brand's voice remains consistent while respecting local customs and sensibilities.", 
                 desc2: "Applying linguistic skills to diverse projects ranging from UX writing to international marketing campaigns. I carefully analyze regional idioms, slang, and cultural touchstones to craft copy that feels native, not imported. This extends to visual design as well; I understand the psychological implications of color theory and iconography across different cultures, advising teams on how to avoid unintentional offenses and maximize positive reception. I am the bridge that ensures your product speaks the user's language, both literally and emotionally.",
                 desc3: "Technical localization workflows involve utilizing specialized CMS platforms and translation management software (like Phrase or Lokalise) to streamline the localization process across massive codebases. I implement proper Unicode standards, right-to-left (RTL) text rendering logic for languages like Arabic or Hebrew, and ensure dates, currencies, and pluralization rules are dynamically formatted based on the user's locale string. This guarantees a technically flawless internationalized product.",
@@ -694,23 +708,7 @@
             initSoundBars();
         });
 
-        // --- FOOTER EYE TRACKING & NAV ---
-        function setFooterEyeTracking(e) {
-            const pupilL = document.getElementById('footer-pupilL');
-            const pupilR = document.getElementById('footer-pupilR');
-            const highL = document.getElementById('footer-highL');
-            const highR = document.getElementById('footer-highR');
-            if (!pupilL || !pupilR || !highL || !highR) return;
-            const x = (e.clientX / window.innerWidth - 0.5) * 12;
-            const y = (e.clientY / window.innerHeight - 0.5) * 12;
-            const translate = `translate(${x}, ${y})`;
-            pupilL.setAttribute('transform', translate);
-            pupilR.setAttribute('transform', translate);
-            highL.setAttribute('transform', translate);
-            highR.setAttribute('transform', translate);
-        }
-        window.addEventListener('mousemove', setFooterEyeTracking);
-
+        // --- NAV ---
         (function setupBurgerMenu() {
             const navToggle = document.getElementById('nav-toggle');
             const navLinks = document.querySelector('#top-nav .nav-links');
