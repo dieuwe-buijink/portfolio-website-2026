@@ -341,6 +341,8 @@
         }
 
         .modal-content-box p { color: rgba(255, 255, 255, 0.85); font-weight: 300; line-height: 1.6; font-size: 0.95rem; word-spacing: -0.2em; }
+        .modal-content-box a { color: #60a5fa; text-decoration: underline; transition: color 0.2s ease, opacity 0.2s ease; }
+        .modal-content-box a:hover { color: #93c5fd; opacity: 0.9; }
         @media (min-width: 768px) {
             .modal-content-box p { line-height: 1.8; font-size: 1.05rem; }
         }
@@ -355,6 +357,40 @@
             .modal-media-placeholder, .modal-small-media { border-radius: 16px; }
             .modal-media-placeholder { height: 450px; } 
             .modal-small-media { width: 40%; max-width: 450px; height: 280px; } 
+        }
+
+        .modal-image-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        .modal-image-card {
+            position: relative;
+            border-radius: 18px;
+            overflow: hidden;
+            background: rgba(15, 15, 20, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-image-card img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        .modal-image-card figcaption {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 1rem;
+            color: #d1d5db;
+            background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.75) 100%);
+            font-size: 0.92rem;
+            line-height: 1.4;
         }
     </style>
 </head>
@@ -498,24 +534,85 @@
                     </p>
                 </div>
 
-                <div class="modal-media-placeholder my-2">
-                    <img id="modal-main-img" src="" class="absolute inset-0 w-full h-full object-cover" alt="">
+                <!-- (Embedded Pac-Man container moved to bottom of modal) -->
+
+                <div class="modal-image-grid mt-4" id="modal-images-container">
+                    <figure class="modal-image-card">
+                        <img id="modal-top-img-1" src="" alt="" class="w-full h-auto">
+                        <figcaption id="modal-top-caption-1" class="text-sm text-gray-300 mt-3 px-2"></figcaption>
+                    </figure>
+                    <figure class="modal-image-card">
+                        <img id="modal-top-img-2" src="" alt="" class="w-full h-auto">
+                        <figcaption id="modal-top-caption-2" class="text-sm text-gray-300 mt-3 px-2"></figcaption>
+                    </figure>
                 </div>
 
-                <div class="flex flex-col md:flex-row gap-6 lg:gap-10 mt-2">
-                    <p id="modal-desc-2" class="flex-1">
+                <div id="modal-desc-2-container" class="flex flex-col lg:flex-row gap-6 lg:gap-10 mt-6">
+                    <p id="modal-desc-2" class="flex-1 text-gray-200">
                         <!-- Text populated by JS -->
                     </p>
                     <div class="modal-small-media">
-                        <img id="modal-small-img" src="" class="absolute inset-0 w-full h-full object-cover" alt="">
+                        <img id="modal-small-img" src="" class="absolute inset-0 w-full h-full object-contain" alt="">
                     </div>
                 </div>
 
-                <div class="mt-4 pt-6 border-t border-gray-700/50">
+                <div id="modal-tech-section" class="mt-6 pt-6 border-t border-gray-700/50">
                     <h3 class="font-audiowide text-xl mb-4 text-white opacity-80 uppercase tracking-widest">Technical Implementation</h3>
                     <p id="modal-desc-3" class="text-gray-400">
                         <!-- Text populated by JS -->
                     </p>
+                </div>
+
+                <!-- EXTENDED PHOTO GRID FOR PORTFOLIO -->
+                <div id="modal-extended-photo-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6" style="display:none;"></div>
+
+                <!-- EMBEDDED PAC-MAN GAME CONTAINER (placed at bottom as requested) -->
+                <div id="embedded-pacman-container" style="display:none; width:100%; padding:20px; background:rgba(0,0,0,0.3); border-radius:8px; margin:20px 0;">
+                    <style>
+                        #pm-game-container { position: relative; box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); width: 100%; max-width: 810px; margin: 0 auto; }
+                        #pm-game-container canvas { display: block; background-color: black; border: 4px solid #1919A6; border-radius: 4px; width: 100%; touch-action: none; margin: 0 auto; image-rendering: pixelated; }
+                        #pm-ui-layer { display: flex; justify-content: space-between; padding: 10px 0; font-size: 1.2rem; font-weight: bold; text-transform: uppercase; max-width: 810px; margin: 0 auto; }
+                        .pm-stat-box { background: #222; padding: 5px 15px; border-radius: 15px; border: 1px solid #333; }
+                        #pm-score span { color: #FFD700; }
+                        #pm-level span { color: #00FF00; }
+                        #pm-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10; border-radius: 4px; }
+                        #pm-overlay h1 { font-size: 3rem; color: #FFD700; margin-bottom: 10px; text-shadow: 2px 2px #d32f2f; line-height: 1; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+                        #pm-overlay p { font-size: 1.2rem; margin-bottom: 30px; color: #ddd; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+                        .pm-btn-group { display: flex; gap: 15px; flex-direction: column; align-items: center; }
+                        .pm-btn { background: #d32f2f; color: white; border: none; padding: 15px 40px; font-size: 1.2rem; border-radius: 30px; cursor: pointer; font-weight: bold; transition: transform 0.1s, background 0.2s; box-shadow: 0 4px 0 #9a0007; text-align: center; display: inline-block; width: 250px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+                        .pm-file-upload-btn { background: #1976D2; box-shadow: 0 4px 0 #0D47A1; font-size: 1rem; padding: 12px 30px; }
+                        .pm-btn:active { transform: translateY(4px); box-shadow: none; }
+                        .pm-btn:hover { background: #ff6659; }
+                        .pm-file-upload-btn:hover { background: #42a5f5; }
+                        #pm-skinInput { display: none; }
+                    </style>
+                    <div id="pm-ui-layer">
+                        <div class="pm-stat-box" id="pm-score">Score: <span>0</span></div>
+                        <div class="pm-stat-box" id="pm-level">Level: <span>1</span></div>
+                    </div>
+                    <div id="pm-game-container">
+                        <canvas id="embeddedGameCanvas"></canvas>
+                        <div id="pm-overlay">
+                            <h1>PAC-MAN</h1>
+                            <p>Use Arrow Keys or Swipe</p>
+                            <div class="pm-btn-group">
+                                <button id="pm-startBtn" class="pm-btn">START GAME</button>
+                                <label for="pm-skinInput" class="pm-btn pm-file-upload-btn">📷 Upload Face</label>
+                                <input type="file" id="pm-skinInput" accept="image/*">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-image-grid mt-4" id="modal-bottom-images-container">
+                    <figure class="modal-image-card">
+                        <img id="modal-bottom-img-1" src="" alt="" class="w-full h-auto">
+                        <figcaption id="modal-bottom-caption-1" class="text-sm text-gray-300 mt-3 px-2"></figcaption>
+                    </figure>
+                    <figure class="modal-image-card">
+                        <img id="modal-bottom-img-2" src="" alt="" class="w-full h-auto">
+                        <figcaption id="modal-bottom-caption-2" class="text-sm text-gray-300 mt-3 px-2"></figcaption>
+                    </figure>
                 </div>
 
             </div>
@@ -660,12 +757,154 @@
 
         // --- PROJECT DATA ---
         const projectsData = [
-            { id: 1, name: "Virtual humans project", img: "pictures/work page/Virtual humans.png", imgSmall: "pictures/work page/Virtual humans.png", desc1: "A fully immersive WebGL experience using custom shaders and Three.js.", desc2: "I handled the entire pipeline from 3D asset creation in Blender to final optimization.", desc3: "Architecture built with React Three Fiber and Web Audio API integration.", theme: { primary: '#00e5ff', hover: '#d946ef', glow1: 'rgba(0, 229, 255, 0.15)', glow2: 'rgba(217, 70, 239, 0.15)', shadow: 'rgba(0, 229, 255, 0.4)' } },
-            { id: 2, name: "Jägermeister Health campaign", img: "pictures/work page/Jagermeister health.png", imgSmall: "pictures/work page/Jagermeister health.png", desc1: "Custom audio-visualization tool built for live DJ performances.", desc2: "Reacts in real-time to frequency bands, morphing generative geometry.", desc3: "Built using C++ and openFrameworks for absolute minimal latency.", theme: { primary: '#a3e635', hover: '#fde047', glow1: 'rgba(163, 230, 53, 0.15)', glow2: 'rgba(253, 224, 71, 0.15)', shadow: 'rgba(163, 230, 53, 0.4)' } },
-            { id: 3, name: "Desertion game", img: "pictures/work page/Dessertion.png", imgSmall: "pictures/work page/Dessertion.png", desc1: "A massive e-commerce platform overhaul focusing on responsive architecture.", desc2: "Rebuilt with React and Tailwind CSS, improving load times by 40%.", desc3: "Headless architecture with Next.js for SSR and static generation.", theme: { primary: '#3b82f6', hover: '#60a5fa', glow1: 'rgba(59, 130, 246, 0.15)', glow2: 'rgba(96, 165, 250, 0.15)', shadow: 'rgba(59, 130, 246, 0.4)' } },
-            { id: 4, name: "AVK website design and game", img: "pictures/work page/AVK.png", imgSmall: "pictures/work page/AVK.png", desc1: "Procedural level generator and balancing tool for Unity.", desc2: "Helping game developers rapidly iterate on grid-based puzzle designs.", desc3: "Utilizes Wave Function Collapse and A* pathfinding algorithms.", theme: { primary: '#ef4444', hover: '#fca5a5', glow1: 'rgba(239, 68, 68, 0.15)', glow2: 'rgba(252, 165, 165, 0.15)', shadow: 'rgba(239, 68, 68, 0.4)' } },
-            { id: 5, name: "Bits and bobs", img: "pictures/work page/bits and bobs.gif", imgSmall: "pictures/work page/bits and bobs.gif", desc1: "Enterprise fintech dashboard design focusing on data clarity.", desc2: "Simplified complex financial metrics into interactive charts.", desc3: "Constructed with Vue 3 and custom-built ECharts WebGL layer.", theme: { primary: '#8b5cf6', hover: '#c4b5fd', glow1: 'rgba(139, 92, 246, 0.15)', glow2: 'rgba(196, 181, 253, 0.15)', shadow: 'rgba(139, 92, 246, 0.4)' } },
-            { id: 6, name: "Photo portfolio", img: "pictures/work page/photo album.jpg", imgSmall: "pictures/work page/photo album.jpg", desc1: "Transforming massive datasets into interactive 3D globe visualizations.", desc2: "Inspired by sci-fi HUDs with glowing nodes and connecting lines.", desc3: "Powered by deck.gl and Mapbox with custom GPU shaders.", theme: { primary: '#f97316', hover: '#fbbf24', glow1: 'rgba(249, 115, 22, 0.15)', glow2: 'rgba(251, 191, 36, 0.15)', shadow: 'rgba(249, 115, 22, 0.4)' } }
+    
+  {
+    id: 1,
+    name: "Virtual humans project",
+    img: "pictures/work page/Virtual humans.png",
+    imgSmall: "pictures/work page/Virtual humans.png",
+    desc1: "During my internship at Mindlabs Tilburg, I engineered 'Noa', an adaptive Virtual Human for the Digireal project—a collaborative initiative between Fontys ICT and BUas. Projected inside a life-sized Holobox, the avatar was designed to foster meaningful, autonomous interactions for children aged 8 to 12. My process began by synthesizing extensive background research into MetaHuman capabilities, non-verbal communication, and character design principles to establish a solid psychological and technical foundation.",
+    img1: {
+      src: "pictures/work page/vh_holobox_setup.png",
+      alt: "Holobox display setup at Mindlabs",
+      caption: "The Holobox hardware setup used to project our interactive Virtual Human."
+    },
+    desc2: "Using Unreal Engine, I brought the avatar to life by blending fluid MetaHuman Creator animations with dynamic Niagara VFX, such as an attention-grabbing smoke simulation. I engineered complex interaction pipelines integrating gaze tracking, socket systems, and precise gesture recognition. After observing user tests, I noticed children struggling with specific inputs, prompting me to develop intuitive UI video guides and robust reset-gestures that significantly lowered the interaction threshold.",
+    img2: {
+      src: "pictures/work page/vh_figma_scenarios.png",
+      alt: "Figma scenario designs",
+      caption: "Designing multiple interaction scenarios and integrating visual guidance elements to assist children with the required gestures."
+    },
+    desc3: "Beyond immediate development, I focused heavily on project performance and longevity. I optimized the demanding Unreal project into stable, validated builds suitable for the Holobox and demo hardware. Wrapping up the internship, I delivered a comprehensive handover via Git, structured agile sprint documentation, and a strategic advisory report for the Fontys IXD-lectoraat, advocating for more accessible XR alternatives like Looking-Glass displays to expand the project's future reach.",
+    theme: {
+      primary: '#00e5ff',
+      hover: '#d946ef',
+      glow1: 'rgba(0, 229, 255, 0.15)',
+      glow2: 'rgba(217, 70, 239, 0.15)',
+      shadow: 'rgba(0, 229, 255, 0.4)'
+    }
+  },
+  {
+    id: 2,
+    name: "Jägermeister Health campaign",
+    img: "pictures/work page/Jagermeister health.png",
+    imgSmall: "pictures/work page/Jagermeister health.png",
+    desc1: "I worked on a project where i wanted to strategize and execute a complete brand campaign for 'Jägermeister Health' a fictional health-focused sub-brand reimagining Jägermeister's iconic herbal formula as a cough syrup. Our approach flipped the brand's notorious party image into an April Fools paradox: marketing therapeutic remedies in bottles designed to mimic the original liqueur shots. This required deep audience analysis, competitor positioning (Otrivin, Dampo), and packaging design that maintained the brand's bold visual identity while signaling health-conscious positioning.",
+    img1: {
+      src: "pictures/work page/jm_product_lineup.png",
+      alt: "Renderings of the Jägermeister health products",
+      caption: "Our conceptual product line featuring Jägermeister Cough Syrup, Throat Lozenges, and Cold Balm."
+    },
+    desc2: "Our target demographic—young adults aged 21–38—represented a unique intersection: established drinkers seeking wellness solutions without sacrificing brand identity. By positioning the products as recovery essentials for the morning after, we created a compelling value proposition that spoke directly to our audience's lifestyle contradictions. To bring this vision to market, I spearheaded the creation of an interactive campaign website featuring a Three.js-powered rhythm game (Guitar Hero-style mechanic) that rewarded players reaching a combo of 30 with a 15% discount coupon. The website showcased looping product videos, a 3D rotating product model built in Blender, and custom interactive animations—all running on our FHICT server.",
+    img2: {
+      src: "pictures/work page/jm_target_audience.png",
+      alt: "Target Audience and Competitor Analysis",
+      caption: "Analyzing competitors and positioning the sub-brand for young adults needing recovery after a night out."
+    },
+    desc3: "Deliverables spanned both physical and digital: custom 3D-modeled product bottles (GLB files optimized for web), professional packaging designs for Cough Syrup, Throat Lozenges, and Cold Balm with custom label textures in Blender, branded video content with seamless crossfade transitions, and a fully functional interactive website combining Tailwind CSS, Three.js rendering, and Vanilla JavaScript. I conducted two rounds of user testing on the rhythm game (~10 participants total), iterating on difficulty balancing—reducing note speed and lowering the win condition based on feedback. The final deliverable hosted at <a href=\"https://i512001.luna.fhict.nl/jagermeister-Health/\" target=\"_blank\" rel=\"noopener noreferrer\">i512001.luna.fhict.nl/jagermeister-Health/</a> demonstrated how interactive storytelling and gamification can drive engagement in brand campaigns.",
+    theme: {
+      primary: '#a3e635',
+      hover: '#fde047',
+      glow1: 'rgba(163, 230, 53, 0.15)',
+      glow2: 'rgba(253, 224, 71, 0.15)',
+      shadow: 'rgba(163, 230, 53, 0.4)'
+    }
+  },
+
+            {
+              id: 3,
+              name: "Desertion game",
+              img: "pictures/work page/Dessertion.png",
+              imgSmall: "pictures/work page/Dessertion.png",
+              img1: {
+                src: "pictures/work page/Dessertion.png",
+                alt: "Desertion gameplay and level design",
+                caption: "Low-fi blockout level with enemy placement and platforming flow established."
+              },
+              img2: {
+                src: "pictures/work page/Dessertion.png",
+                alt: "Desertion pixel art and animation",
+                caption: "Character animation frames and pixel art environment assets for the final build."
+              },
+              imgSmallCaption: "Play the demo at dieuwebuijink.itch.io/desertion.",
+              desc1: "Desertion is a challenging 2D pixel-art action platformer built in collaboration with a peer over a semester at school. set in a post-apocalyptic, resource-scarce world where navigation and timing are survival.",
+              desc2: "I designed and blocked out the first level using box colliders to establish platform flow, sightlines, and enemy spawning zones. I researched responsive character movement using the GMTK platformer toolkit, then implemented a snappy control scheme in Unity that balanced speed with precision. I engineered two distinct enemy archetypes: stationary patrol enemies and proximity-triggered chasers, each with health pools and damage feedback.",
+              desc3: "I sourced and integrated ambient music from Fesliyan Studios to match our deserted aesthetic, then implemented contextual sound effects (footsteps, jump/land, weapon attacks) using Freesound.org samples edited and normalized in Audacity. I supported level iteration through Git with established team protocols (shared scenes, logical file hierarchy, disciplined commits), and contributed pixel art for character animation and environment details. The polished demo shipped at <a href=\"https://dieuwebuijink.itch.io/desertion\" target=\"_blank\" rel=\"noopener noreferrer\">dieuwebuijink.itch.io/desertion</a> after two rounds of playtest-driven refinement.",
+              theme: {
+                primary: '#3b82f6',
+                hover: '#60a5fa',
+                glow1: 'rgba(59, 130, 246, 0.15)',
+                glow2: 'rgba(96, 165, 250, 0.15)',
+                shadow: 'rgba(59, 130, 246, 0.4)'
+              }
+            },
+
+            {
+              id: 4,
+              name: "AVK: Prompt Fabriek & Website Redesign",
+              img: "pictures/work page/AVK.png",
+              imgSmall: "pictures/work page/AVK.png",
+              desc1: "During my 4.5-month internship at AVK a digital transformation consultancy specializing in AI training and business optimization—I led two parallel UX/UI design projects that fundamentally modernized the company's digital presence. AVK specializes in helping enterprises master Microsoft 365 and AI tools like ChatGPT and Copilot through innovative training methods. Recognizing that their own digital footprint lagged behind their expertise, AVK brought me on with a mandate to refresh their brand identity and conceptualize an interactive AI training game. The internship spanned 8 methodical sprints, combining deep user research, iterative prototyping, stakeholder management, and real-world implementation.",
+              img1: {
+                src: "pictures/work page/avk_navigation_before_after.png",
+                alt: "AVK.nl navigation redesign before and after",
+                caption: "Navigation restructuring reduced visible menu items by 50%, improving user information discovery."
+              },
+              desc2: "Project 1: Prompt Fabriek (AI Educational Game) AVK envisioned an escape-room-style training game where users solve challenges using correctly-crafted AI prompts. The game, set in the fictional company universe 'Ambachtelijke Vliegende Koekjes', featured a charismatic AI-generated character named Professor Zoetendaal who guided players through prompt engineering lessons. I conducted extensive user research across trainers, office workers, and tech enthusiasts—capturing 10+ user test sessions with 85% positive feedback on the gameplay concept. My design process included: 4 comprehensive research reports on game UI best practices, wireframes with multiple stakeholder feedback iterations, mid-fidelity prototypes for validation, and high-fidelity interactive Figma designs across both desktop and mobile platforms. When project scope constraints emerged mid-way (a 2-person team couldn't fully build and deploy within the timeline), I pivoted strategically: instead of delivering a half-built product, I created a complete, professional-grade design system with detailed documentation, organized Figma components, and comprehensive handoff materials for the external development team . This design-first approach proved equally valuable—it provided developers with crystal-clear specifications and reduced rework cycles.",
+              img2: {
+                src: "pictures/work page/avk_promptfabriek_design.png",
+                alt: "Prompt Fabriek game design system",
+                caption: "High-fidelity prototypes with complete component library, ready for external development handoff."
+              },
+              desc3: "<strong>Project 2: Brand & Website Optimization</strong><br>AVK managed two primary websites: <a href=\"https://avk.nl\" target=\"_blank\" rel=\"noopener noreferrer\">avk.nl</a> (corporate site) and <a href=\"https://trainen.online\" target=\"_blank\" rel=\"noopener noreferrer\">trainen.online</a> (training platform). Both were functionally sound but visually dated and difficult to navigate. I executed a comprehensive 4-question research framework investigating user navigation patterns, pain points, competitor benchmarks, and UX improvement opportunities. Key finding: the navigation was overwhelming with 80+ links causing decision paralysis. My solution involved meticulous link categorization, hierarchical restructuring, and a phased rollout strategy. I delivered live improvements including: <a href=\"https://avk.nl\" target=\"_blank\" rel=\"noopener noreferrer\">AVK.nl</a> navigation completely restructured (50% reduction in visible menu items), <a href=\"https://trainen.online\" target=\"_blank\" rel=\"noopener noreferrer\">trainen.online</a> UX audit with 15+ actionable improvements, and a bonus project—RVS marketing campaign landing pages for Microsoft Copilot training events, deployed across three sector-specific variants (education, government, healthcare). Quick wins were implemented immediately to build momentum before the major navigation redesign went live. Throughout both projects, I learned the critical importance of stakeholder communication: switching from email coordination to weekly phone calls and documented agreements prevented major rework and ensured alignment. User testing was conducted in two rounds, with feedback directly driving design refinements. Both projects shipped successfully: the Prompt Fabriek design documentation is now guiding the development team, and AVK's websites reflect a modern, cohesive brand identity that accurately represents their innovative mission.",
+              theme: {
+                primary: '#ef4444',
+                hover: '#fca5a5',
+                glow1: 'rgba(239, 68, 68, 0.15)',
+                glow2: 'rgba(252, 165, 165, 0.15)',
+                shadow: 'rgba(239, 68, 68, 0.4)'
+              }
+            },
+                        { 
+                            id: 5, 
+                            name: "Jasmin Brand & Pac-Man", 
+                            img: "pictures/work page/bits and bobs.gif", 
+                            imgSmall: "pictures/work page/bits and bobs.gif", 
+                            desc1: "<strong>Jasmin Gum — Website I built for a friend's brand</strong><br>I implemented the responsive campaign website and landing pages for 'Jasmin', translating Figma designs into production-ready HTML/CSS and interactive JS components (animated headers, product showcases, responsive breakpoints). See the portfolio folders 'Building a website' and 'website Jasmin gum' for design iterations, 3D assets, and hosting evidence.",
+                            img1: {
+                                src: "pictures/work page/jasmin_website_iterations.png",
+                                alt: "Jasmin website design iterations and branding",
+                                caption: "Website iterations with Figma mockups, AI-assisted layouts, and interactive header animations featuring the gum product."
+                            },
+                            desc2: "<strong>3D Spinning Gum Bottle — Unreal Engine Product Visualization</strong><br>As the centerpiece of the Jasmin website, I developed a premium 3D product showcase using Unreal Engine. Starting with a free base model, I assembled and modified individual components, then created custom wrapper designs by leveraging AI iteration in Figma—rapidly producing two distinct aesthetic options. The preferred design was a cherry-mint inspired wrapper that better captured Jasmin's brand identity. Using Unreal's Sequencer tool, I choreographed a multi-axis rotation (yaw, pitch, roll) to reveal the full product form, then recorded the animation via OBS into a perfectly looped video. The result delivers a high-fidelity, premium-feeling product display embedded on the live website at <a href=\"https://i512001.luna.fhict.nl/Brand-a-friend/\" target=\"_blank\" rel=\"noopener noreferrer\">i512001.luna.fhict.nl/Brand-a-friend/</a>.",
+                            img2: {
+                                src: "pictures/work page/jasmin_3d_bottle.png",
+                                alt: "3D spinning gum bottle product visualization",
+                                caption: "3D product model created in Unreal Engine with custom wrapper design and looped spinning animation."
+                            },
+                            desc3: "<strong>Technical Implementation — Pac‑Man</strong><br>The embedded Pac‑Man is implemented in Vanilla JavaScript and HTML5 Canvas: tile-based collision, multiple ghost AIs, touch + keyboard controls, score/level/lives state, power-mode mechanics, and optimized 60 FPS rendering. Click 'START GAME' below to play—use arrow keys on desktop or swipe on mobile.",
+                            hasEmbeddedGame: true,
+                            gameType: "pacman",
+                            theme: { primary: '#8b5cf6', hover: '#c4b5fd', glow1: 'rgba(139, 92, 246, 0.15)', glow2: 'rgba(196, 181, 253, 0.15)', shadow: 'rgba(139, 92, 246, 0.4)' } 
+                        },
+            { 
+                id: 6, 
+                name: "Photo portfolio", 
+                img: "pictures/work page/photo album.jpg", 
+                imgSmall: "pictures/work page/photo album.jpg", 
+                desc1: "Welcome to my photography portfolio. This space is a curated collection of my visual storytelling, focused on capturing authentic moments, exploring the delicate balance of light and shadow, and finding beauty in the everyday. Below is a selection of my recent work.", 
+                desc2: "", 
+                desc3: "", 
+                photos: [
+                    "https://placehold.co/800x600/111/fff?text=Portfolio+Shot+1",
+                    "https://placehold.co/800x600/222/fff?text=Portfolio+Shot+2",
+                    "https://placehold.co/800x600/333/fff?text=Portfolio+Shot+3",
+                    "https://placehold.co/800x600/444/fff?text=Portfolio+Shot+4",
+                    "https://placehold.co/800x600/555/fff?text=Portfolio+Shot+5",
+                    "https://placehold.co/800x600/666/fff?text=Portfolio+Shot+6"
+                ],
+                theme: { primary: '#f97316', hover: '#fbbf24', glow1: 'rgba(249, 115, 22, 0.15)', glow2: 'rgba(251, 191, 36, 0.15)', shadow: 'rgba(249, 115, 22, 0.4)' } 
+            }
         ];
 
         function initProjects() {
@@ -694,11 +933,102 @@
 
         function openProjectModal(project) {
             document.getElementById('modal-title').innerText = project.name;
-            document.getElementById('modal-desc-1').innerText = project.desc1;
-            document.getElementById('modal-desc-2').innerText = project.desc2;
-            document.getElementById('modal-desc-3').innerText = project.desc3;
-            document.getElementById('modal-main-img').src = project.img;
-            document.getElementById('modal-small-img').src = project.imgSmall;
+            document.getElementById('modal-desc-1').innerHTML = project.desc1 || '';
+            
+            const desc2Container = document.getElementById('modal-desc-2-container');
+            const desc2Text = document.getElementById('modal-desc-2');
+            if (project.desc2) {
+                if (desc2Container) desc2Container.style.display = 'flex';
+                if (desc2Text) desc2Text.innerHTML = project.desc2;
+            } else {
+                if (desc2Container) desc2Container.style.display = 'none';
+            }
+
+            const techSection = document.getElementById('modal-tech-section');
+            const desc3Text = document.getElementById('modal-desc-3');
+            if (project.desc3) {
+                if (techSection) techSection.style.display = 'block';
+                if (desc3Text) desc3Text.innerHTML = project.desc3;
+            } else {
+                if (techSection) techSection.style.display = 'none';
+            }
+
+            const pacmanContainer = document.getElementById('embedded-pacman-container');
+            const imagesContainer = document.getElementById('modal-images-container');
+            const bottomImagesContainer = document.getElementById('modal-bottom-images-container');
+            
+            // Safely populate all images first to prevent broken "placeholder" icons from previous modal states
+            const topImg1 = document.getElementById('modal-top-img-1');
+            const topImg2 = document.getElementById('modal-top-img-2');
+            const bottomImg1 = document.getElementById('modal-bottom-img-1');
+            const bottomImg2 = document.getElementById('modal-bottom-img-2');
+            const smallImg = document.getElementById('modal-small-img');
+
+            if (topImg1) { topImg1.src = project.img || ''; topImg1.alt = project.name; }
+            if (topImg2) { topImg2.src = project.img1?.src || project.img || ''; topImg2.alt = project.img1?.alt || project.name; }
+            if (bottomImg1) { bottomImg1.src = project.img2?.src || project.img || ''; bottomImg1.alt = project.img2?.alt || project.name; }
+            if (bottomImg2) { bottomImg2.src = project.imgSmall || project.img || ''; bottomImg2.alt = project.name; }
+            if (smallImg) { smallImg.src = project.imgSmall || project.img || ''; }
+
+            const topCap1 = document.getElementById('modal-top-caption-1');
+            const topCap2 = document.getElementById('modal-top-caption-2');
+            const botCap1 = document.getElementById('modal-bottom-caption-1');
+            const botCap2 = document.getElementById('modal-bottom-caption-2');
+
+            if (topCap1) topCap1.innerText = project.img?.caption || '';
+            if (topCap2) topCap2.innerText = project.img1?.caption || project.img1?.alt || '';
+            if (botCap1) botCap1.innerText = project.img2?.caption || project.img2?.alt || '';
+            if (botCap2) botCap2.innerText = project.imgSmallCaption || '';
+
+            // Handle specific layouts based on project data
+            const extendedGrid = document.getElementById('modal-extended-photo-grid');
+            
+            if (project.photos && project.photos.length > 0) {
+                // Photo Portfolio specific layout (Hide default elements, show expanded grid)
+                pacmanContainer.style.display = 'none';
+                imagesContainer.style.display = 'none';
+                if (bottomImagesContainer) {
+                    bottomImagesContainer.style.display = 'none';
+                    bottomImagesContainer.classList.remove('grid');
+                    bottomImagesContainer.classList.add('hidden');
+                }
+                if (extendedGrid) {
+                    extendedGrid.style.display = 'grid';
+                    extendedGrid.innerHTML = project.photos.map(photoUrl => `
+                        <figure class="modal-image-card">
+                            <img src="${photoUrl}" alt="Portfolio Photo" class="w-full h-auto rounded-lg">
+                        </figure>
+                    `).join('');
+                }
+            } else if (project.hasEmbeddedGame && project.gameType === 'pacman') {
+                // Pacman specific layout
+                if (extendedGrid) extendedGrid.style.display = 'none';
+                pacmanContainer.style.display = 'none';
+                imagesContainer.style.display = 'grid';
+                if (bottomImagesContainer) {
+                    bottomImagesContainer.style.display = 'none';
+                    // Forcefully strip grid class and add hidden to ensure the placeholders are gone
+                    bottomImagesContainer.classList.remove('grid');
+                    bottomImagesContainer.classList.add('hidden');
+                }
+                
+                // initialize the embedded game after modal has opened so it appears at the bottom
+                setTimeout(() => {
+                    pacmanContainer.style.display = 'block';
+                    initEmbeddedPacMan();
+                }, 150);
+            } else {
+                // Default layout
+                if (extendedGrid) extendedGrid.style.display = 'none';
+                pacmanContainer.style.display = 'none';
+                imagesContainer.style.display = 'grid';
+                if (bottomImagesContainer) {
+                    bottomImagesContainer.style.display = 'grid';
+                    bottomImagesContainer.classList.remove('hidden');
+                    bottomImagesContainer.classList.add('grid');
+                }
+            }
+
             modalBox.style.setProperty('--theme-primary', project.theme.primary);
             modalBox.style.setProperty('--theme-hover', project.theme.hover);
             modalBox.style.setProperty('--theme-glow-1', project.theme.glow1);
@@ -711,10 +1041,591 @@
             lenis.stop();
         }
 
+        // --- EMBEDDED PAC-MAN GAME ---
+        let embeddedGameInstance = null;
+        
+        function initEmbeddedPacMan() {
+            const embeddedCanvas = document.getElementById('embeddedGameCanvas');
+            if (!embeddedCanvas) return;
+            if (embeddedGameInstance) embeddedGameInstance.destroy();
+            embeddedGameInstance = createPacManGame(embeddedCanvas);
+        }
+
+        function createPacManGame(canvas) {
+            const ctx = canvas.getContext('2d');
+            const startBtn = document.getElementById('pm-startBtn');
+            const overlay = document.getElementById('pm-overlay');
+            const scoreEl = document.querySelector('#pm-score span');
+            const levelEl = document.querySelector('#pm-level span');
+            const overlayTitle = document.querySelector('#pm-overlay h1');
+            const skinInput = document.getElementById('pm-skinInput');
+
+            // Game Configuration
+            const TILE_SIZE = 20;
+            const ROW_COUNT = 20;
+            const COL_COUNT = 19;
+            
+            // Speeds
+            const PACMAN_SPEED_BASE = 0.10; 
+            const GHOST_SPEED_BASE = 0.06;
+
+            // Colors
+            const WALL_COLOR = '#1919A6';
+            const PELLET_COLOR = '#ffb8ae';
+            const POWER_PELLET_COLOR = '#ffb8ae';
+            const PACMAN_COLOR = '#FFFF00';
+            
+            // Game State
+            let score = 0;
+            let level = 1;
+            let gameRunning = false;
+            let animationId;
+            let powerModeTime = 0;
+            let lives = 3;
+            let customSkinImg = null;
+
+            // Map: 0=Empty, 1=Wall, 2=Pellet, 3=Power, 4=Gate
+            const mapTemplate = [
+                [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,1],
+                [1,3,1,1,2,1,1,1,2,1,2,1,1,1,2,1,1,3,1],
+                [1,2,1,1,2,1,1,1,2,1,2,1,1,1,2,1,1,2,1],
+                [1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1],
+                [1,2,1,1,2,1,2,1,1,1,1,1,2,1,2,1,1,2,1],
+                [1,2,2,2,2,1,2,2,2,1,2,2,2,1,2,2,2,2,1],
+                [1,1,1,1,2,1,1,1,0,1,0,1,1,1,2,1,1,1,1],
+                [0,0,0,1,2,1,0,0,0,0,0,0,0,1,2,1,0,0,0],
+                [1,1,1,1,2,1,0,1,1,4,1,1,0,1,2,1,1,1,1],
+                [0,2,2,2,2,0,0,1,0,0,0,1,0,0,2,2,2,2,0], 
+                [1,1,1,1,2,1,0,1,1,1,1,1,0,1,2,1,1,1,1],
+                [0,0,0,1,2,1,0,0,0,0,0,0,0,1,2,1,0,0,0],
+                [1,1,1,1,2,1,2,1,1,1,1,1,2,1,2,1,1,1,1],
+                [1,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,1],
+                [1,2,1,1,2,1,1,1,2,1,2,1,1,1,2,1,1,2,1],
+                [1,3,2,1,2,2,2,2,2,0,2,2,2,2,2,1,2,3,1], 
+                [1,1,2,1,2,1,2,1,1,1,1,1,2,1,2,1,2,1,1],
+                [1,2,2,2,2,1,2,2,2,1,2,2,2,1,2,2,2,2,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+            ];
+
+            let map = [];
+            
+            // Directions
+            const UP = { x: 0, y: -1, id: 'up' };
+            const DOWN = { x: 0, y: 1, id: 'down' };
+            const LEFT = { x: -1, y: 0, id: 'left' };
+            const RIGHT = { x: 1, y: 0, id: 'right' };
+            const STOP = { x: 0, y: 0, id: 'stop' };
+
+            // Handle Image Upload
+            const handleSkinChange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const img = new Image();
+                        img.onload = function() {
+                            customSkinImg = img;
+                            if (startBtn) startBtn.innerText = "START (WITH FACE)";
+                        }
+                        img.src = event.target.result;
+                    }
+                    reader.readAsDataURL(file);
+                }
+            };
+            if (skinInput) skinInput.addEventListener('change', handleSkinChange);
+
+            class Entity {
+                constructor(x, y, speed) {
+                    this.x = x + 0.5; // Center of tile
+                    this.y = y + 0.5;
+                    this.speed = speed;
+                    this.dir = STOP;
+                    this.nextDir = STOP;
+                    this.radius = TILE_SIZE * 0.45; // Slightly larger for image visibility
+                }
+
+                isWall(tx, ty, isGhost = false) {
+                    if (ty === 10 && (tx < 0 || tx >= COL_COUNT)) return false;
+                    if (tx < 0 || tx >= COL_COUNT || ty < 0 || ty >= ROW_COUNT) return true;
+                    const tile = map[ty][tx];
+                    if (isGhost) return tile === 1;
+                    return tile === 1 || tile === 4;
+                }
+
+                move(speedMultipler = 1.0, isGhost = false) {
+                    const spd = this.speed * speedMultipler;
+                    const cx = Math.floor(this.x);
+                    const cy = Math.floor(this.y);
+                    const centerX = cx + 0.5;
+                    const centerY = cy + 0.5;
+                    const dx = this.x - centerX;
+                    const dy = this.y - centerY;
+                    const distToCenter = Math.sqrt(dx*dx + dy*dy);
+
+                    if (this.nextDir !== STOP && distToCenter < spd) {
+                        const nextTx = cx + this.nextDir.x;
+                        const nextTy = cy + this.nextDir.y;
+                        if (!this.isWall(nextTx, nextTy, isGhost)) {
+                            this.x = centerX;
+                            this.y = centerY;
+                            this.dir = this.nextDir;
+                            this.nextDir = STOP;
+                            return;
+                        }
+                    }
+
+                    if (this.dir === STOP) return;
+
+                    const nextTx = cx + this.dir.x;
+                    const nextTy = cy + this.dir.y;
+
+                    if (this.isWall(nextTx, nextTy, isGhost)) {
+                        let distToStop = 0;
+                        if (this.dir === RIGHT) distToStop = centerX - this.x;
+                        else if (this.dir === LEFT) distToStop = this.x - centerX;
+                        else if (this.dir === DOWN) distToStop = centerY - this.y;
+                        else if (this.dir === UP) distToStop = this.y - centerY;
+
+                        if (distToStop <= spd) {
+                            this.x = centerX;
+                            this.y = centerY;
+                            if(isGhost) this.hitWall = true; 
+                            else this.dir = STOP; 
+                        } else {
+                            this.x += this.dir.x * spd;
+                            this.y += this.dir.y * spd;
+                        }
+                    } else {
+                        this.x += this.dir.x * spd;
+                        this.y += this.dir.y * spd;
+                    }
+
+                    if (this.x < 0) this.x = COL_COUNT;
+                    if (this.x > COL_COUNT) this.x = 0;
+                }
+            }
+
+            class Pacman extends Entity {
+                constructor(x, y) {
+                    super(x, y, PACMAN_SPEED_BASE);
+                    this.mouthOpen = 0;
+                    this.mouthSpeed = 0.2;
+                    this.rotation = 0;
+                }
+
+                update() {
+                    if (this.dir === RIGHT || (this.dir === STOP && this.rotation === 0)) this.rotation = 0;
+                    else if (this.dir === DOWN) this.rotation = Math.PI / 2;
+                    else if (this.dir === LEFT) this.rotation = Math.PI;
+                    else if (this.dir === UP) this.rotation = -Math.PI / 2;
+
+                    this.move(1.0, false);
+
+                    const cx = Math.floor(this.x);
+                    const cy = Math.floor(this.y);
+                    
+                    if (cx >= 0 && cx < COL_COUNT && cy >= 0 && cy < ROW_COUNT) {
+                        const tile = map[cy][cx];
+                        if (tile === 2) {
+                            map[cy][cx] = 0;
+                            score += 10;
+                            checkLevelComplete();
+                        } else if (tile === 3) {
+                            map[cy][cx] = 0;
+                            score += 50;
+                            activatePowerMode();
+                            checkLevelComplete();
+                        }
+                    }
+
+                    if (this.dir !== STOP) {
+                        this.mouthOpen += this.mouthSpeed;
+                        if (this.mouthOpen > 0.25 || this.mouthOpen < 0) this.mouthSpeed = -this.mouthSpeed;
+                    }
+                }
+
+                draw() {
+                    ctx.save();
+                    ctx.translate(this.x * TILE_SIZE, this.y * TILE_SIZE);
+                    ctx.rotate(this.rotation);
+                    
+                    ctx.beginPath();
+                    const angle = 0.2 * Math.PI * Math.sin(this.mouthOpen * Math.PI * 2);
+                    ctx.arc(0, 0, this.radius, angle, 2 * Math.PI - angle);
+                    ctx.lineTo(0, 0);
+                    ctx.closePath();
+                    
+                    if (customSkinImg) {
+                        ctx.clip(); 
+                        ctx.drawImage(customSkinImg, -this.radius, -this.radius, this.radius * 2, this.radius * 2);
+                    } else {
+                        ctx.fillStyle = PACMAN_COLOR;
+                        ctx.fill();
+                    }
+
+                    ctx.restore();
+                }
+            }
+
+            class Ghost extends Entity {
+                constructor(x, y, color) {
+                    super(x, y, GHOST_SPEED_BASE);
+                    this.color = color;
+                    this.isDead = false;
+                    this.isScared = false;
+                    this.hitWall = false;
+                    this.lastDecisionX = -1;
+                    this.lastDecisionY = -1;
+                    this.reviveDelay = 0;
+                }
+
+                isInHouse() {
+                    return this.y > 8 && this.y <= 10 && this.x >= 8 && this.x <= 10;
+                }
+
+                getValidDirs() {
+                    const cx = Math.floor(this.x);
+                    const cy = Math.floor(this.y);
+                    const valids = [];
+                    [UP, DOWN, LEFT, RIGHT].forEach(d => {
+                        if (d.x === -this.dir.x && d.y === -this.dir.y && !this.hitWall) return;
+                        if (!this.isWall(cx + d.x, cy + d.y, true)) {
+                            valids.push(d);
+                        }
+                    });
+                    return valids;
+                }
+
+                update() {
+                    if (this.isDead && this.isInHouse()) {
+                        if (this.reviveDelay === 0) this.reviveDelay = 180; 
+                    }
+
+                    if (this.reviveDelay > 0) {
+                        this.reviveDelay--;
+                        if (this.reviveDelay <= 0) this.isDead = false;
+                    }
+
+                    let speedMult = 1.0 + (level * 0.05);
+                    if (this.isScared) speedMult *= 0.6;
+                    if (this.isDead) {
+                        if (this.reviveDelay > 0) speedMult = 0.5;
+                        else speedMult *= 2.0;
+                    }
+
+                    this.hitWall = false;
+                    this.move(speedMult, true);
+
+                    const cx = Math.floor(this.x);
+                    const cy = Math.floor(this.y);
+                    const centerX = cx + 0.5;
+                    const centerY = cy + 0.5;
+                    const distToCenter = Math.sqrt(Math.pow(this.x - centerX, 2) + Math.pow(this.y - centerY, 2));
+                    const moveDist = this.speed * speedMult;
+                    const atCenter = distToCenter < moveDist;
+                    const isNewTile = cx !== this.lastDecisionX || cy !== this.lastDecisionY;
+
+                    if (this.hitWall || (atCenter && isNewTile)) {
+                        if (atCenter && !this.hitWall) {
+                            this.x = centerX;
+                            this.y = centerY;
+                        }
+                        this.lastDecisionX = cx;
+                        this.lastDecisionY = cy;
+
+                        const valids = this.getValidDirs();
+                        
+                        if (valids.length > 0) {
+                            let target = null;
+                            if (this.isInHouse()) {
+                                if (this.isDead && this.reviveDelay > 0) target = { x: 9, y: 9.5 };
+                                else {
+                                    target = { x: 9, y: 8 };
+                                    if (Math.abs(this.x - 9) > 0.1) target = { x: 9, y: 10 }; 
+                                    else target = { x: 9, y: 8 };
+                                }
+                            } 
+                            else if (this.isDead) target = { x: 9, y: 8 };
+                            else if (this.isScared) target = null;
+                            else {
+                                if (this.color === '#FF0000') { 
+                                    const dist = Math.hypot(this.x - pacman.x, this.y - pacman.y);
+                                    if (dist < 7) target = { x: pacman.x, y: pacman.y };
+                                    else target = null; 
+                                } else if (this.color === '#FFB852') { 
+                                    const dist = Math.hypot(this.x - pacman.x, this.y - pacman.y);
+                                    if (dist < 5) target = { x: pacman.x, y: pacman.y };
+                                    else target = null;
+                                } else target = null;
+                            }
+
+                            if (target) {
+                                valids.sort((a, b) => {
+                                    const distA = Math.hypot((cx + a.x) - target.x, (cy + a.y) - target.y);
+                                    const distB = Math.hypot((cx + b.x) - target.x, (cy + b.y) - target.y);
+                                    return distA - distB;
+                                });
+                                this.dir = valids[0];
+                            } else {
+                                this.dir = valids[Math.floor(Math.random() * valids.length)];
+                            }
+                        } else {
+                            const reverse = { x: -this.dir.x, y: -this.dir.y };
+                            this.dir = reverse;
+                        }
+                    }
+                }
+
+                draw() {
+                    const cx = this.x * TILE_SIZE;
+                    const cy = this.y * TILE_SIZE;
+                    ctx.fillStyle = this.isScared ? (Math.floor(Date.now() / 200) % 2 === 0 ? '#fff' : '#0000FF') : this.color;
+                    
+                    ctx.beginPath();
+                    ctx.arc(cx, cy - 2, this.radius, Math.PI, 0);
+                    ctx.lineTo(cx + this.radius, cy + this.radius);
+                    for(let i=1; i<=3; i++) {
+                        ctx.lineTo(cx + this.radius - (2*this.radius/3)*i, cy + this.radius - (i%2==0 ? 2 : 0));
+                    }
+                    ctx.lineTo(cx - this.radius, cy + this.radius);
+                    ctx.fill();
+
+                    if (!this.isScared) {
+                        ctx.fillStyle = 'white';
+                        ctx.beginPath();
+                        ctx.arc(cx - 4, cy - 4, 3, 0, Math.PI*2);
+                        ctx.arc(cx + 4, cy - 4, 3, 0, Math.PI*2);
+                        ctx.fill();
+                        ctx.fillStyle = 'blue';
+                        ctx.beginPath();
+                        ctx.arc(cx - 4 + this.dir.x*2, cy - 4 + this.dir.y*2, 1.5, 0, Math.PI*2);
+                        ctx.arc(cx + 4 + this.dir.x*2, cy - 4 + this.dir.y*2, 1.5, 0, Math.PI*2);
+                        ctx.fill();
+                    } else {
+                        ctx.fillStyle = '#ffb8ae';
+                        ctx.beginPath();
+                        ctx.fillRect(cx - 4, cy - 2, 2, 2);
+                        ctx.fillRect(cx + 2, cy - 2, 2, 2);
+                        ctx.fillRect(cx - 4, cy + 2, 8, 1); 
+                        ctx.fill();
+                    }
+                }
+            }
+
+            let pacman;
+            let ghosts = [];
+
+            function initLevel() {
+                map = mapTemplate.map(row => [...row]);
+                resetPositions();
+            }
+
+            function resetPositions() {
+                pacman = new Pacman(9, 16); 
+                pacman.nextDir = LEFT; 
+
+                ghosts = [
+                    new Ghost(9, 8, '#FF0000'), 
+                    new Ghost(8, 10, '#FFB8FF'),
+                    new Ghost(10, 10, '#00FFFF'),
+                    new Ghost(9, 9, '#FFB852') 
+                ];
+                
+                ghosts[0].dir = LEFT;
+                ghosts[1].dir = UP;
+                ghosts[2].dir = UP;
+                ghosts[3].dir = RIGHT;
+            }
+
+            function activatePowerMode() {
+                powerModeTime = 600; 
+                ghosts.forEach(g => {
+                    if (!g.isDead) g.isScared = true;
+                });
+            }
+
+            function checkLevelComplete() {
+                for(let row of map) {
+                    for(let tile of row) {
+                        if (tile === 2 || tile === 3) return;
+                    }
+                }
+                level++;
+                if (levelEl) levelEl.innerText = level;
+                initLevel();
+                showMessage(`LEVEL ${level}`);
+            }
+
+            function showMessage(text) {
+                gameRunning = false;
+                if (overlayTitle) overlayTitle.innerText = text;
+                if (startBtn) startBtn.innerText = "CONTINUE";
+                if (overlay) overlay.style.display = 'flex';
+            }
+
+            function gameOver() {
+                gameRunning = false;
+                if (overlayTitle) overlayTitle.innerText = "GAME OVER";
+                if (startBtn) startBtn.innerText = "RESTART";
+                if (overlay) overlay.style.display = 'flex';
+            }
+
+            function update() {
+                if (!gameRunning) return;
+
+                pacman.update();
+
+                if (powerModeTime > 0) {
+                    powerModeTime--;
+                    if (powerModeTime <= 0) ghosts.forEach(g => g.isScared = false);
+                }
+
+                ghosts.forEach(g => {
+                    g.update();
+                    const dist = Math.hypot(pacman.x - g.x, pacman.y - g.y);
+                    if (dist < 0.6) { 
+                        if (g.isScared && !g.isDead) {
+                            g.isDead = true; 
+                            g.isScared = false;
+                            g.reviveDelay = 0; 
+                            g.x = Math.round(g.x); 
+                            g.y = Math.round(g.y);
+                            score += 200;
+                        } else if (!g.isDead) {
+                            lives--;
+                            if (lives <= 0) gameOver();
+                            else {
+                                resetPositions();
+                                gameRunning = false;
+                                setTimeout(() => gameRunning = true, 1000);
+                            }
+                        }
+                    }
+                });
+
+                if (scoreEl) scoreEl.innerText = score;
+            }
+
+            function draw() {
+                ctx.fillStyle = 'black';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                for (let y = 0; y < ROW_COUNT; y++) {
+                    for (let x = 0; x < COL_COUNT; x++) {
+                        const tile = map[y][x];
+                        const px = x * TILE_SIZE;
+                        const py = y * TILE_SIZE;
+
+                        if (tile === 1) { 
+                            ctx.fillStyle = WALL_COLOR;
+                            ctx.fillRect(px, py, TILE_SIZE, TILE_SIZE);
+                        } else if (tile === 2) { 
+                            ctx.fillStyle = PELLET_COLOR;
+                            ctx.fillRect(px + TILE_SIZE/2 - 2, py + TILE_SIZE/2 - 2, 4, 4);
+                        } else if (tile === 3) { 
+                            if (Math.floor(Date.now() / 200) % 2 === 0) {
+                                ctx.fillStyle = POWER_PELLET_COLOR;
+                                ctx.beginPath();
+                                ctx.arc(px + TILE_SIZE/2, py + TILE_SIZE/2, 6, 0, Math.PI*2);
+                                ctx.fill();
+                            }
+                        } else if (tile === 4) { 
+                            ctx.strokeStyle = '#ffb8ae';
+                            ctx.beginPath();
+                            ctx.moveTo(px, py + TILE_SIZE/2);
+                            ctx.lineTo(px + TILE_SIZE, py + TILE_SIZE/2);
+                            ctx.stroke();
+                        }
+                    }
+                }
+
+                pacman.draw();
+                ghosts.forEach(g => g.draw());
+            }
+
+            function loop() {
+                update();
+                draw();
+                animationId = requestAnimationFrame(loop);
+            }
+
+            const onKeyDown = e => {
+                if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
+                    e.preventDefault();
+                }
+                if (e.key === 'ArrowUp') pacman.nextDir = UP;
+                if (e.key === 'ArrowDown') pacman.nextDir = DOWN;
+                if (e.key === 'ArrowLeft') pacman.nextDir = LEFT;
+                if (e.key === 'ArrowRight') pacman.nextDir = RIGHT;
+            };
+            window.addEventListener('keydown', onKeyDown);
+
+            let tX = 0; let tY = 0;
+            const onTouchStart = e => { tX = e.touches[0].clientX; tY = e.touches[0].clientY; };
+            const onTouchMove = e => { e.preventDefault(); };
+            const onTouchEnd = e => {
+                let dX = e.changedTouches[0].clientX - tX;
+                let dY = e.changedTouches[0].clientY - tY;
+                if(Math.abs(dX) > Math.abs(dY) && Math.abs(dX) > 30) pacman.nextDir = dX > 0 ? RIGHT : LEFT;
+                else if(Math.abs(dY) > 30) pacman.nextDir = dY > 0 ? DOWN : UP;
+            };
+            canvas.addEventListener('touchstart', onTouchStart, {passive:false});
+            canvas.addEventListener('touchmove', onTouchMove, {passive:false});
+            canvas.addEventListener('touchend', onTouchEnd, {passive:false});
+
+            function resize() {
+                const containerWidth = canvas.parentElement.clientWidth || 380;
+                canvas.width = COL_COUNT * TILE_SIZE;
+                canvas.height = ROW_COUNT * TILE_SIZE;
+                let scale = containerWidth / canvas.width;
+                canvas.style.width = `${canvas.width * scale}px`;
+                canvas.style.height = `${canvas.height * scale}px`;
+            }
+            
+            window.addEventListener('resize', resize);
+            
+            const onStartClick = () => {
+                if (startBtn.innerText === "RESTART") {
+                    score = 0; level = 1; lives = 3; 
+                    if (scoreEl) scoreEl.innerText = "0"; 
+                    if (levelEl) levelEl.innerText = "1";
+                    initLevel();
+                } else initLevel();
+                if (overlay) overlay.style.display = 'none';
+                gameRunning = true;
+            };
+            if (startBtn) startBtn.addEventListener('click', onStartClick);
+
+            resize();
+            initLevel();
+            draw();
+            loop();
+
+            return {
+                destroy: () => {
+                    cancelAnimationFrame(animationId);
+                    window.removeEventListener('keydown', onKeyDown);
+                    window.removeEventListener('resize', resize);
+                    canvas.removeEventListener('touchstart', onTouchStart);
+                    canvas.removeEventListener('touchmove', onTouchMove);
+                    // canvas.removeEventListener('touchend', onTouchEnd);
+                    if (startBtn) startBtn.removeEventListener('click', onStartClick);
+                    if (skinInput) skinInput.removeEventListener('change', handleSkinChange);
+                }
+            };
+        }
+
         function closeProjectModal() {
             projectModalOverlay.classList.remove('active');
             document.body.style.overflow = '';
             lenis.start();
+            if (embeddedGameInstance) {
+                embeddedGameInstance.destroy();
+                embeddedGameInstance = null;
+            }
+            const pacmanContainerClose = document.getElementById('embedded-pacman-container');
+            if (pacmanContainerClose) pacmanContainerClose.style.display = 'none';
         }
 
         closeProjectModalBtn.addEventListener('click', closeProjectModal);
@@ -724,4 +1635,3 @@
     </script>
 </body>
 </html>
-
