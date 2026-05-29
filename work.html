@@ -351,7 +351,27 @@
             display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; overflow: hidden; position: relative; border-radius: 12px; border: 1px solid rgba(255,255,255,0.15); box-shadow: inset 0 0 20px rgba(0,0,0,0.5); background: rgba(10, 10, 15, 0.6);
         }
         .modal-media-placeholder { width: 100%; height: 200px; } 
-        .modal-small-media { width: 100%; height: 180px; }
+        .modal-small-media { width: 100%; height: 320px; }
+        .modal-small-media img,
+        .modal-small-media video,
+        .modal-small-media model-viewer,
+        .modal-image-card img,
+        .modal-image-card video,
+        .modal-image-card model-viewer {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+        .modal-image-card {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-image-card model-viewer {
+            max-width: 100%;
+            max-height: 100%;
+        }
         
         @media (min-width: 768px) { 
             .modal-media-placeholder, .modal-small-media { border-radius: 16px; }
@@ -366,6 +386,9 @@
         }
 
         .modal-image-card {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             position: relative;
             border-radius: 18px;
             overflow: hidden;
@@ -391,8 +414,74 @@
             background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.75) 100%);
             font-size: 0.92rem;
             line-height: 1.4;
+            display: none;
+        }
+
+        .photo-portfolio-thumb {
+            aspect-ratio: 4 / 3;
+            cursor: zoom-in;
+        }
+
+        .photo-portfolio-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .photo-lightbox-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 110;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            background: rgba(0, 0, 10, 0.9);
+            backdrop-filter: blur(10px);
+        }
+
+        .photo-lightbox-overlay.active {
+            display: flex;
+        }
+
+        .photo-lightbox-panel {
+            position: relative;
+            width: min(96vw, 1400px);
+            max-height: 92vh;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(10, 10, 15, 0.95);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.65);
+        }
+
+        .photo-lightbox-panel img {
+            width: 100%;
+            height: 100%;
+            max-height: 92vh;
+            object-fit: contain;
+            display: block;
+        }
+
+        .photo-lightbox-close {
+            position: absolute;
+            top: 0.75rem;
+            right: 1rem;
+            z-index: 1;
+            font-size: 2.25rem;
+            line-height: 1;
+            color: rgba(255, 255, 255, 0.75);
+            text-shadow: 0 0 12px rgba(0, 0, 0, 0.85);
+            cursor: pointer;
+        }
+
+        .photo-lightbox-close:hover {
+            color: #ffffff;
         }
     </style>
+    <!-- Model Viewer for GLB -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
 </head>
 <body class="selection:bg-[#ff007f] selection:text-white font-normal-sans select-none overflow-x-hidden">
 
@@ -619,6 +708,13 @@
         </div>
     </div>
 
+    <div id="photo-lightbox-overlay" class="photo-lightbox-overlay" aria-hidden="true">
+        <div class="photo-lightbox-panel">
+            <span id="close-photo-lightbox" class="photo-lightbox-close" aria-label="Close photo preview">&times;</span>
+            <img id="photo-lightbox-img" src="" alt="">
+        </div>
+    </div>
+
     <script>
         // --- LENIS SMOOTH SCROLL INIT ---
         const lenis = new Lenis({
@@ -762,19 +858,21 @@
     id: 1,
     name: "Virtual humans project",
     img: "pictures/work page/Virtual humans.png",
-    imgSmall: "pictures/work page/Virtual humans.png",
+    imgSmall: "pictures/work page/virtual human img 4.mp4",
     desc1: "During my internship at Mindlabs Tilburg, I engineered 'Noa', an adaptive Virtual Human for the Digireal project—a collaborative initiative between Fontys ICT and BUas. Projected inside a life-sized Holobox, the avatar was designed to foster meaningful, autonomous interactions for children aged 8 to 12. My process began by synthesizing extensive background research into MetaHuman capabilities, non-verbal communication, and character design principles to establish a solid psychological and technical foundation.",
     img1: {
-      src: "pictures/work page/vh_holobox_setup.png",
-      alt: "Holobox display setup at Mindlabs",
-      caption: "The Holobox hardware setup used to project our interactive Virtual Human."
+      src: "pictures/work page/virtual human img 1.jpeg"
+    },
+    img2: {
+      src: "pictures/work page/virtual humans 2.mp4"
+    },
+    img3: {
+      src: "pictures/work page/virtual humans 3.mp4"
+    },
+    img4: {
+      src: "pictures/work page/virtual human img 4.mp4"
     },
     desc2: "Using Unreal Engine, I brought the avatar to life by blending fluid MetaHuman Creator animations with dynamic Niagara VFX, such as an attention-grabbing smoke simulation. I engineered complex interaction pipelines integrating gaze tracking, socket systems, and precise gesture recognition. After observing user tests, I noticed children struggling with specific inputs, prompting me to develop intuitive UI video guides and robust reset-gestures that significantly lowered the interaction threshold.",
-    img2: {
-      src: "pictures/work page/vh_figma_scenarios.png",
-      alt: "Figma scenario designs",
-      caption: "Designing multiple interaction scenarios and integrating visual guidance elements to assist children with the required gestures."
-    },
     desc3: "Beyond immediate development, I focused heavily on project performance and longevity. I optimized the demanding Unreal project into stable, validated builds suitable for the Holobox and demo hardware. Wrapping up the internship, I delivered a comprehensive handover via Git, structured agile sprint documentation, and a strategic advisory report for the Fontys IXD-lectoraat, advocating for more accessible XR alternatives like Looking-Glass displays to expand the project's future reach.",
     theme: {
       primary: '#00e5ff',
@@ -788,19 +886,24 @@
     id: 2,
     name: "Jägermeister Health campaign",
     img: "pictures/work page/Jagermeister health.png",
-    imgSmall: "pictures/work page/Jagermeister health.png",
+    imgSmall: "pictures/work page/jager health image 5.png",
     desc1: "I worked on a project where i wanted to strategize and execute a complete brand campaign for 'Jägermeister Health' a fictional health-focused sub-brand reimagining Jägermeister's iconic herbal formula as a cough syrup. Our approach flipped the brand's notorious party image into an April Fools paradox: marketing therapeutic remedies in bottles designed to mimic the original liqueur shots. This required deep audience analysis, competitor positioning (Otrivin, Dampo), and packaging design that maintained the brand's bold visual identity while signaling health-conscious positioning.",
     img1: {
-      src: "pictures/work page/jm_product_lineup.png",
-      alt: "Renderings of the Jägermeister health products",
-      caption: "Our conceptual product line featuring Jägermeister Cough Syrup, Throat Lozenges, and Cold Balm."
+      src: "pictures/work page/Jager health img 1.png"
+    },
+    img2: {
+      src: "pictures/work page/jager health image 2.png"
+    },
+    img3: {
+      src: "pictures/work page/jager health img 3.png"
+    },
+    img4: {
+      src: "pictures/work page/jager health image 4.glb"
+    },
+    img5: {
+      src: "pictures/work page/jager health image 5.png"
     },
     desc2: "Our target demographic—young adults aged 21–38—represented a unique intersection: established drinkers seeking wellness solutions without sacrificing brand identity. By positioning the products as recovery essentials for the morning after, we created a compelling value proposition that spoke directly to our audience's lifestyle contradictions. To bring this vision to market, I spearheaded the creation of an interactive campaign website featuring a Three.js-powered rhythm game (Guitar Hero-style mechanic) that rewarded players reaching a combo of 30 with a 15% discount coupon. The website showcased looping product videos, a 3D rotating product model built in Blender, and custom interactive animations—all running on our FHICT server.",
-    img2: {
-      src: "pictures/work page/jm_target_audience.png",
-      alt: "Target Audience and Competitor Analysis",
-      caption: "Analyzing competitors and positioning the sub-brand for young adults needing recovery after a night out."
-    },
     desc3: "Deliverables spanned both physical and digital: custom 3D-modeled product bottles (GLB files optimized for web), professional packaging designs for Cough Syrup, Throat Lozenges, and Cold Balm with custom label textures in Blender, branded video content with seamless crossfade transitions, and a fully functional interactive website combining Tailwind CSS, Three.js rendering, and Vanilla JavaScript. I conducted two rounds of user testing on the rhythm game (~10 participants total), iterating on difficulty balancing—reducing note speed and lowering the win condition based on feedback. The final deliverable hosted at <a href=\"https://i512001.luna.fhict.nl/jagermeister-Health/\" target=\"_blank\" rel=\"noopener noreferrer\">i512001.luna.fhict.nl/jagermeister-Health/</a> demonstrated how interactive storytelling and gamification can drive engagement in brand campaigns.",
     theme: {
       primary: '#a3e635',
@@ -815,21 +918,26 @@
               id: 3,
               name: "Desertion game",
               img: "pictures/work page/Dessertion.png",
-              imgSmall: "pictures/work page/Dessertion.png",
-              img1: {
-                src: "pictures/work page/Dessertion.png",
-                alt: "Desertion gameplay and level design",
-                caption: "Low-fi blockout level with enemy placement and platforming flow established."
-              },
-              img2: {
-                src: "pictures/work page/Dessertion.png",
-                alt: "Desertion pixel art and animation",
-                caption: "Character animation frames and pixel art environment assets for the final build."
-              },
+              imgSmall: "pictures/work page/desertion 4.png",
               imgSmallCaption: "Play the demo at dieuwebuijink.itch.io/desertion.",
               desc1: "Desertion is a challenging 2D pixel-art action platformer built in collaboration with a peer over a semester at school. set in a post-apocalyptic, resource-scarce world where navigation and timing are survival.",
               desc2: "I designed and blocked out the first level using box colliders to establish platform flow, sightlines, and enemy spawning zones. I researched responsive character movement using the GMTK platformer toolkit, then implemented a snappy control scheme in Unity that balanced speed with precision. I engineered two distinct enemy archetypes: stationary patrol enemies and proximity-triggered chasers, each with health pools and damage feedback.",
               desc3: "I sourced and integrated ambient music from Fesliyan Studios to match our deserted aesthetic, then implemented contextual sound effects (footsteps, jump/land, weapon attacks) using Freesound.org samples edited and normalized in Audacity. I supported level iteration through Git with established team protocols (shared scenes, logical file hierarchy, disciplined commits), and contributed pixel art for character animation and environment details. The polished demo shipped at <a href=\"https://dieuwebuijink.itch.io/desertion\" target=\"_blank\" rel=\"noopener noreferrer\">dieuwebuijink.itch.io/desertion</a> after two rounds of playtest-driven refinement.",
+              img1: {
+                  src: "pictures/work page/desertion 4.png"
+              },
+              img2: {
+                  src: "pictures/work page/Desertion 1 .png"
+              },
+              img3: {
+                  src: "pictures/work page/desertion 3.png"
+              },
+              img4: {
+                  src: "pictures/work page/Dessertion.png"
+              },
+              img5: {
+                  src: "pictures/work page/Desertion 2.png"
+              },
               theme: {
                 primary: '#3b82f6',
                 hover: '#60a5fa',
@@ -843,19 +951,22 @@
               id: 4,
               name: "AVK: Prompt Fabriek & Website Redesign",
               img: "pictures/work page/AVK.png",
-              imgSmall: "pictures/work page/AVK.png",
+              imgSmall: "pictures/work page/AVK img (2).png",
+              topFullWidth: true,
               desc1: "During my 4.5-month internship at AVK a digital transformation consultancy specializing in AI training and business optimization—I led two parallel UX/UI design projects that fundamentally modernized the company's digital presence. AVK specializes in helping enterprises master Microsoft 365 and AI tools like ChatGPT and Copilot through innovative training methods. Recognizing that their own digital footprint lagged behind their expertise, AVK brought me on with a mandate to refresh their brand identity and conceptualize an interactive AI training game. The internship spanned 8 methodical sprints, combining deep user research, iterative prototyping, stakeholder management, and real-world implementation.",
               img1: {
-                src: "pictures/work page/avk_navigation_before_after.png",
-                alt: "AVK.nl navigation redesign before and after",
-                caption: "Navigation restructuring reduced visible menu items by 50%, improving user information discovery."
+                  src: "pictures/work page/AVK img (1).png"
+              },
+              img3: {
+                  src: "pictures/work page/AVK img 2.png"
+              },
+              img4: {
+                  src: "pictures/work page/AVK img (3).png"
+              },
+              img5: {
+                  src: "pictures/work page/AVK img (4).png"
               },
               desc2: "Project 1: Prompt Fabriek (AI Educational Game) AVK envisioned an escape-room-style training game where users solve challenges using correctly-crafted AI prompts. The game, set in the fictional company universe 'Ambachtelijke Vliegende Koekjes', featured a charismatic AI-generated character named Professor Zoetendaal who guided players through prompt engineering lessons. I conducted extensive user research across trainers, office workers, and tech enthusiasts—capturing 10+ user test sessions with 85% positive feedback on the gameplay concept. My design process included: 4 comprehensive research reports on game UI best practices, wireframes with multiple stakeholder feedback iterations, mid-fidelity prototypes for validation, and high-fidelity interactive Figma designs across both desktop and mobile platforms. When project scope constraints emerged mid-way (a 2-person team couldn't fully build and deploy within the timeline), I pivoted strategically: instead of delivering a half-built product, I created a complete, professional-grade design system with detailed documentation, organized Figma components, and comprehensive handoff materials for the external development team . This design-first approach proved equally valuable—it provided developers with crystal-clear specifications and reduced rework cycles.",
-              img2: {
-                src: "pictures/work page/avk_promptfabriek_design.png",
-                alt: "Prompt Fabriek game design system",
-                caption: "High-fidelity prototypes with complete component library, ready for external development handoff."
-              },
               desc3: "<strong>Project 2: Brand & Website Optimization</strong><br>AVK managed two primary websites: <a href=\"https://avk.nl\" target=\"_blank\" rel=\"noopener noreferrer\">avk.nl</a> (corporate site) and <a href=\"https://trainen.online\" target=\"_blank\" rel=\"noopener noreferrer\">trainen.online</a> (training platform). Both were functionally sound but visually dated and difficult to navigate. I executed a comprehensive 4-question research framework investigating user navigation patterns, pain points, competitor benchmarks, and UX improvement opportunities. Key finding: the navigation was overwhelming with 80+ links causing decision paralysis. My solution involved meticulous link categorization, hierarchical restructuring, and a phased rollout strategy. I delivered live improvements including: <a href=\"https://avk.nl\" target=\"_blank\" rel=\"noopener noreferrer\">AVK.nl</a> navigation completely restructured (50% reduction in visible menu items), <a href=\"https://trainen.online\" target=\"_blank\" rel=\"noopener noreferrer\">trainen.online</a> UX audit with 15+ actionable improvements, and a bonus project—RVS marketing campaign landing pages for Microsoft Copilot training events, deployed across three sector-specific variants (education, government, healthcare). Quick wins were implemented immediately to build momentum before the major navigation redesign went live. Throughout both projects, I learned the critical importance of stakeholder communication: switching from email coordination to weekly phone calls and documented agreements prevented major rework and ensured alignment. User testing was conducted in two rounds, with feedback directly driving design refinements. Both projects shipped successfully: the Prompt Fabriek design documentation is now guiding the development team, and AVK's websites reflect a modern, cohesive brand identity that accurately represents their innovative mission.",
               theme: {
                 primary: '#ef4444',
@@ -864,28 +975,38 @@
                 glow2: 'rgba(252, 165, 165, 0.15)',
                 shadow: 'rgba(239, 68, 68, 0.4)'
               }
-            },
+                            ,
+                            topFullWidth: true
+                        },
                         { 
                             id: 5, 
                             name: "Jasmin Brand & Pac-Man", 
                             img: "pictures/work page/bits and bobs.gif", 
-                            imgSmall: "pictures/work page/bits and bobs.gif", 
+                            imgSmall: "pictures/work page/bits and bobs img 1.mp4", 
+                            topFullWidth: true,
                             desc1: "<strong>Jasmin Gum — Website I built for a friend's brand</strong><br>I implemented the responsive campaign website and landing pages for 'Jasmin', translating Figma designs into production-ready HTML/CSS and interactive JS components (animated headers, product showcases, responsive breakpoints). See the portfolio folders 'Building a website' and 'website Jasmin gum' for design iterations, 3D assets, and hosting evidence.",
                             img1: {
-                                src: "pictures/work page/jasmin_website_iterations.png",
-                                alt: "Jasmin website design iterations and branding",
-                                caption: "Website iterations with Figma mockups, AI-assisted layouts, and interactive header animations featuring the gum product."
+                                src: "pictures/work page/bits and bobs img 1.mp4"
+                            },
+                            img2: {
+                                src: "pictures/work page/bits and bobs.gif"
+                            },
+                            img3: {
+                                src: "pictures/work page/bits and bobs img 3.png"
+                            },
+                            img4: {
+                                src: "pictures/work page/bits and bobs.gif"
+                            },
+                            img5: {
+                                src: ""
                             },
                             desc2: "<strong>3D Spinning Gum Bottle — Unreal Engine Product Visualization</strong><br>As the centerpiece of the Jasmin website, I developed a premium 3D product showcase using Unreal Engine. Starting with a free base model, I assembled and modified individual components, then created custom wrapper designs by leveraging AI iteration in Figma—rapidly producing two distinct aesthetic options. The preferred design was a cherry-mint inspired wrapper that better captured Jasmin's brand identity. Using Unreal's Sequencer tool, I choreographed a multi-axis rotation (yaw, pitch, roll) to reveal the full product form, then recorded the animation via OBS into a perfectly looped video. The result delivers a high-fidelity, premium-feeling product display embedded on the live website at <a href=\"https://i512001.luna.fhict.nl/Brand-a-friend/\" target=\"_blank\" rel=\"noopener noreferrer\">i512001.luna.fhict.nl/Brand-a-friend/</a>.",
-                            img2: {
-                                src: "pictures/work page/jasmin_3d_bottle.png",
-                                alt: "3D spinning gum bottle product visualization",
-                                caption: "3D product model created in Unreal Engine with custom wrapper design and looped spinning animation."
-                            },
                             desc3: "<strong>Technical Implementation — Pac‑Man</strong><br>The embedded Pac‑Man is implemented in Vanilla JavaScript and HTML5 Canvas: tile-based collision, multiple ghost AIs, touch + keyboard controls, score/level/lives state, power-mode mechanics, and optimized 60 FPS rendering. Click 'START GAME' below to play—use arrow keys on desktop or swipe on mobile.",
                             hasEmbeddedGame: true,
                             gameType: "pacman",
                             theme: { primary: '#8b5cf6', hover: '#c4b5fd', glow1: 'rgba(139, 92, 246, 0.15)', glow2: 'rgba(196, 181, 253, 0.15)', shadow: 'rgba(139, 92, 246, 0.4)' } 
+                            ,
+                            topFullWidth: true
                         },
             { 
                 id: 6, 
@@ -896,12 +1017,15 @@
                 desc2: "", 
                 desc3: "", 
                 photos: [
-                    "https://placehold.co/800x600/111/fff?text=Portfolio+Shot+1",
-                    "https://placehold.co/800x600/222/fff?text=Portfolio+Shot+2",
-                    "https://placehold.co/800x600/333/fff?text=Portfolio+Shot+3",
-                    "https://placehold.co/800x600/444/fff?text=Portfolio+Shot+4",
-                    "https://placehold.co/800x600/555/fff?text=Portfolio+Shot+5",
-                    "https://placehold.co/800x600/666/fff?text=Portfolio+Shot+6"
+                    "pictures/work page/photoportfolio img 1.JPG",
+                    "pictures/work page/photoportfolio img 2.JPG",
+                    "pictures/work page/photoportfolio img 3.jpg",
+                    "pictures/work page/photoportfolio img 4.jpg.jpeg",
+                    "pictures/work page/photoportfolio img 5.jpg.jpeg",
+                    "pictures/work page/photoportfolio img 6.jpeg",
+                    "pictures/work page/photoportfolio img 7.jpeg",
+                    "pictures/work page/photoportfolio img 8.jpeg",
+                    "pictures/work page/photoportfolio img 9.jpeg"
                 ],
                 theme: { primary: '#f97316', hover: '#fbbf24', glow1: 'rgba(249, 115, 22, 0.15)', glow2: 'rgba(251, 191, 36, 0.15)', shadow: 'rgba(249, 115, 22, 0.4)' } 
             }
@@ -930,6 +1054,32 @@
         const projectModalOverlay = document.getElementById('project-modal-overlay');
         const closeProjectModalBtn = document.getElementById('close-project-modal');
         const modalBox = document.getElementById('dynamic-modal-box');
+        const photoLightboxOverlay = document.getElementById('photo-lightbox-overlay');
+        const photoLightboxImg = document.getElementById('photo-lightbox-img');
+        const closePhotoLightboxBtn = document.getElementById('close-photo-lightbox');
+
+        function openPhotoLightbox(src, alt) {
+            if (!photoLightboxOverlay || !photoLightboxImg) return;
+            photoLightboxImg.src = src;
+            photoLightboxImg.alt = alt || 'Photo preview';
+            photoLightboxOverlay.classList.add('active');
+            photoLightboxOverlay.setAttribute('aria-hidden', 'false');
+        }
+
+        function closePhotoLightbox() {
+            if (!photoLightboxOverlay || !photoLightboxImg) return;
+            photoLightboxOverlay.classList.remove('active');
+            photoLightboxOverlay.setAttribute('aria-hidden', 'true');
+            photoLightboxImg.src = '';
+            photoLightboxImg.alt = '';
+        }
+
+        if (closePhotoLightboxBtn) closePhotoLightboxBtn.addEventListener('click', closePhotoLightbox);
+        if (photoLightboxOverlay) {
+            photoLightboxOverlay.addEventListener('click', (event) => {
+                if (event.target === photoLightboxOverlay) closePhotoLightbox();
+            });
+        }
 
         function openProjectModal(project) {
             document.getElementById('modal-title').innerText = project.name;
@@ -957,28 +1107,116 @@
             const imagesContainer = document.getElementById('modal-images-container');
             const bottomImagesContainer = document.getElementById('modal-bottom-images-container');
             
-            // Safely populate all images first to prevent broken "placeholder" icons from previous modal states
+            const setMedia = (id, mediaData, defaultAlt) => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                const parent = el.parentElement;
+                const src = mediaData?.src || '';
+                
+                // Save className to re-apply
+                const cn = el.className;
+                
+                // remove existing media
+                const existingElements = parent.querySelectorAll(`img#${id}, video#${id}, model-viewer#${id}`);
+                existingElements.forEach(e => e.remove());
+                
+                if (!src) {
+                    const img = document.createElement('img');
+                    img.id = id;
+                    img.className = cn;
+                    parent.insertBefore(img, parent.firstChild);
+                    parent.style.display = 'none';
+                    return;
+                } else {
+                    parent.style.display = '';
+                }
+
+                let newEl;
+                const isVideo = src.toLowerCase().endsWith('.mp4');
+                const isModel = src.toLowerCase().endsWith('.glb');
+
+                if (isVideo) {
+                    newEl = document.createElement('video');
+                    newEl.autoplay = true;
+                    newEl.loop = true;
+                    newEl.muted = true;
+                    newEl.playsInline = true;
+                    newEl.style.width = '100%';
+                    newEl.style.height = '100%';
+                    newEl.style.objectFit = 'cover';
+                } else if (isModel) {
+                    newEl = document.createElement('model-viewer');
+                    newEl.setAttribute('camera-controls', 'true');
+                    newEl.setAttribute('auto-rotate', 'true');
+                    newEl.setAttribute('shadow-intensity', '1');
+                    newEl.style.width = '100%';
+                    newEl.style.height = '100%';
+                    newEl.style.maxHeight = '700px';
+                    newEl.style.minHeight = '420px';
+                } else {
+                    newEl = document.createElement('img');
+                    newEl.alt = mediaData.alt || defaultAlt || '';
+                    newEl.style.width = '100%';
+                    newEl.style.height = '100%';
+                    newEl.style.objectFit = 'contain';
+                }
+
+                newEl.id = id;
+                newEl.src = src;
+                newEl.className = cn;
+
+                parent.insertBefore(newEl, parent.firstChild);
+            };
+
+            setMedia('modal-top-img-1', project.img1, project.name);
+            setMedia('modal-top-img-2', project.img2, project.name);
+            setMedia('modal-small-img', project.img3, '');
+            setMedia('modal-bottom-img-1', project.img4, project.name);
+            setMedia('modal-bottom-img-2', project.img5, project.name);
+
+            if (bottomImagesContainer) {
+                if (!project.img5?.src) {
+                    bottomImagesContainer.style.gridTemplateColumns = '1fr';
+                } else {
+                    bottomImagesContainer.style.gridTemplateColumns = 'repeat(2, minmax(0, 1fr))';
+                }
+            }
+
+            // Fetch elements after any swaps
             const topImg1 = document.getElementById('modal-top-img-1');
             const topImg2 = document.getElementById('modal-top-img-2');
             const bottomImg1 = document.getElementById('modal-bottom-img-1');
             const bottomImg2 = document.getElementById('modal-bottom-img-2');
             const smallImg = document.getElementById('modal-small-img');
 
-            if (topImg1) { topImg1.src = project.img || ''; topImg1.alt = project.name; }
-            if (topImg2) { topImg2.src = project.img1?.src || project.img || ''; topImg2.alt = project.img1?.alt || project.name; }
-            if (bottomImg1) { bottomImg1.src = project.img2?.src || project.img || ''; bottomImg1.alt = project.img2?.alt || project.name; }
-            if (bottomImg2) { bottomImg2.src = project.imgSmall || project.img || ''; bottomImg2.alt = project.name; }
-            if (smallImg) { smallImg.src = project.imgSmall || project.img || ''; }
-
             const topCap1 = document.getElementById('modal-top-caption-1');
             const topCap2 = document.getElementById('modal-top-caption-2');
             const botCap1 = document.getElementById('modal-bottom-caption-1');
             const botCap2 = document.getElementById('modal-bottom-caption-2');
 
-            if (topCap1) topCap1.innerText = project.img?.caption || '';
-            if (topCap2) topCap2.innerText = project.img1?.caption || project.img1?.alt || '';
-            if (botCap1) botCap1.innerText = project.img2?.caption || project.img2?.alt || '';
-            if (botCap2) botCap2.innerText = project.imgSmallCaption || '';
+            if (topCap1) topCap1.innerText = project.img1?.caption || '';
+            if (topCap2) topCap2.innerText = project.img2?.caption || '';
+            if (botCap1) botCap1.innerText = project.img4?.caption || project.imgSmallCaption || '';
+            if (botCap2) botCap2.innerText = project.img5?.caption || '';
+
+            // If project requests a single full-width top image, adjust grid and visibility
+            if (project.topFullWidth) {
+                if (imagesContainer) {
+                    imagesContainer.style.gridTemplateColumns = '1fr';
+                    imagesContainer.style.display = 'grid';
+                }
+                if (topCap1) topCap1.innerText = project.img1?.caption || project.img1?.alt || '';
+                if (topImg2) {
+                    const f = topImg2.closest('figure');
+                    if (f) f.style.display = 'none';
+                }
+            } else {
+                if (imagesContainer) imagesContainer.style.gridTemplateColumns = '';
+                if (topImg2) {
+                    const f = topImg2.closest('figure');
+                    if (f) f.style.display = '';
+                }
+            }
 
             // Handle specific layouts based on project data
             const extendedGrid = document.getElementById('modal-extended-photo-grid');
@@ -995,10 +1233,21 @@
                 if (extendedGrid) {
                     extendedGrid.style.display = 'grid';
                     extendedGrid.innerHTML = project.photos.map(photoUrl => `
-                        <figure class="modal-image-card">
+                        <figure class="modal-image-card photo-portfolio-thumb" tabindex="0" role="button" aria-label="Open photo preview">
                             <img src="${photoUrl}" alt="Portfolio Photo" class="w-full h-auto rounded-lg">
                         </figure>
                     `).join('');
+                    extendedGrid.querySelectorAll('.photo-portfolio-thumb').forEach((figure, index) => {
+                        const photoUrl = project.photos[index];
+                        const openHandler = () => openPhotoLightbox(photoUrl, `Portfolio photo ${index + 1}`);
+                        figure.addEventListener('click', openHandler);
+                        figure.addEventListener('keydown', (event) => {
+                            if (event.key === 'Enter' || event.key === ' ') {
+                                event.preventDefault();
+                                openHandler();
+                            }
+                        });
+                    });
                 }
             } else if (project.hasEmbeddedGame && project.gameType === 'pacman') {
                 // Pacman specific layout
@@ -1617,6 +1866,7 @@
         }
 
         function closeProjectModal() {
+            closePhotoLightbox();
             projectModalOverlay.classList.remove('active');
             document.body.style.overflow = '';
             lenis.start();
@@ -1630,6 +1880,11 @@
 
         closeProjectModalBtn.addEventListener('click', closeProjectModal);
         projectModalOverlay.addEventListener('click', (e) => { if (e.target === projectModalOverlay) closeProjectModal(); });
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && photoLightboxOverlay?.classList.contains('active')) {
+                closePhotoLightbox();
+            }
+        });
         document.addEventListener('DOMContentLoaded', initProjects);
 
     </script>
