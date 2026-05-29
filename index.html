@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dieuwe Buijink | Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="site.js"></script>
+    <script src="site.js"></script>
+    
+    <!-- Model Viewer for GLB -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Press+Start+2P&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap');
 
@@ -319,7 +322,205 @@
             transform: translateY(0%);
         }
 
-        #modal-desc { word-spacing: -0.2em; }
+        /* --- SMOKED HOLO MODAL STYLES (MOBILE OPTIMIZED) --- */
+        #project-modal-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0, 0, 10, 0.85);
+            backdrop-filter: blur(8px); z-index: 100; justify-content: center; align-items: center; padding: 1rem;
+            flex-direction: column;
+        }
+        #project-modal-overlay.active { display: flex; animation: fadeIn 0.3s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .modal-content-box {
+            width: 95%; max-width: 1400px; max-height: 85vh; 
+            display: flex; flex-direction: column; position: relative;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-family: 'Source Code Pro', monospace;
+            overflow: hidden;
+            border-radius: 16px;
+
+            /* Dynamic CSS Variables assigned via JS */
+            --theme-primary: #ff3333;
+            --theme-glow-1: rgba(255, 0, 254, 0.12);
+            --theme-glow-2: rgba(0, 255, 204, 0.12);
+            --theme-hover: #00ffcc;
+            --theme-shadow: rgba(255, 51, 51, 0.4);
+
+            background-color: rgba(15, 15, 20, 0.65); backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px);
+            border: 1px solid rgba(80, 80, 80, 0.6); border-top: 1px solid rgba(255, 255, 255, 0.25); color: #f3f4f6;
+            background-image: radial-gradient(circle at top right, var(--theme-glow-1), transparent 55%), radial-gradient(circle at bottom left, var(--theme-glow-2), transparent 55%);
+            box-shadow: 0 35px 65px rgba(0,0,0,0.8), inset 0 2px 10px rgba(255,255,255,0.15);
+        }
+
+        @media (min-width: 768px) { 
+            .modal-content-box { width: 70vw; border-radius: 24px; } 
+        }
+        
+        .modal-scroll-area { padding: 1.25rem; overflow-y: auto; display: flex; flex-direction: column; gap: 1.5rem; }
+        @media (min-width: 768px) {
+            .modal-scroll-area { padding: 2.5rem; gap: 2rem; }
+        }
+
+        .modal-scroll-area::-webkit-scrollbar { width: 6px; }
+        .modal-scroll-area::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 0 16px 16px 0; }
+        .modal-scroll-area::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 4px; border: 2px solid transparent; background-clip: padding-box; }
+        .modal-scroll-area::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.5); }
+        
+        @media (min-width: 768px) {
+            .modal-scroll-area::-webkit-scrollbar { width: 8px; }
+            .modal-scroll-area::-webkit-scrollbar-track { border-radius: 0 24px 24px 0; }
+        }
+
+        .modal-close-btn { position: absolute; top: 0.5rem; right: 1rem; font-size: 2rem; cursor: pointer; z-index: 10; line-height: 1; transition: all 0.3s ease; color: rgba(255,255,255,0.6); font-weight: 300; }
+        @media (min-width: 768px) {
+            .modal-close-btn { top: 1.5rem; right: 2rem; font-size: 2.5rem; }
+        }
+        .modal-close-btn:hover { color: var(--theme-hover); transform: rotate(90deg); text-shadow: 0 0 10px var(--theme-hover); }
+
+        .modal-content-box h2 { color: var(--theme-primary); font-family: 'Audiowide', sans-serif; text-shadow: 0 0 15px var(--theme-shadow); text-transform: uppercase; font-size: 1.8rem !important; transition: color 0.4s ease, text-shadow 0.4s ease; margin-bottom: 0.25rem; padding-right: 1.5rem; }
+        @media (min-width: 768px) {
+            .modal-content-box h2 { font-size: 2.5rem !important; padding-right: 0; margin-bottom: 0.5rem; }
+        }
+
+        .modal-content-box p { color: rgba(255, 255, 255, 0.85); font-weight: 300; line-height: 1.6; font-size: 0.95rem; word-spacing: -0.2em; }
+        .modal-content-box a { color: #60a5fa; text-decoration: underline; transition: color 0.2s ease, opacity 0.2s ease; }
+        .modal-content-box a:hover { color: #93c5fd; opacity: 0.9; }
+        @media (min-width: 768px) {
+            .modal-content-box p { line-height: 1.8; font-size: 1.05rem; }
+        }
+        
+        .modal-media-placeholder, .modal-small-media { 
+            display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; overflow: hidden; position: relative; border-radius: 12px; border: 1px solid rgba(255,255,255,0.15); box-shadow: inset 0 0 20px rgba(0,0,0,0.5); background: rgba(10, 10, 15, 0.6);
+        }
+        .modal-media-placeholder { width: 100%; height: 200px; } 
+        .modal-small-media { width: 100%; height: 320px; }
+        .modal-small-media img,
+        .modal-small-media video,
+        .modal-small-media model-viewer,
+        .modal-image-card img,
+        .modal-image-card video,
+        .modal-image-card model-viewer {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+        .modal-image-card {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-image-card model-viewer {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        
+        @media (min-width: 768px) { 
+            .modal-media-placeholder, .modal-small-media { border-radius: 16px; }
+            .modal-media-placeholder { height: 450px; } 
+            .modal-small-media { width: 40%; max-width: 450px; height: 280px; } 
+        }
+
+        .modal-image-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        .modal-image-card {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border-radius: 18px;
+            overflow: hidden;
+            background: rgba(15, 15, 20, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-image-card img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        .modal-image-card figcaption {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 1rem;
+            color: #d1d5db;
+            background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.75) 100%);
+            font-size: 0.92rem;
+            line-height: 1.4;
+            display: none;
+        }
+
+        .photo-portfolio-thumb {
+            aspect-ratio: 4 / 3;
+            cursor: zoom-in;
+        }
+
+        .photo-portfolio-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .photo-lightbox-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 110;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            background: rgba(0, 0, 10, 0.9);
+            backdrop-filter: blur(10px);
+        }
+
+        .photo-lightbox-overlay.active {
+            display: flex;
+        }
+
+        .photo-lightbox-panel {
+            position: relative;
+            width: min(96vw, 1400px);
+            max-height: 92vh;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(10, 10, 15, 0.95);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.65);
+        }
+
+        .photo-lightbox-panel img {
+            width: 100%;
+            height: 100%;
+            max-height: 92vh;
+            object-fit: contain;
+            display: block;
+        }
+
+        .photo-lightbox-close {
+            position: absolute;
+            top: 0.75rem;
+            right: 1rem;
+            z-index: 1;
+            font-size: 2.25rem;
+            line-height: 1;
+            color: rgba(255, 255, 255, 0.75);
+            text-shadow: 0 0 12px rgba(0, 0, 0, 0.85);
+            cursor: pointer;
+        }
+
+        .photo-lightbox-close:hover {
+            color: #ffffff;
+        }
 
     </style>
 </head>
@@ -514,41 +715,67 @@
                 <div id="work-wrapper" class="relative w-full max-w-[95vw] xl:max-w-[1400px] z-10 group">
                     <div id="work-container" class="grid grid-cols-1 lg:grid-cols-3 gap-8 w-full py-4 px-4">
                         
-                        <!-- Exactly 3 Tall Cards -->
-                        <div class="brutalist-card cyan-hover p-8 text-left cursor-pointer popup-trigger flex flex-col justify-between min-h-[500px] md:min-h-[60vh]" data-title="Neon Interface" data-desc="A full conceptual UI for an interactive experience." data-img="NEON_PREVIEW">
-                            <div class="relative z-10 flex flex-col justify-between h-full w-full">
-                                <div>
-                                    <h3 class="font-audiowide text-2xl text-[#e2e8f0] mb-2 group-hover:text-[#00ffcc] transition-colors">Neon Interface</h3>
-                                    <p class="text-gray-400 text-base font-normal-sans mb-4">Web / UI Design</p>
+                        <!-- WORK CARD 1: VIRTUAL HUMANS -->
+                        <div class="brutalist-card group relative p-0 text-left cursor-pointer flex flex-col justify-end min-h-[500px] md:min-h-[60vh] overflow-hidden" 
+                             onclick="openProjectModal(projectsData[0])">
+                             
+                            <!-- Background Image -->
+                            <img src="pictures/work page/Virtual humans.png" onerror="this.src='https://picsum.photos/800/800?random=11'" alt="Virtual Humans" class="absolute inset-0 w-full h-full object-cover saturate-50 group-hover:saturate-100 transition-all duration-700 group-hover:scale-105 opacity-60 group-hover:opacity-90">
+                            <!-- Gradient Overlay -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#00000A] via-[#00000A]/70 to-transparent opacity-90 group-hover:opacity-80 transition-opacity"></div>
+                            
+                            <!-- Content -->
+                            <div class="relative z-10 p-6 md:p-8 flex flex-col justify-end h-full w-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                                <div class="mb-6">
+                                    <h3 class="font-audiowide text-2xl text-[#e2e8f0] mb-2 group-hover:text-[#00ffcc] transition-colors drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Virtual Humans</h3>
+                                    <p class="text-gray-300 text-base font-normal-sans drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">Media Design & Generative AI</p>
                                 </div>
-                                <div class="flex items-center justify-between border-t border-[#2a2a2e] pt-4">
-                                    <span class="text-xs font-audiowide tracking-wider text-gray-400">FIGMA / REACT</span>
+                                <div class="flex items-center justify-between border-t border-gray-600/50 pt-4 relative overflow-hidden">
+                                    <span class="text-xs font-audiowide tracking-wider text-gray-400 group-hover:text-gray-200 transition-colors">UNREAL / METAHUMAN</span>
                                     <span class="text-sm font-audiowide tracking-wider text-[#00ffcc] opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-[0_0_5px_rgba(0,255,204,0.8)]">VIEW</span>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="brutalist-card p-8 text-left cursor-pointer popup-trigger flex flex-col justify-between min-h-[500px] md:min-h-[60vh]" data-title="Atmospheric OS" data-desc="A web-based interactive experience featuring smooth transitions." data-img="ATMOS_PREVIEW">
-                            <div class="relative z-10 flex flex-col justify-between h-full w-full">
-                                <div>
-                                    <h3 class="font-audiowide text-2xl text-[#e2e8f0] mb-2 group-hover:text-[#ff007f] transition-colors">Atmospheric OS</h3>
-                                    <p class="text-gray-400 text-base font-normal-sans mb-4">Experience Design</p>
+                        <!-- WORK CARD 2: JÄGERMEISTER HEALTH CAMPAIGN -->
+                        <div class="brutalist-card group relative p-0 text-left cursor-pointer flex flex-col justify-end min-h-[500px] md:min-h-[60vh] overflow-hidden" 
+                             onclick="openProjectModal(projectsData[1])">
+                             
+                            <!-- Background Image -->
+                            <img src="pictures/work page/Jagermeister health.png" onerror="this.src='https://picsum.photos/800/800?random=12'" alt="Jägermeister" class="absolute inset-0 w-full h-full object-cover saturate-50 group-hover:saturate-100 transition-all duration-700 group-hover:scale-105 opacity-60 group-hover:opacity-90">
+                            <!-- Gradient Overlay -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#00000A] via-[#00000A]/70 to-transparent opacity-90 group-hover:opacity-80 transition-opacity"></div>
+                            
+                            <!-- Content -->
+                            <div class="relative z-10 p-6 md:p-8 flex flex-col justify-end h-full w-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                                <div class="mb-6">
+                                    <h3 class="font-audiowide text-2xl text-[#e2e8f0] mb-2 group-hover:text-[#ff007f] transition-colors drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Jägermeister</h3>
+                                    <p class="text-gray-300 text-base font-normal-sans drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">Interactive Concept & UX/UI</p>
                                 </div>
-                                <div class="flex items-center justify-between border-t border-[#2a2a2e] pt-4">
-                                    <span class="text-xs font-audiowide tracking-wider text-gray-400">JAVASCRIPT</span>
+                                <div class="flex items-center justify-between border-t border-gray-600/50 pt-4 relative overflow-hidden">
+                                    <span class="text-xs font-audiowide tracking-wider text-gray-400 group-hover:text-gray-200 transition-colors">FIGMA / BRANDING / UX</span>
                                     <span class="text-sm font-audiowide tracking-wider text-[#ff007f] opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-[0_0_5px_rgba(255,0,127,0.8)]">VIEW</span>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="brutalist-card cyan-hover p-8 text-left cursor-pointer popup-trigger flex flex-col justify-between min-h-[500px] md:min-h-[60vh]" data-title="Grid Runner" data-desc="An interactive browser game utilizing HTML5 Canvas." data-img="GRID_PREVIEW">
-                            <div class="relative z-10 flex flex-col justify-between h-full w-full">
-                                <div>
-                                    <h3 class="font-audiowide text-2xl text-[#e2e8f0] mb-2 group-hover:text-[#00ffcc] transition-colors">Grid Runner</h3>
-                                    <p class="text-gray-400 text-base font-normal-sans mb-4">Interactive Media</p>
+                        <!-- WORK CARD 3: PHOTO PORTFOLIO -->
+                        <div class="brutalist-card group relative p-0 text-left cursor-pointer flex flex-col justify-end min-h-[500px] md:min-h-[60vh] overflow-hidden" 
+                             onclick="openProjectModal(projectsData[2])">
+                             
+                            <!-- Background Image -->
+                            <img src="pictures/work page/photo album.jpg" onerror="this.src='https://picsum.photos/800/800?random=13'" alt="Photo Portfolio" class="absolute inset-0 w-full h-full object-cover saturate-50 group-hover:saturate-100 transition-all duration-700 group-hover:scale-105 opacity-60 group-hover:opacity-90">
+                            <!-- Gradient Overlay -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#00000A] via-[#00000A]/70 to-transparent opacity-90 group-hover:opacity-80 transition-opacity"></div>
+                            
+                            <!-- Content -->
+                            <div class="relative z-10 p-6 md:p-8 flex flex-col justify-end h-full w-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                                <div class="mb-6">
+                                    <h3 class="font-audiowide text-2xl text-[#e2e8f0] mb-2 group-hover:text-[#00ffcc] transition-colors drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Photo Portfolio</h3>
+                                    <p class="text-gray-300 text-base font-normal-sans drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">Creative Photography</p>
                                 </div>
-                                <div class="flex items-center justify-between border-t border-[#2a2a2e] pt-4">
-                                    <span class="text-xs font-audiowide tracking-wider text-gray-400">CANVAS / DESIGN</span>
+                                <div class="flex items-center justify-between border-t border-gray-600/50 pt-4 relative overflow-hidden">
+                                    <span class="text-xs font-audiowide tracking-wider text-gray-400 group-hover:text-gray-200 transition-colors">LIGHTROOM / CAMERA</span>
                                     <span class="text-sm font-audiowide tracking-wider text-[#00ffcc] opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-[0_0_5px_rgba(0,255,204,0.8)]">VIEW</span>
                                 </div>
                             </div>
@@ -676,18 +903,106 @@
         </footer>
     </main>
 
-    <div id="modal-overlay" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
-        <div id="modal-bg" class="absolute inset-0 bg-[#00000A]/90 backdrop-blur-md transition-opacity duration-300 opacity-0 cursor-pointer"></div>
-        <div id="modal-content" class="relative bg-[#0d0f12] border-2 border-[#00ffcc] p-1 max-w-3xl w-full shadow-[0_0_30px_rgba(0,255,204,0.15)] transform scale-95 opacity-0 transition-all duration-300">
-            <div class="border border-[#1a1f24] p-6 bg-[#0a0c0e]">
-                <button id="modal-close" class="absolute top-4 right-4 text-gray-500 hover:text-[#ff007f] font-normal-sans font-bold text-lg transition-colors p-2 hover:border-[#ff007f]">×</button>
-                <h3 id="modal-title" class="font-audiowide text-3xl text-[#00ffcc] mb-6 drop-shadow-[0_0_8px_rgba(0,255,204,0.5)]">Title</h3>
-                <div class="bg-[#00000A] aspect-video w-full border-2 border-[#1a1f24] mb-8 flex items-center justify-center relative overflow-hidden group">
-                    <div class="absolute inset-0 bg-[linear-gradient(rgba(0,255,204,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(0,255,204,0.05)_1px,transparent_1px)] bg-[size:10px_10px]"></div>
-                    <span id="modal-img-text" class="font-audiowide text-[#ff007f] tracking-widest relative z-10 group-hover:scale-110 transition-transform duration-500">IMG_PREVIEW</span>
+    <!-- SMOKED HOLO PROJECT MODAL OVERLAY -->
+    <div id="project-modal-overlay">
+        <div id="dynamic-modal-box" class="modal-content-box">
+            <span class="modal-close-btn" id="close-project-modal">&times;</span>
+            <div class="modal-scroll-area" data-lenis-prevent>
+                
+                <div>
+                    <h2 id="modal-title">Project Name</h2>
+                    <p id="modal-desc-1">
+                        <!-- Text populated by JS -->
+                    </p>
                 </div>
-                <p id="modal-desc" class="text-gray-300 font-normal-sans text-lg leading-relaxed border-l-2 border-[#ff007f] pl-4">Description goes here.</p>
+
+                <div class="modal-image-grid mt-4" id="modal-images-container">
+                    <figure class="modal-image-card">
+                        <img id="modal-top-img-1" src="" alt="" class="w-full h-auto">
+                        <figcaption id="modal-top-caption-1" class="text-sm text-gray-300 mt-3 px-2"></figcaption>
+                    </figure>
+                    <figure class="modal-image-card">
+                        <img id="modal-top-img-2" src="" alt="" class="w-full h-auto">
+                        <figcaption id="modal-top-caption-2" class="text-sm text-gray-300 mt-3 px-2"></figcaption>
+                    </figure>
+                </div>
+
+                <div id="modal-desc-2-container" class="flex flex-col lg:flex-row gap-6 lg:gap-10 mt-6">
+                    <p id="modal-desc-2" class="flex-1 text-gray-200">
+                        <!-- Text populated by JS -->
+                    </p>
+                    <div class="modal-small-media">
+                        <img id="modal-small-img" src="" class="absolute inset-0 w-full h-full object-contain" alt="">
+                    </div>
+                </div>
+
+                <div id="modal-tech-section" class="mt-6 pt-6 border-t border-gray-700/50">
+                    <h3 class="font-audiowide text-xl mb-4 text-white opacity-80 uppercase tracking-widest">Technical Implementation</h3>
+                    <p id="modal-desc-3" class="text-gray-400">
+                        <!-- Text populated by JS -->
+                    </p>
+                </div>
+
+                <!-- EXTENDED PHOTO GRID FOR PORTFOLIO -->
+                <div id="modal-extended-photo-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6" style="display:none;"></div>
+
+                <!-- EMBEDDED PAC-MAN GAME CONTAINER -->
+                <div id="embedded-pacman-container" style="display:none; width:100%; padding:20px; background:rgba(0,0,0,0.3); border-radius:8px; margin:20px 0;">
+                    <style>
+                        #pm-game-container { position: relative; box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); width: 100%; max-width: 810px; margin: 0 auto; }
+                        #pm-game-container canvas { display: block; background-color: black; border: 4px solid #1919A6; border-radius: 4px; width: 100%; touch-action: none; margin: 0 auto; image-rendering: pixelated; }
+                        #pm-ui-layer { display: flex; justify-content: space-between; padding: 10px 0; font-size: 1.2rem; font-weight: bold; text-transform: uppercase; max-width: 810px; margin: 0 auto; }
+                        .pm-stat-box { background: #222; padding: 5px 15px; border-radius: 15px; border: 1px solid #333; }
+                        #pm-score span { color: #FFD700; }
+                        #pm-level span { color: #00FF00; }
+                        #pm-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10; border-radius: 4px; }
+                        #pm-overlay h1 { font-size: 3rem; color: #FFD700; margin-bottom: 10px; text-shadow: 2px 2px #d32f2f; line-height: 1; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+                        #pm-overlay p { font-size: 1.2rem; margin-bottom: 30px; color: #ddd; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+                        .pm-btn-group { display: flex; gap: 15px; flex-direction: column; align-items: center; }
+                        .pm-btn { background: #d32f2f; color: white; border: none; padding: 15px 40px; font-size: 1.2rem; border-radius: 30px; cursor: pointer; font-weight: bold; transition: transform 0.1s, background 0.2s; box-shadow: 0 4px 0 #9a0007; text-align: center; display: inline-block; width: 250px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+                        .pm-file-upload-btn { background: #1976D2; box-shadow: 0 4px 0 #0D47A1; font-size: 1rem; padding: 12px 30px; }
+                        .pm-btn:active { transform: translateY(4px); box-shadow: none; }
+                        .pm-btn:hover { background: #ff6659; }
+                        .pm-file-upload-btn:hover { background: #42a5f5; }
+                        #pm-skinInput { display: none; }
+                    </style>
+                    <div id="pm-ui-layer">
+                        <div class="pm-stat-box" id="pm-score">Score: <span>0</span></div>
+                        <div class="pm-stat-box" id="pm-level">Level: <span>1</span></div>
+                    </div>
+                    <div id="pm-game-container">
+                        <canvas id="embeddedGameCanvas"></canvas>
+                        <div id="pm-overlay">
+                            <h1>PAC-MAN</h1>
+                            <p>Use Arrow Keys or Swipe</p>
+                            <div class="pm-btn-group">
+                                <button id="pm-startBtn" class="pm-btn">START GAME</button>
+                                <label for="pm-skinInput" class="pm-btn pm-file-upload-btn">📷 Upload Face</label>
+                                <input type="file" id="pm-skinInput" accept="image/*">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-image-grid mt-4" id="modal-bottom-images-container">
+                    <figure class="modal-image-card">
+                        <img id="modal-bottom-img-1" src="" alt="" class="w-full h-auto">
+                        <figcaption id="modal-bottom-caption-1" class="text-sm text-gray-300 mt-3 px-2"></figcaption>
+                    </figure>
+                    <figure class="modal-image-card">
+                        <img id="modal-bottom-img-2" src="" alt="" class="w-full h-auto">
+                        <figcaption id="modal-bottom-caption-2" class="text-sm text-gray-300 mt-3 px-2"></figcaption>
+                    </figure>
+                </div>
+
             </div>
+        </div>
+    </div>
+
+    <div id="photo-lightbox-overlay" class="photo-lightbox-overlay" aria-hidden="true">
+        <div class="photo-lightbox-panel">
+            <span id="close-photo-lightbox" class="photo-lightbox-close" aria-label="Close photo preview">&times;</span>
+            <img id="photo-lightbox-img" src="" alt="">
         </div>
     </div>
 
@@ -931,33 +1246,847 @@
             initDraggableSkills();
         };
 
-        const modalOverlay = document.getElementById('modal-overlay');
-        const modalBg = document.getElementById('modal-bg');
-        const modalContentEl = document.getElementById('modal-content');
-        const modalClose = document.getElementById('modal-close');
-        
-        function openModal(title, desc, imgText) {
-            document.getElementById('modal-title').textContent = title;
-            document.getElementById('modal-desc').textContent = desc;
-            document.getElementById('modal-img-text').textContent = imgText;
-            modalOverlay.classList.remove('hidden'); modalOverlay.classList.add('flex');
-            setTimeout(() => { modalBg.classList.remove('opacity-0'); modalBg.classList.add('opacity-100'); modalContentEl.classList.remove('scale-95', 'opacity-0'); modalContentEl.classList.add('scale-100', 'opacity-100'); }, 10);
-            clearTimeout(randomLoop);
+        const projectsData = [
+            {
+                id: 1,
+                name: "Virtual humans project",
+                desc1: "During my internship at Mindlabs Tilburg, I engineered 'Noa', an adaptive Virtual Human for the Digireal project—a collaborative initiative between Fontys ICT and BUas. Projected inside a life-sized Holobox, the avatar was designed to foster meaningful, autonomous interactions for children aged 8 to 12. My process began by synthesizing extensive background research into MetaHuman capabilities, non-verbal communication, and character design principles to establish a solid psychological and technical foundation.",
+                img1: { src: "pictures/work page/virtual human img 1.jpeg" },
+                img2: { src: "pictures/work page/virtual humans 2.mp4" },
+                img3: { src: "pictures/work page/virtual humans 3.mp4" },
+                img4: { src: "pictures/work page/virtual human img 4.mp4" },
+                desc2: "Using Unreal Engine, I brought the avatar to life by blending fluid MetaHuman Creator animations with dynamic Niagara VFX, such as an attention-grabbing smoke simulation. I engineered complex interaction pipelines integrating gaze tracking, socket systems, and precise gesture recognition. After observing user tests, I noticed children struggling with specific inputs, prompting me to develop intuitive UI video guides and robust reset-gestures that significantly lowered the interaction threshold.",
+                desc3: "Beyond immediate development, I focused heavily on project performance and longevity. I optimized the demanding Unreal project into stable, validated builds suitable for the Holobox and demo hardware. Wrapping up the internship, I delivered a comprehensive handover via Git, structured agile sprint documentation, and a strategic advisory report for the Fontys IXD-lectoraat, advocating for more accessible XR alternatives like Looking-Glass displays to expand the project's future reach.",
+                theme: { primary: '#00e5ff', hover: '#d946ef', glow1: 'rgba(0, 229, 255, 0.15)', glow2: 'rgba(217, 70, 239, 0.15)', shadow: 'rgba(0, 229, 255, 0.4)' }
+            },
+            {
+                id: 2,
+                name: "Jägermeister Health campaign",
+                desc1: "I worked on a project where i wanted to strategize and execute a complete brand campaign for 'Jägermeister Health' a fictional health-focused sub-brand reimagining Jägermeister's iconic herbal formula as a cough syrup. Our approach flipped the brand's notorious party image into an April Fools paradox: marketing therapeutic remedies in bottles designed to mimic the original liqueur shots. This required deep audience analysis, competitor positioning (Otrivin, Dampo), and packaging design that maintained the brand's bold visual identity while signaling health-conscious positioning.",
+                img1: { src: "pictures/work page/Jager health img 1.png" },
+                img2: { src: "pictures/work page/jager health image 2.png" },
+                img3: { src: "pictures/work page/jager health img 3.png" },
+                img4: { src: "pictures/work page/jager health image 4.glb" },
+                img5: { src: "pictures/work page/jager health image 5.png" },
+                desc2: "Our target demographic—young adults aged 21–38—represented a unique intersection: established drinkers seeking wellness solutions without sacrificing brand identity. By positioning the products as recovery essentials for the morning after, we created a compelling value proposition that spoke directly to our audience's lifestyle contradictions. To bring this vision to market, I spearheaded the creation of an interactive campaign website featuring a Three.js-powered rhythm game (Guitar Hero-style mechanic) that rewarded players reaching a combo of 30 with a 15% discount coupon. The website showcased looping product videos, a 3D rotating product model built in Blender, and custom interactive animations—all running on our FHICT server.",
+                desc3: "Deliverables spanned both physical and digital: custom 3D-modeled product bottles (GLB files optimized for web), professional packaging designs for Cough Syrup, Throat Lozenges, and Cold Balm with custom label textures in Blender, branded video content with seamless crossfade transitions, and a fully functional interactive website combining Tailwind CSS, Three.js rendering, and Vanilla JavaScript. I conducted two rounds of user testing on the rhythm game (~10 participants total), iterating on difficulty balancing—reducing note speed and lowering the win condition based on feedback. The final deliverable hosted at <a href=\"https://i512001.luna.fhict.nl/jagermeister-Health/\" target=\"_blank\" rel=\"noopener noreferrer\">i512001.luna.fhict.nl/jagermeister-Health/</a> demonstrated how interactive storytelling and gamification can drive engagement in brand campaigns.",
+                theme: { primary: '#a3e635', hover: '#fde047', glow1: 'rgba(163, 230, 53, 0.15)', glow2: 'rgba(253, 224, 71, 0.15)', shadow: 'rgba(163, 230, 53, 0.4)' }
+            },
+            {
+                id: 6,
+                name: "Photo portfolio",
+                desc1: "Welcome to my photography portfolio. This space is a curated collection of my visual storytelling, focused on capturing authentic moments, exploring the delicate balance of light and shadow, and finding beauty in the everyday. Below is a selection of my recent work.",
+                desc2: "",
+                desc3: "",
+                photos: [
+                    "pictures/work page/photoportfolio img 1.JPG",
+                    "pictures/work page/photoportfolio img 2.JPG",
+                    "pictures/work page/photoportfolio img 3.jpg",
+                    "pictures/work page/photoportfolio img 4.jpg.jpeg",
+                    "pictures/work page/photoportfolio img 5.jpg.jpeg",
+                    "pictures/work page/photoportfolio img 6.jpeg",
+                    "pictures/work page/photoportfolio img 7.jpeg",
+                    "pictures/work page/photoportfolio img 8.jpeg",
+                    "pictures/work page/photoportfolio img 9.jpeg"
+                ],
+                theme: { primary: '#f97316', hover: '#fbbf24', glow1: 'rgba(249, 115, 22, 0.15)', glow2: 'rgba(251, 191, 36, 0.15)', shadow: 'rgba(249, 115, 22, 0.4)' } 
+            }
+        ];
+
+        const projectModalOverlay = document.getElementById('project-modal-overlay');
+        const closeProjectModalBtn = document.getElementById('close-project-modal');
+        const modalBox = document.getElementById('dynamic-modal-box');
+        const photoLightboxOverlay = document.getElementById('photo-lightbox-overlay');
+        const photoLightboxImg = document.getElementById('photo-lightbox-img');
+        const closePhotoLightboxBtn = document.getElementById('close-photo-lightbox');
+
+        function openPhotoLightbox(src, alt) {
+            if (!photoLightboxOverlay || !photoLightboxImg) return;
+            photoLightboxImg.src = src;
+            photoLightboxImg.alt = alt || 'Photo preview';
+            photoLightboxOverlay.classList.add('active');
+            photoLightboxOverlay.setAttribute('aria-hidden', 'false');
         }
-        
-        function closeModal() {
-            modalBg.classList.remove('opacity-100'); modalBg.classList.add('opacity-0');
-            modalContentEl.classList.remove('scale-100', 'opacity-100'); modalContentEl.classList.add('scale-95', 'opacity-0');
-            setTimeout(() => { modalOverlay.classList.add('hidden'); modalOverlay.classList.remove('flex'); randomLoop = setTimeout(triggerRandomGlitch, 3000); }, 300);
+
+        function closePhotoLightbox() {
+            if (!photoLightboxOverlay || !photoLightboxImg) return;
+            photoLightboxOverlay.classList.remove('active');
+            photoLightboxOverlay.setAttribute('aria-hidden', 'true');
+            photoLightboxImg.src = '';
+            photoLightboxImg.alt = '';
         }
+
+        if (closePhotoLightboxBtn) closePhotoLightboxBtn.addEventListener('click', closePhotoLightbox);
+        if (photoLightboxOverlay) {
+            photoLightboxOverlay.addEventListener('click', (event) => {
+                if (event.target === photoLightboxOverlay) closePhotoLightbox();
+            });
+        }
+
+        function openProjectModal(project) {
+            clearTimeout(randomLoop); // Pause glitch effect
+            document.getElementById('modal-title').innerText = project.name;
+            document.getElementById('modal-desc-1').innerHTML = project.desc1 || '';
+            
+            const desc2Container = document.getElementById('modal-desc-2-container');
+            const desc2Text = document.getElementById('modal-desc-2');
+            if (project.desc2) {
+                if (desc2Container) desc2Container.style.display = 'flex';
+                if (desc2Text) desc2Text.innerHTML = project.desc2;
+            } else {
+                if (desc2Container) desc2Container.style.display = 'none';
+            }
+
+            const techSection = document.getElementById('modal-tech-section');
+            const desc3Text = document.getElementById('modal-desc-3');
+            if (project.desc3) {
+                if (techSection) techSection.style.display = 'block';
+                if (desc3Text) desc3Text.innerHTML = project.desc3;
+            } else {
+                if (techSection) techSection.style.display = 'none';
+            }
+
+            const pacmanContainer = document.getElementById('embedded-pacman-container');
+            const imagesContainer = document.getElementById('modal-images-container');
+            const bottomImagesContainer = document.getElementById('modal-bottom-images-container');
+            
+            const setMedia = (id, mediaData, defaultAlt) => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                const parent = el.parentElement;
+                const src = mediaData?.src || '';
+                
+                const cn = el.className;
+                
+                const existingElements = parent.querySelectorAll(`img#${id}, video#${id}, model-viewer#${id}`);
+                existingElements.forEach(e => e.remove());
+                
+                if (!src) {
+                    const img = document.createElement('img');
+                    img.id = id;
+                    img.className = cn;
+                    parent.insertBefore(img, parent.firstChild);
+                    parent.style.display = 'none';
+                    return;
+                } else {
+                    parent.style.display = '';
+                }
+
+                let newEl;
+                const isVideo = src.toLowerCase().endsWith('.mp4');
+                const isModel = src.toLowerCase().endsWith('.glb');
+
+                if (isVideo) {
+                    newEl = document.createElement('video');
+                    newEl.autoplay = true;
+                    newEl.loop = true;
+                    newEl.muted = true;
+                    newEl.playsInline = true;
+                    newEl.style.width = '100%';
+                    newEl.style.height = '100%';
+                    newEl.style.objectFit = 'cover';
+                } else if (isModel) {
+                    newEl = document.createElement('model-viewer');
+                    newEl.setAttribute('camera-controls', 'true');
+                    newEl.setAttribute('auto-rotate', 'true');
+                    newEl.setAttribute('shadow-intensity', '1');
+                    newEl.style.width = '100%';
+                    newEl.style.height = '100%';
+                    newEl.style.maxHeight = '700px';
+                    newEl.style.minHeight = '420px';
+                } else {
+                    newEl = document.createElement('img');
+                    newEl.alt = mediaData.alt || defaultAlt || '';
+                    newEl.style.width = '100%';
+                    newEl.style.height = '100%';
+                    newEl.style.objectFit = 'contain';
+                }
+
+                newEl.id = id;
+                newEl.src = src;
+                newEl.className = cn;
+
+                parent.insertBefore(newEl, parent.firstChild);
+            };
+
+            setMedia('modal-top-img-1', project.img1, project.name);
+            setMedia('modal-top-img-2', project.img2, project.name);
+            setMedia('modal-small-img', project.img3, '');
+            setMedia('modal-bottom-img-1', project.img4, project.name);
+            setMedia('modal-bottom-img-2', project.img5, project.name);
+
+            if (bottomImagesContainer) {
+                if (!project.img5?.src) {
+                    bottomImagesContainer.style.gridTemplateColumns = '1fr';
+                } else {
+                    bottomImagesContainer.style.gridTemplateColumns = 'repeat(2, minmax(0, 1fr))';
+                }
+            }
+
+            const extendedGrid = document.getElementById('modal-extended-photo-grid');
+            
+            if (project.photos && project.photos.length > 0) {
+                if (pacmanContainer) pacmanContainer.style.display = 'none';
+                if (imagesContainer) imagesContainer.style.display = 'none';
+                if (bottomImagesContainer) {
+                    bottomImagesContainer.style.display = 'none';
+                    bottomImagesContainer.classList.remove('grid');
+                    bottomImagesContainer.classList.add('hidden');
+                }
+                if (extendedGrid) {
+                    extendedGrid.style.display = 'grid';
+                    extendedGrid.innerHTML = project.photos.map(photoUrl => `
+                        <figure class="modal-image-card photo-portfolio-thumb" tabindex="0" role="button" aria-label="Open photo preview">
+                            <img src="${photoUrl}" alt="Portfolio Photo" class="w-full h-auto rounded-lg">
+                        </figure>
+                    `).join('');
+                    extendedGrid.querySelectorAll('.photo-portfolio-thumb').forEach((figure, index) => {
+                        const photoUrl = project.photos[index];
+                        const openHandler = () => openPhotoLightbox(photoUrl, `Portfolio photo ${index + 1}`);
+                        figure.addEventListener('click', openHandler);
+                        figure.addEventListener('keydown', (event) => {
+                            if (event.key === 'Enter' || event.key === ' ') {
+                                event.preventDefault();
+                                openHandler();
+                            }
+                        });
+                    });
+                }
+            } else if (project.hasEmbeddedGame && project.gameType === 'pacman') {
+                if (extendedGrid) extendedGrid.style.display = 'none';
+                if (pacmanContainer) pacmanContainer.style.display = 'none';
+                if (imagesContainer) imagesContainer.style.display = 'grid';
+                if (bottomImagesContainer) {
+                    bottomImagesContainer.style.display = 'none';
+                    bottomImagesContainer.classList.remove('grid');
+                    bottomImagesContainer.classList.add('hidden');
+                }
+                
+                setTimeout(() => {
+                    if (pacmanContainer) pacmanContainer.style.display = 'block';
+                    initEmbeddedPacMan();
+                }, 150);
+            } else {
+                if (extendedGrid) extendedGrid.style.display = 'none';
+                if (pacmanContainer) pacmanContainer.style.display = 'none';
+                if (imagesContainer) imagesContainer.style.display = 'grid';
+                if (bottomImagesContainer) {
+                    bottomImagesContainer.style.display = 'grid';
+                    bottomImagesContainer.classList.remove('hidden');
+                    bottomImagesContainer.classList.add('grid');
+                }
+            }
+
+            modalBox.style.setProperty('--theme-primary', project.theme.primary);
+            modalBox.style.setProperty('--theme-hover', project.theme.hover);
+            modalBox.style.setProperty('--theme-glow-1', project.theme.glow1);
+            modalBox.style.setProperty('--theme-glow-2', project.theme.glow2);
+            modalBox.style.setProperty('--theme-shadow', project.theme.shadow);
+            const scrollArea = modalBox.querySelector('.modal-scroll-area');
+            if(scrollArea) scrollArea.scrollTop = 0;
+            projectModalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // Suspend smooth scrolling if present globally
+            if (typeof window.lenis !== 'undefined') window.lenis.stop();
+            else if (typeof lenis !== 'undefined') lenis.stop();
+        }
+
+        // --- EMBEDDED PAC-MAN GAME ---
+        let embeddedGameInstance = null;
         
-        document.body.addEventListener('click', (e) => {
-            const trigger = e.target.closest('.popup-trigger');
-            if (trigger) { e.preventDefault(); openModal(trigger.getAttribute('data-title'), trigger.getAttribute('data-desc'), trigger.getAttribute('data-img')); }
+        function initEmbeddedPacMan() {
+            const embeddedCanvas = document.getElementById('embeddedGameCanvas');
+            if (!embeddedCanvas) return;
+            if (embeddedGameInstance) embeddedGameInstance.destroy();
+            embeddedGameInstance = createPacManGame(embeddedCanvas);
+        }
+
+        function createPacManGame(canvas) {
+            const ctx = canvas.getContext('2d');
+            const startBtn = document.getElementById('pm-startBtn');
+            const overlay = document.getElementById('pm-overlay');
+            const scoreEl = document.querySelector('#pm-score span');
+            const levelEl = document.querySelector('#pm-level span');
+            const overlayTitle = document.querySelector('#pm-overlay h1');
+            const skinInput = document.getElementById('pm-skinInput');
+
+            const TILE_SIZE = 20;
+            const ROW_COUNT = 20;
+            const COL_COUNT = 19;
+            
+            const PACMAN_SPEED_BASE = 0.10; 
+            const GHOST_SPEED_BASE = 0.06;
+
+            const WALL_COLOR = '#1919A6';
+            const PELLET_COLOR = '#ffb8ae';
+            const POWER_PELLET_COLOR = '#ffb8ae';
+            const PACMAN_COLOR = '#FFFF00';
+            
+            let score = 0;
+            let level = 1;
+            let gameRunning = false;
+            let animationId;
+            let powerModeTime = 0;
+            let lives = 3;
+            let customSkinImg = null;
+
+            const mapTemplate = [
+                [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,1],
+                [1,3,1,1,2,1,1,1,2,1,2,1,1,1,2,1,1,3,1],
+                [1,2,1,1,2,1,1,1,2,1,2,1,1,1,2,1,1,2,1],
+                [1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1],
+                [1,2,1,1,2,1,2,1,1,1,1,1,2,1,2,1,1,2,1],
+                [1,2,2,2,2,1,2,2,2,1,2,2,2,1,2,2,2,2,1],
+                [1,1,1,1,2,1,1,1,0,1,0,1,1,1,2,1,1,1,1],
+                [0,0,0,1,2,1,0,0,0,0,0,0,0,1,2,1,0,0,0],
+                [1,1,1,1,2,1,0,1,1,4,1,1,0,1,2,1,1,1,1],
+                [0,2,2,2,2,0,0,1,0,0,0,1,0,0,2,2,2,2,0], 
+                [1,1,1,1,2,1,0,1,1,1,1,1,0,1,2,1,1,1,1],
+                [0,0,0,1,2,1,0,0,0,0,0,0,0,1,2,1,0,0,0],
+                [1,1,1,1,2,1,2,1,1,1,1,1,2,1,2,1,1,1,1],
+                [1,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,1],
+                [1,2,1,1,2,1,1,1,2,1,2,1,1,1,2,1,1,2,1],
+                [1,3,2,1,2,2,2,2,2,0,2,2,2,2,2,1,2,3,1], 
+                [1,1,2,1,2,1,2,1,1,1,1,1,2,1,2,1,2,1,1],
+                [1,2,2,2,2,1,2,2,2,1,2,2,2,1,2,2,2,2,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+            ];
+
+            let map = [];
+            
+            const UP = { x: 0, y: -1, id: 'up' };
+            const DOWN = { x: 0, y: 1, id: 'down' };
+            const LEFT = { x: -1, y: 0, id: 'left' };
+            const RIGHT = { x: 1, y: 0, id: 'right' };
+            const STOP = { x: 0, y: 0, id: 'stop' };
+
+            const handleSkinChange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const img = new Image();
+                        img.onload = function() {
+                            customSkinImg = img;
+                            if (startBtn) startBtn.innerText = "START (WITH FACE)";
+                        }
+                        img.src = event.target.result;
+                    }
+                    reader.readAsDataURL(file);
+                }
+            };
+            if (skinInput) skinInput.addEventListener('change', handleSkinChange);
+
+            class Entity {
+                constructor(x, y, speed) {
+                    this.x = x + 0.5; 
+                    this.y = y + 0.5;
+                    this.speed = speed;
+                    this.dir = STOP;
+                    this.nextDir = STOP;
+                    this.radius = TILE_SIZE * 0.45; 
+                }
+
+                isWall(tx, ty, isGhost = false) {
+                    if (ty === 10 && (tx < 0 || tx >= COL_COUNT)) return false;
+                    if (tx < 0 || tx >= COL_COUNT || ty < 0 || ty >= ROW_COUNT) return true;
+                    const tile = map[ty][tx];
+                    if (isGhost) return tile === 1;
+                    return tile === 1 || tile === 4;
+                }
+
+                move(speedMultipler = 1.0, isGhost = false) {
+                    const spd = this.speed * speedMultipler;
+                    const cx = Math.floor(this.x);
+                    const cy = Math.floor(this.y);
+                    const centerX = cx + 0.5;
+                    const centerY = cy + 0.5;
+                    const dx = this.x - centerX;
+                    const dy = this.y - centerY;
+                    const distToCenter = Math.sqrt(dx*dx + dy*dy);
+
+                    if (this.nextDir !== STOP && distToCenter < spd) {
+                        const nextTx = cx + this.nextDir.x;
+                        const nextTy = cy + this.nextDir.y;
+                        if (!this.isWall(nextTx, nextTy, isGhost)) {
+                            this.x = centerX;
+                            this.y = centerY;
+                            this.dir = this.nextDir;
+                            this.nextDir = STOP;
+                            return;
+                        }
+                    }
+
+                    if (this.dir === STOP) return;
+
+                    const nextTx = cx + this.dir.x;
+                    const nextTy = cy + this.dir.y;
+
+                    if (this.isWall(nextTx, nextTy, isGhost)) {
+                        let distToStop = 0;
+                        if (this.dir === RIGHT) distToStop = centerX - this.x;
+                        else if (this.dir === LEFT) distToStop = this.x - centerX;
+                        else if (this.dir === DOWN) distToStop = centerY - this.y;
+                        else if (this.dir === UP) distToStop = this.y - centerY;
+
+                        if (distToStop <= spd) {
+                            this.x = centerX;
+                            this.y = centerY;
+                            if(isGhost) this.hitWall = true; 
+                            else this.dir = STOP; 
+                        } else {
+                            this.x += this.dir.x * spd;
+                            this.y += this.dir.y * spd;
+                        }
+                    } else {
+                        this.x += this.dir.x * spd;
+                        this.y += this.dir.y * spd;
+                    }
+
+                    if (this.x < 0) this.x = COL_COUNT;
+                    if (this.x > COL_COUNT) this.x = 0;
+                }
+            }
+
+            class Pacman extends Entity {
+                constructor(x, y) {
+                    super(x, y, PACMAN_SPEED_BASE);
+                    this.mouthOpen = 0;
+                    this.mouthSpeed = 0.2;
+                    this.rotation = 0;
+                }
+
+                update() {
+                    if (this.dir === RIGHT || (this.dir === STOP && this.rotation === 0)) this.rotation = 0;
+                    else if (this.dir === DOWN) this.rotation = Math.PI / 2;
+                    else if (this.dir === LEFT) this.rotation = Math.PI;
+                    else if (this.dir === UP) this.rotation = -Math.PI / 2;
+
+                    this.move(1.0, false);
+
+                    const cx = Math.floor(this.x);
+                    const cy = Math.floor(this.y);
+                    
+                    if (cx >= 0 && cx < COL_COUNT && cy >= 0 && cy < ROW_COUNT) {
+                        const tile = map[cy][cx];
+                        if (tile === 2) {
+                            map[cy][cx] = 0;
+                            score += 10;
+                            checkLevelComplete();
+                        } else if (tile === 3) {
+                            map[cy][cx] = 0;
+                            score += 50;
+                            activatePowerMode();
+                            checkLevelComplete();
+                        }
+                    }
+
+                    if (this.dir !== STOP) {
+                        this.mouthOpen += this.mouthSpeed;
+                        if (this.mouthOpen > 0.25 || this.mouthOpen < 0) this.mouthSpeed = -this.mouthSpeed;
+                    }
+                }
+
+                draw() {
+                    ctx.save();
+                    ctx.translate(this.x * TILE_SIZE, this.y * TILE_SIZE);
+                    ctx.rotate(this.rotation);
+                    
+                    ctx.beginPath();
+                    const angle = 0.2 * Math.PI * Math.sin(this.mouthOpen * Math.PI * 2);
+                    ctx.arc(0, 0, this.radius, angle, 2 * Math.PI - angle);
+                    ctx.lineTo(0, 0);
+                    ctx.closePath();
+                    
+                    if (customSkinImg) {
+                        ctx.clip(); 
+                        ctx.drawImage(customSkinImg, -this.radius, -this.radius, this.radius * 2, this.radius * 2);
+                    } else {
+                        ctx.fillStyle = PACMAN_COLOR;
+                        ctx.fill();
+                    }
+
+                    ctx.restore();
+                }
+            }
+
+            class Ghost extends Entity {
+                constructor(x, y, color) {
+                    super(x, y, GHOST_SPEED_BASE);
+                    this.color = color;
+                    this.isDead = false;
+                    this.isScared = false;
+                    this.hitWall = false;
+                    this.lastDecisionX = -1;
+                    this.lastDecisionY = -1;
+                    this.reviveDelay = 0;
+                }
+
+                isInHouse() {
+                    return this.y > 8 && this.y <= 10 && this.x >= 8 && this.x <= 10;
+                }
+
+                getValidDirs() {
+                    const cx = Math.floor(this.x);
+                    const cy = Math.floor(this.y);
+                    const valids = [];
+                    [UP, DOWN, LEFT, RIGHT].forEach(d => {
+                        if (d.x === -this.dir.x && d.y === -this.dir.y && !this.hitWall) return;
+                        if (!this.isWall(cx + d.x, cy + d.y, true)) {
+                            valids.push(d);
+                        }
+                    });
+                    return valids;
+                }
+
+                update() {
+                    if (this.isDead && this.isInHouse()) {
+                        if (this.reviveDelay === 0) this.reviveDelay = 180; 
+                    }
+
+                    if (this.reviveDelay > 0) {
+                        this.reviveDelay--;
+                        if (this.reviveDelay <= 0) this.isDead = false;
+                    }
+
+                    let speedMult = 1.0 + (level * 0.05);
+                    if (this.isScared) speedMult *= 0.6;
+                    if (this.isDead) {
+                        if (this.reviveDelay > 0) speedMult = 0.5;
+                        else speedMult *= 2.0;
+                    }
+
+                    this.hitWall = false;
+                    this.move(speedMult, true);
+
+                    const cx = Math.floor(this.x);
+                    const cy = Math.floor(this.y);
+                    const centerX = cx + 0.5;
+                    const centerY = cy + 0.5;
+                    const distToCenter = Math.sqrt(Math.pow(this.x - centerX, 2) + Math.pow(this.y - centerY, 2));
+                    const moveDist = this.speed * speedMult;
+                    const atCenter = distToCenter < moveDist;
+                    const isNewTile = cx !== this.lastDecisionX || cy !== this.lastDecisionY;
+
+                    if (this.hitWall || (atCenter && isNewTile)) {
+                        if (atCenter && !this.hitWall) {
+                            this.x = centerX;
+                            this.y = centerY;
+                        }
+                        this.lastDecisionX = cx;
+                        this.lastDecisionY = cy;
+
+                        const valids = this.getValidDirs();
+                        
+                        if (valids.length > 0) {
+                            let target = null;
+                            if (this.isInHouse()) {
+                                if (this.isDead && this.reviveDelay > 0) target = { x: 9, y: 9.5 };
+                                else {
+                                    target = { x: 9, y: 8 };
+                                    if (Math.abs(this.x - 9) > 0.1) target = { x: 9, y: 10 }; 
+                                    else target = { x: 9, y: 8 };
+                                }
+                            } 
+                            else if (this.isDead) target = { x: 9, y: 8 };
+                            else if (this.isScared) target = null;
+                            else {
+                                if (this.color === '#FF0000') { 
+                                    const dist = Math.hypot(this.x - pacman.x, this.y - pacman.y);
+                                    if (dist < 7) target = { x: pacman.x, y: pacman.y };
+                                    else target = null; 
+                                } else if (this.color === '#FFB852') { 
+                                    const dist = Math.hypot(this.x - pacman.x, this.y - pacman.y);
+                                    if (dist < 5) target = { x: pacman.x, y: pacman.y };
+                                    else target = null;
+                                } else target = null;
+                            }
+
+                            if (target) {
+                                valids.sort((a, b) => {
+                                    const distA = Math.hypot((cx + a.x) - target.x, (cy + a.y) - target.y);
+                                    const distB = Math.hypot((cx + b.x) - target.x, (cy + b.y) - target.y);
+                                    return distA - distB;
+                                });
+                                this.dir = valids[0];
+                            } else {
+                                this.dir = valids[Math.floor(Math.random() * valids.length)];
+                            }
+                        } else {
+                            const reverse = { x: -this.dir.x, y: -this.dir.y };
+                            this.dir = reverse;
+                        }
+                    }
+                }
+
+                draw() {
+                    const cx = this.x * TILE_SIZE;
+                    const cy = this.y * TILE_SIZE;
+                    ctx.fillStyle = this.isScared ? (Math.floor(Date.now() / 200) % 2 === 0 ? '#fff' : '#0000FF') : this.color;
+                    
+                    ctx.beginPath();
+                    ctx.arc(cx, cy - 2, this.radius, Math.PI, 0);
+                    ctx.lineTo(cx + this.radius, cy + this.radius);
+                    for(let i=1; i<=3; i++) {
+                        ctx.lineTo(cx + this.radius - (2*this.radius/3)*i, cy + this.radius - (i%2==0 ? 2 : 0));
+                    }
+                    ctx.lineTo(cx - this.radius, cy + this.radius);
+                    ctx.fill();
+
+                    if (!this.isScared) {
+                        ctx.fillStyle = 'white';
+                        ctx.beginPath();
+                        ctx.arc(cx - 4, cy - 4, 3, 0, Math.PI*2);
+                        ctx.arc(cx + 4, cy - 4, 3, 0, Math.PI*2);
+                        ctx.fill();
+                        ctx.fillStyle = 'blue';
+                        ctx.beginPath();
+                        ctx.arc(cx - 4 + this.dir.x*2, cy - 4 + this.dir.y*2, 1.5, 0, Math.PI*2);
+                        ctx.arc(cx + 4 + this.dir.x*2, cy - 4 + this.dir.y*2, 1.5, 0, Math.PI*2);
+                        ctx.fill();
+                    } else {
+                        ctx.fillStyle = '#ffb8ae';
+                        ctx.beginPath();
+                        ctx.fillRect(cx - 4, cy - 2, 2, 2);
+                        ctx.fillRect(cx + 2, cy - 2, 2, 2);
+                        ctx.fillRect(cx - 4, cy + 2, 8, 1); 
+                        ctx.fill();
+                    }
+                }
+            }
+
+            let pacman;
+            let ghosts = [];
+
+            function initLevel() {
+                map = mapTemplate.map(row => [...row]);
+                resetPositions();
+            }
+
+            function resetPositions() {
+                pacman = new Pacman(9, 16); 
+                pacman.nextDir = LEFT; 
+
+                ghosts = [
+                    new Ghost(9, 8, '#FF0000'), 
+                    new Ghost(8, 10, '#FFB8FF'),
+                    new Ghost(10, 10, '#00FFFF'),
+                    new Ghost(9, 9, '#FFB852') 
+                ];
+                
+                ghosts[0].dir = LEFT;
+                ghosts[1].dir = UP;
+                ghosts[2].dir = UP;
+                ghosts[3].dir = RIGHT;
+            }
+
+            function activatePowerMode() {
+                powerModeTime = 600; 
+                ghosts.forEach(g => {
+                    if (!g.isDead) g.isScared = true;
+                });
+            }
+
+            function checkLevelComplete() {
+                for(let row of map) {
+                    for(let tile of row) {
+                        if (tile === 2 || tile === 3) return;
+                    }
+                }
+                level++;
+                if (levelEl) levelEl.innerText = level;
+                initLevel();
+                showMessage(`LEVEL ${level}`);
+            }
+
+            function showMessage(text) {
+                gameRunning = false;
+                if (overlayTitle) overlayTitle.innerText = text;
+                if (startBtn) startBtn.innerText = "CONTINUE";
+                if (overlay) overlay.style.display = 'flex';
+            }
+
+            function gameOver() {
+                gameRunning = false;
+                if (overlayTitle) overlayTitle.innerText = "GAME OVER";
+                if (startBtn) startBtn.innerText = "RESTART";
+                if (overlay) overlay.style.display = 'flex';
+            }
+
+            function update() {
+                if (!gameRunning) return;
+
+                pacman.update();
+
+                if (powerModeTime > 0) {
+                    powerModeTime--;
+                    if (powerModeTime <= 0) ghosts.forEach(g => g.isScared = false);
+                }
+
+                ghosts.forEach(g => {
+                    g.update();
+                    const dist = Math.hypot(pacman.x - g.x, pacman.y - g.y);
+                    if (dist < 0.6) { 
+                        if (g.isScared && !g.isDead) {
+                            g.isDead = true; 
+                            g.isScared = false;
+                            g.reviveDelay = 0; 
+                            g.x = Math.round(g.x); 
+                            g.y = Math.round(g.y);
+                            score += 200;
+                        } else if (!g.isDead) {
+                            lives--;
+                            if (lives <= 0) gameOver();
+                            else {
+                                resetPositions();
+                                gameRunning = false;
+                                setTimeout(() => gameRunning = true, 1000);
+                            }
+                        }
+                    }
+                });
+
+                if (scoreEl) scoreEl.innerText = score;
+            }
+
+            function draw() {
+                ctx.fillStyle = 'black';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                for (let y = 0; y < ROW_COUNT; y++) {
+                    for (let x = 0; x < COL_COUNT; x++) {
+                        const tile = map[y][x];
+                        const px = x * TILE_SIZE;
+                        const py = y * TILE_SIZE;
+
+                        if (tile === 1) { 
+                            ctx.fillStyle = WALL_COLOR;
+                            ctx.fillRect(px, py, TILE_SIZE, TILE_SIZE);
+                        } else if (tile === 2) { 
+                            ctx.fillStyle = PELLET_COLOR;
+                            ctx.fillRect(px + TILE_SIZE/2 - 2, py + TILE_SIZE/2 - 2, 4, 4);
+                        } else if (tile === 3) { 
+                            if (Math.floor(Date.now() / 200) % 2 === 0) {
+                                ctx.fillStyle = POWER_PELLET_COLOR;
+                                ctx.beginPath();
+                                ctx.arc(px + TILE_SIZE/2, py + TILE_SIZE/2, 6, 0, Math.PI*2);
+                                ctx.fill();
+                            }
+                        } else if (tile === 4) { 
+                            ctx.strokeStyle = '#ffb8ae';
+                            ctx.beginPath();
+                            ctx.moveTo(px, py + TILE_SIZE/2);
+                            ctx.lineTo(px + TILE_SIZE, py + TILE_SIZE/2);
+                            ctx.stroke();
+                        }
+                    }
+                }
+
+                pacman.draw();
+                ghosts.forEach(g => g.draw());
+            }
+
+            function loop() {
+                update();
+                draw();
+                animationId = requestAnimationFrame(loop);
+            }
+
+            const onKeyDown = e => {
+                if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
+                    e.preventDefault();
+                }
+                if (e.key === 'ArrowUp') pacman.nextDir = UP;
+                if (e.key === 'ArrowDown') pacman.nextDir = DOWN;
+                if (e.key === 'ArrowLeft') pacman.nextDir = LEFT;
+                if (e.key === 'ArrowRight') pacman.nextDir = RIGHT;
+            };
+            window.addEventListener('keydown', onKeyDown);
+
+            let tX = 0; let tY = 0;
+            const onTouchStart = e => { tX = e.touches[0].clientX; tY = e.touches[0].clientY; };
+            const onTouchMove = e => { e.preventDefault(); };
+            const onTouchEnd = e => {
+                let dX = e.changedTouches[0].clientX - tX;
+                let dY = e.changedTouches[0].clientY - tY;
+                if(Math.abs(dX) > Math.abs(dY) && Math.abs(dX) > 30) pacman.nextDir = dX > 0 ? RIGHT : LEFT;
+                else if(Math.abs(dY) > 30) pacman.nextDir = dY > 0 ? DOWN : UP;
+            };
+            canvas.addEventListener('touchstart', onTouchStart, {passive:false});
+            canvas.addEventListener('touchmove', onTouchMove, {passive:false});
+            canvas.addEventListener('touchend', onTouchEnd, {passive:false});
+
+            function resize() {
+                const containerWidth = canvas.parentElement.clientWidth || 380;
+                canvas.width = COL_COUNT * TILE_SIZE;
+                canvas.height = ROW_COUNT * TILE_SIZE;
+                let scale = containerWidth / canvas.width;
+                canvas.style.width = `${canvas.width * scale}px`;
+                canvas.style.height = `${canvas.height * scale}px`;
+            }
+            
+            window.addEventListener('resize', resize);
+            
+            const onStartClick = () => {
+                if (startBtn.innerText === "RESTART") {
+                    score = 0; level = 1; lives = 3; 
+                    if (scoreEl) scoreEl.innerText = "0"; 
+                    if (levelEl) levelEl.innerText = "1";
+                    initLevel();
+                } else initLevel();
+                if (overlay) overlay.style.display = 'none';
+                gameRunning = true;
+            };
+            if (startBtn) startBtn.addEventListener('click', onStartClick);
+
+            resize();
+            initLevel();
+            draw();
+            loop();
+
+            return {
+                destroy: () => {
+                    cancelAnimationFrame(animationId);
+                    window.removeEventListener('keydown', onKeyDown);
+                    window.removeEventListener('resize', resize);
+                    canvas.removeEventListener('touchstart', onTouchStart);
+                    canvas.removeEventListener('touchmove', onTouchMove);
+                    if (startBtn) startBtn.removeEventListener('click', onStartClick);
+                    if (skinInput) skinInput.removeEventListener('change', handleSkinChange);
+                }
+            };
+        }
+
+        function closeProjectModal() {
+            closePhotoLightbox();
+            projectModalOverlay.classList.remove('active');
+            
+            // Reset to auto to perfectly match the intro animation's unlocked state
+            document.body.style.overflow = 'auto';
+            
+            // Resume smooth scrolling if present globally
+            if (typeof window.lenis !== 'undefined') window.lenis.start();
+            else if (typeof lenis !== 'undefined') lenis.start();
+            
+            if (embeddedGameInstance) {
+                embeddedGameInstance.destroy();
+                embeddedGameInstance = null;
+            }
+            const pacmanContainerClose = document.getElementById('embedded-pacman-container');
+            if (pacmanContainerClose) pacmanContainerClose.style.display = 'none';
+
+            randomLoop = setTimeout(triggerRandomGlitch, 3000); // Resume glitch effect
+        }
+
+        if(closeProjectModalBtn) closeProjectModalBtn.addEventListener('click', closeProjectModal);
+        if(projectModalOverlay) projectModalOverlay.addEventListener('click', (e) => { if (e.target === projectModalOverlay) closeProjectModal(); });
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && photoLightboxOverlay?.classList.contains('active')) {
+                closePhotoLightbox();
+            }
         });
-        
-        if(modalClose) modalClose.addEventListener('click', closeModal);
-        if(modalBg) modalBg.addEventListener('click', closeModal);
 
         // Physics Engine for Floating Skills
         function initDraggableSkills() {
