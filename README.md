@@ -32,6 +32,4 @@ This portfolio showcases a collection of personal projects, design decisions, an
 - `style.css` — Visual design, responsive rules
 - `scripts/` — Contains all JavaScript files (`site.js`, `transition.js`, `index.js`, `work.js`, `skills.js`, `contact.js`) for interaction logic and transitions.
 
-If you'd like, I can add short case-study blurbs for each project in `work.html`, include tech stacks per project, or add deployment instructions tailored to GitHub Pages or Netlify.
-
-If you have any questions, email: youremail@example.com
+If you have any questions, email: dieuwebuijink@gmail.com
